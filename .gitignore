@@ -1,0 +1,8 @@
+node_modules/
+build/
+config.json
+pakbot-7f806-firebase-adminsdk-ep5hk-02e9bec8e8.json
+package.json
+Procfile
+tsconfig.json
+yarn.lock
