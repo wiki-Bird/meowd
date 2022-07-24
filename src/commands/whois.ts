@@ -1,7 +1,7 @@
 import Command from '../types/Command';
 import { CommandInteraction, MessageEmbed, Message, GuildMember } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { client } from "../index";
+import validateUser from '../functions/validateUser';
 
 const whois: Command = {
 	data: new SlashCommandBuilder()
@@ -14,31 +14,16 @@ const whois: Command = {
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
         // checks if user is mentioned or ID is given:
-        const user = interaction.options.getString("user");
+        const user = interaction.options.getString("user") || interaction.user.id;
 
-        if (user !== null) {
-            var userGuildMember;
-            var userNamed;
-            var userID;
+        var isValidUser = await validateUser(user, interaction);
 
-            if (user?.startsWith("<@!") && user?.endsWith(">")) {
-                userID = user.slice(3, -1);
-            }
-            // else if user is an ID:
-            else if (user?.length === 18 && isNaN(Number(user)) === false) {
-                userID = user;
-            }
-            else {
-                await interaction.reply({ content: `Invalid user. Please provide a user's ID, @ a user, or provide nothing at all.`, ephemeral: true });
-                return;
-            }
-            userGuildMember = await interaction.guild!.members.fetch(userID);
-            userNamed = userGuildMember.user;
+        if (!isValidUser) {
+            return;
         }
-        else {
-            userNamed = interaction.user;
-            userGuildMember = interaction.member;
-        }
+    
+        var {userGuildMember, userNamed, userID} = isValidUser;
+    
 
 
         // if interaction not in guild, return:
