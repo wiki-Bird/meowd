@@ -27,7 +27,7 @@ If you've found an issue with the bot, please open an issue in the [issues tab](
 |:-----------:|:--------------:|:--------------------------------------:|:-----------------------------------------------------:|:--------------:|
 | /report     | @user reason   | ```/report @user they're mean :(```    | Reports a user to the mod team                        | Everyone       |
 | /poll       | title, options, show | ```/poll Red or Blue```, ```/poll Colour Orange, Yellow```| Polls users                  | Everyone       |
-| /whois      | @user          | ```/whois @user```, ```/whois 12345678| Adds a channel to recieve daily otters                 | Everyone       |
+| /whois      | @user          | ```/whois @user```, ```/whois 12345678```| Adds a channel to recieve daily otters                 | Everyone       |
 | /ping       |                | ```/ping```                            | Shares the bot's latency/ping                         | Everyone       |
 | /help       |                | ```/help```                            | Provides a list of bot commands                       | Everyone       |
 | /warn       | @user, reason  | ```/warn @user evil```                 | Warns a user                                          | Admin Only     |
