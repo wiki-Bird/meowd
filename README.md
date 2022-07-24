@@ -18,7 +18,7 @@ This bot is currently in development. Check the progress and planned features in
 </br>
 
 ## 🤕 Issues:
-If you've found an issue with the bot, please open an issue in the [issues tab]([https://github.com/diyhrt/diyhrt.github.io/issues](https://github.com/KwiiHours/PakBot/issues), or contact a discord mod.
+If you've found an issue with the bot, please open an issue in the [issues tab](https://github.com/KwiiHours/PakBot/issues), or contact a discord mod.
 
 </br>
 
