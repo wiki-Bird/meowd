@@ -9,7 +9,6 @@ Currently under development.</p>
 
 </br>
 
-<h2> </h2>
 </br></br>
 
 
