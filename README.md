@@ -13,6 +13,10 @@ Currently under development.</p>
 </br></br>
 
 
+## 🏗️ In development:
+This bot is currently in development. Check the progress and planned features in the [projects tab](https://github.com/users/KwiiHours/projects/2/views/1)
+
+</br>
 
 ## 🤕 Issues:
 If you've found an issue with the bot, please open an issue in the [issues tab]([https://github.com/diyhrt/diyhrt.github.io/issues](https://github.com/KwiiHours/PakBot/issues), or contact a discord mod.
