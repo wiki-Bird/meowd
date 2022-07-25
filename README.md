@@ -1,3 +1,4 @@
+</br>
 <p align="center"><a href="https://kwii.tk" target="_blank" rel="noreferrer noopener"><img width="170" alt="Ecosia Darkmode Logo" src="https://i.imgur.com/7EiprPq.png"></a></p>
 <h1 align="center">PakBot 2.0<br/><br/></h1>
 
@@ -9,7 +10,6 @@ Currently under development.</p>
 
 </br>
 
-<h2> </h2>
 </br></br>
 
 
@@ -19,7 +19,7 @@ This bot is currently in development. Check the progress and planned features in
 </br>
 
 ## 🤕 Issues:
-If you've found an issue with the bot, please open an issue in the [issues tab]([https://github.com/diyhrt/diyhrt.github.io/issues](https://github.com/KwiiHours/PakBot/issues), or contact a discord mod.
+If you've found an issue with the bot, please open an issue in the [issues tab](https://github.com/KwiiHours/PakBot/issues), or contact a discord mod.
 
 </br>
 
@@ -28,7 +28,7 @@ If you've found an issue with the bot, please open an issue in the [issues tab](
 |:-----------:|:--------------:|:--------------------------------------:|:-----------------------------------------------------:|:--------------:|
 | /report     | @user reason   | ```/report @user they're mean :(```    | Reports a user to the mod team                        | Everyone       |
 | /poll       | title, options, show | ```/poll Red or Blue```, ```/poll Colour Orange, Yellow```| Polls users                  | Everyone       |
-| /whois      | @user          | ```/whois @user```, ```/whois 12345678| Adds a channel to recieve daily otters                 | Everyone       |
+| /whois      | @user          | ```/whois @user```, ```/whois 12345678```| Adds a channel to recieve daily otters                 | Everyone       |
 | /ping       |                | ```/ping```                            | Shares the bot's latency/ping                         | Everyone       |
 | /help       |                | ```/help```                            | Provides a list of bot commands                       | Everyone       |
 | /warn       | @user, reason  | ```/warn @user evil```                 | Warns a user                                          | Admin Only     |
