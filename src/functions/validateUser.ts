@@ -1,4 +1,5 @@
 import { GuildMember, User, CommandInteraction } from 'discord.js';
+import { client } from "../index";
 
 export interface ValidatedUser {
     userNamed: User;
@@ -6,10 +7,11 @@ export interface ValidatedUser {
     userID: string;
 }
 
-export default async function validateUser(user: string, interaction: CommandInteraction<"cached" | "raw">): Promise<ValidatedUser | false> {
+export default async function validateUser(user: string, interaction: CommandInteraction<"cached" | "raw">, checker: boolean): Promise<ValidatedUser | false> {
     let userGuildMember: GuildMember;
     let userNamed: User;
     let userID: string;
+    console.log(checker);
 
     if (user !== null) {
     
@@ -24,8 +26,39 @@ export default async function validateUser(user: string, interaction: CommandInt
             await interaction.reply({ content: `Invalid user. Please provide a user's ID, @ a user, or provide nothing at all.`, ephemeral: true });
             return false;
         }
-        userGuildMember = await interaction.guild!.members.fetch(userID);
-        userNamed = userGuildMember.user;
+        
+
+        try {
+            const drip = await interaction.guild?.members.fetch(userID);
+            if (drip === undefined) {
+                if (checker) { 
+                    await interaction.reply({ content: `User not found in this server.`, ephemeral: true });
+                    return false;
+                }
+            }
+        }
+        catch (e) {
+            if (checker) {
+                await interaction.reply({ content: `User not found in this server.`, ephemeral: true });
+                return false;
+            }
+
+        }
+        if (checker){
+            userGuildMember = await interaction.guild!.members.fetch(userID);
+            userNamed = userGuildMember.user;
+        }
+        else if (interaction.member instanceof GuildMember){
+            userNamed = client.user;
+            userGuildMember = interaction.member;
+        }
+        else {
+            console.log('5');
+            await interaction.reply({ content: `User not found.`, ephemeral: true });
+            return false;
+        }
+
+
     } else if (interaction.member instanceof GuildMember) {
             userNamed = interaction.user;
             userGuildMember = interaction.member;

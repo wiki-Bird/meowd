@@ -16,7 +16,7 @@ const whois: Command = {
         // checks if user is mentioned or ID is given:
         const user = interaction.options.getString("user") || interaction.user.id;
 
-        var isValidUser = await validateUser(user, interaction);
+        var isValidUser = await validateUser(user, interaction, true);
 
         if (!isValidUser) {
             return;

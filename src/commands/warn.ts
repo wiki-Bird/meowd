@@ -35,7 +35,7 @@ const warn: Command = {
     }
     const moderator = interaction.user;
 
-    var isValidUser = await validateUser(user, interaction);
+    var isValidUser = await validateUser(user, interaction, true);
 
     if (!isValidUser) {
         return;
@@ -55,9 +55,10 @@ const warn: Command = {
         await configRef.child(userID).set({
             warnings: [{
                 reason: reason,
-                date: currentDate.toISOString(),
+                date: currentDate.toUTCString(),
                 moderator: moderator.id,
                 type: "warning",
+                duration: "N/A",
                 case_number: 1
             }],
             cases: 1
@@ -72,9 +73,10 @@ const warn: Command = {
 
         await configRef.child(userID).child("warnings").push({
             reason: reason,
-            date: currentDate.toISOString(),
+            date: currentDate.toUTCString(),
             moderator: moderator.id,
             type: "warning",
+            duration: "N/A",
             case_number: caseno2
         });
 

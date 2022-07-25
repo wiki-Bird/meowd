@@ -40,15 +40,13 @@ const modlog: Command = {
     var type = interaction.options.getString("type");
     var page = interaction.options.getNumber("page");
     
-    var isValidUser = await validateUser(user, interaction);
+    var isValidUser = await validateUser(user, interaction, false);
 
     if (!isValidUser) {
         return;
     }
 
     var {userGuildMember, userNamed, userID} = isValidUser;
-
-
 
     const userConfig = await getUserConfig(userID);
     if (userConfig === null){ return interaction.reply({ content: `User has no logs.`, ephemeral: true }) };
@@ -74,26 +72,31 @@ const modlog: Command = {
     // let sentEmbed = false;
     let addedFieldCount = 1;
 
-    if (type === null || type === "all") {
-        embed.setTitle(`${userNamed.username}'s moderation history:`);
+    if (userNamed.id === client.user.id) {
+        embed.setTitle("User " + userID + "'s moderation history (user not in server):");
+    } else {
+        embed.setTitle(userNamed.tag + "'s moderation history:");
+    }
+    embed.setFooter({ text: "Page " + page + " of " + totalPages + "  |  ID: " + userID });
+
         // We can fit 15 cases per page. If the page number is 1, give the first 15 cases. If the page number is 2, give the next 15 cases. etc.
         //.startAt((page - 1) * 15).endAt(page * 15)
+        //warnsRef.orderByChild("case_number").startAt((page - 1) * 15).endAt(page * 15).on("child_added", async (snapshot) => {
 
-        var warnsRef = ref.child("config").child(userID).child("warnings");
-        warnsRef.orderByChild("case_number").startAt((page - 1) * 15).endAt(page * 15).on("child_added", async (snapshot) => {
+    
+    var warnsRef = ref.child("config").child(userID).child("warnings");
+    if (type === null || type === "all") {
+        var i = 1;
+        warnsRef.orderByChild("case_number").on("child_added", async (snapshot) => {
+            if (i <= 15) {
+                embed.addFields({
+                    name: `Case ${snapshot.val().case_number} - ${snapshot.val().type}`,
+                    value: `**Reason:** ${snapshot.val().reason}\n**Moderator:** ${snapshot.val().moderator}\n**Date:** ${snapshot.val().date}\n**Type:** ${snapshot.val().type}, **Duration:** ${snapshot.val().duration}`,
+                });
+                addedFieldCount++;
+                i++;
+            }
 
-            embed.addFields({
-                name: `Case ${snapshot.val().case_number} - ${snapshot.val().type}`,
-                value: `**Reason:** ${snapshot.val().reason}\n**Moderator:** ${snapshot.val().moderator}\n**Date:** ${snapshot.val().date}\n**Type:** ${snapshot.val().type}`,
-            });
-
-            addedFieldCount++;
-
-            // if (sentEmbed) {
-            //     await interaction.editReply({ embeds: [embed] });
-            // } else {
-            //     console.log(`added field, not sent yet :)`);
-            // }
         })
     }
 
@@ -110,11 +113,6 @@ const modlog: Command = {
             await interaction.editReply({ embeds: [embed] });
         }, 10_000);
     }
-
-    // setTimeout(async () => {
-    //     // sentEmbed = true;
-    // }, 0_000);
-    
 
   }
 }
