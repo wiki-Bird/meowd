@@ -14,7 +14,7 @@ Currently under development.</p>
 
 
 ## 🏗️ In development:
-This bot is currently in development. Check the progress and planned features in the [projects tab](https://github.com/users/KwiiHours/projects/2/views/1)
+This bot is currently in development. Check the progress and planned features in the [projects tab](https://github.com/users/KwiiHours/projects/2/views/1).
 
 </br>
 
