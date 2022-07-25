@@ -54,8 +54,10 @@ const mute: Command = {
         var {timeInMS, timeString} = isValidTime;
 
         if (!interaction.guild) {return;}
+
         if (timeInMS >= 2419200000) {
-            await interaction.reply("You can't mute for more than 28 days.");
+            console.log('odas')
+            await interaction.editReply("You can't mute for more than 28 days.");
             return;
         }
 
@@ -71,14 +73,12 @@ const mute: Command = {
         .setTimestamp();
 
         // if user's role is higher than mine, I can't mute them
-        console.log(userGuildMember.roles.highest.comparePositionTo(interaction.guild.me!.roles.highest));
         if(userGuildMember.roles.highest.comparePositionTo(interaction.guild.me!.roles.highest) >= 0) {
             interaction.editReply("<@!" + userID + "> has a higher role than me, I cannot mute them.");
             return;
         }
 
         try {
-            // const dm = await userGuildMember.kick(reason);
             userGuildMember.timeout(timeInMS, reason);
         } catch (e) {
             interaction.editReply(`Error: Could not mute user.`);
