@@ -36,6 +36,9 @@ const whois: Command = {
 
             var roleCount = userGuildMember.roles.cache.map((role) => "<@&" + role.id + ">").join(' ');
             roleCount = roleCount.substring(0, roleCount.length - 22);
+            if (roleCount.length <= 0) {
+                roleCount = "No roles";
+            }
             const embed = new MessageEmbed();
             embed
                 .setColor("#1847bf")

@@ -11,7 +11,6 @@ export default async function validateUser(user: string, interaction: CommandInt
     let userGuildMember: GuildMember;
     let userNamed: User;
     let userID: string;
-    console.log(checker);
 
     if (user !== null) {
     
@@ -53,7 +52,6 @@ export default async function validateUser(user: string, interaction: CommandInt
             userGuildMember = interaction.member;
         }
         else {
-            console.log('5');
             await interaction.reply({ content: `User not found.`, ephemeral: true });
             return false;
         }

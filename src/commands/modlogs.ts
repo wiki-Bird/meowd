@@ -15,16 +15,17 @@ const modlog: Command = {
   .addStringOption(option =>
     option.setName("user")
         .setDescription("The user to list, ID or @.")
+        .setRequired(true)
     )
     .addStringOption(option =>
         option.setName("type")
             .setDescription("The type of activity you want to view.")  
             .addChoices(
                 { name: "all", value: "all" },
-                { name: "warnings", value: "warnings" },
-                { name: "mutes", value: "mutes" },
-                { name: "kicks", value: "kicks" },
-                { name: "bans", value: "bans" },
+                { name: "warnings", value: "warning" },
+                { name: "mutes", value: "mute" },
+                { name: "kicks", value: "kick" },
+                { name: "bans", value: "ban" },
                 )
             .setRequired(false)
     )
@@ -67,17 +68,23 @@ const modlog: Command = {
 
     var embed = new MessageEmbed()
         .setColor("#0099ff")
+        .setDescription("_ _")
         .setTimestamp();
 
     // let sentEmbed = false;
     let addedFieldCount = 1;
 
-    if (userNamed.id === client.user.id) {
+    if (userID === client.user.id) {
         embed.setTitle("User " + userID + "'s moderation history (user not in server):");
     } else {
-        embed.setTitle(userNamed.tag + "'s moderation history:");
+        embed.setAuthor({ name: userNamed.tag + "'s moderation history:", iconURL: userNamed.displayAvatarURL() });
     }
-    embed.setFooter({ text: "Page " + page + " of " + totalPages + "  |  ID: " + userID });
+    if (page < totalPages) {
+        embed.setFooter({ text: "Page " + page + " of " + totalPages + "  |  /modlog " + userID  + " " + (page + 1) + " for the next page."});
+    }
+    else{
+        embed.setFooter({ text: "Page " + page + " of " + totalPages});
+    }
 
         // We can fit 15 cases per page. If the page number is 1, give the first 15 cases. If the page number is 2, give the next 15 cases. etc.
         //.startAt((page - 1) * 15).endAt(page * 15)
@@ -85,13 +92,14 @@ const modlog: Command = {
 
     
     var warnsRef = ref.child("config").child(userID).child("warnings");
+    var lastCase = 0;
     if (type === null || type === "all") {
         var i = 1;
-        warnsRef.orderByChild("case_number").on("child_added", async (snapshot) => {
+        warnsRef.orderByChild("case_number").startAt((page-1)*15).on("child_added", async (snapshot) => {
             if (i <= 15) {
                 embed.addFields({
                     name: `Case ${snapshot.val().case_number} - ${snapshot.val().type}`,
-                    value: `**Reason:** ${snapshot.val().reason}\n**Moderator:** ${snapshot.val().moderator}\n**Date:** ${snapshot.val().date}\n**Type:** ${snapshot.val().type}, **Duration:** ${snapshot.val().duration}`,
+                    value: `**Reason:** ${snapshot.val().reason}\n**Moderator:** <@!` + snapshot.val().moderator + `> - ${snapshot.val().moderator}\n**Date:** ${snapshot.val().date}\n**Type:** ${snapshot.val().type}\n**Duration:** ${snapshot.val().duration}ms`,
                 });
                 addedFieldCount++;
                 i++;
@@ -99,11 +107,41 @@ const modlog: Command = {
 
         })
     }
+    else {
+        var i = 1;
+        warnsRef.orderByChild("case_number").startAt((page-1)*15).on("child_added", async (snapshot) => {
+            if (i <= 15 && snapshot.val().type === type) {
+                embed.addFields({
+                    name: `Case ${snapshot.val().case_number} - ${snapshot.val().type}`,
+                    value: `**Reason:** ${snapshot.val().reason}\n**Moderator:** <@!` + snapshot.val().moderator + `> - ${snapshot.val().moderator}\n**Date:** ${snapshot.val().date}\n**Type:** ${snapshot.val().type}`,
+                });
+                addedFieldCount++;
+                i++;
+            }
+        })
+        if (i === 1) {
+            embed.addField("No cases found.", "No cases found of type " + type + ".");
+        }
+        if (userID === client.user.id) {
+            embed.setTitle("User " + userID + "'s " + type + " history (user not in server):");
+        } else {
+            embed.setAuthor({ name: userNamed.tag + "'s " + type + " history:", iconURL: userNamed.displayAvatarURL() });
+        }
+
+        totalPages = Math.ceil(addedFieldCount / 15);
+        if (page < totalPages) {
+            embed.setFooter({ text: "Page " + page + " of " + totalPages + "  |  /modlog " + userID  + " " + (page + 1) + " for the next page."});
+        }
+        else{
+            embed.setFooter({ text: "Page " + page + " of " + totalPages});
+        }
+    }
+
 
     await interaction.deferReply();
 
     await interaction.editReply({ embeds: [embed] });
-    if (addedFieldCount !== casenumbers) {
+    if (addedFieldCount !== casenumbers && addedFieldCount !== (casenumbers % 15) + 1 && addedFieldCount !== 16 && i !== 1) {
         embed.setFooter({  text: `Some cases could not be shown. Please try again shortly.` });
         await interaction.editReply({ embeds: [embed] });
         setTimeout(async () => {
