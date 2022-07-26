@@ -2,7 +2,7 @@
 // a slash command that lets server admins add channels to a database
 // a file that checks when the bot joins a new guild and runs said command
 
-import { Client, Collection, Intents } from 'discord.js';
+import { Client, Collection, Intents, PartialTypes  } from 'discord.js';
 import OtterClient from './types/OtterClient';
 import { readdirSync } from 'fs';
 import { join } from 'path';
@@ -13,7 +13,14 @@ import { Routes, ActivityType } from 'discord-api-types/v9';
 const { token } = require('../config.json');
 const { clientId } = require('../config.json');
 
-export const client= new Client({ intents: [Intents.FLAGS.GUILDS] }) as OtterClient
+const myIntents = new Intents();
+// myIntents.add('DIRECT_MESSAGES', 'FLAGS.GUILDS', 'MESSAGE_CONTENT', 'AUTO_MODERATION_EXECUTION','GUILD_MESSAGE_REACTIONS',
+// 'GUILD_BANS', 'GUILD_MEMBERS', 'GUILDS');
+//add all intents:
+// myIntents.add(Intents.ALL);
+
+export const client= new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_MESSAGES,
+Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MEMBERS], partials: ["CHANNEL"] }) as OtterClient
 
 // FIREBASE:
 // Import the functions you need from the SDKs you need
