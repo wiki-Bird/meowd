@@ -5,7 +5,6 @@ import Event from '../types/Event';
 const messageCreate: Event = {
     name: 'messageCreate',
     execute: function (message: Message) {
-        console.log(message.content);
 
         //if a message is sent in the live-streams chat, change the status to streaming for an hour
         if ( message.channel.id === '767412939773706270'){
