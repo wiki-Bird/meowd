@@ -1,9 +1,9 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
-import { MessageActionRow, MessageButton, TextChannel, Guild } from 'discord.js';
+import { CommandInteraction, MessageEmbed, TextChannel, Guild  } from 'discord.js';
 import Command from '../types/Command';
 import { client } from "../index";
 import validateUser from '../functions/validateUser';
+
 
 const report: Command = {
 	data: new SlashCommandBuilder()
@@ -44,7 +44,7 @@ const report: Command = {
         var {userGuildMember, userNamed, userID} = isValidUser;
 
         var reportEmbed = new MessageEmbed()
-            .setColor("#ff0000")
+            .setColor("#1847bf")
             .setAuthor({name: `${userNamed.tag} (${userNamed.id}) reported by ${reportingUser.tag}`, iconURL: userNamed.displayAvatarURL()})
             .addFields(
                 { name: "Reason:", value: reason},
