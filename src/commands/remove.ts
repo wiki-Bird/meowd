@@ -50,10 +50,6 @@ const remove: Command = {
 
         var warnsRef = ref.child("config").child(userID).child("warnings");
         warnsRef.orderByChild("case_number").on("child_added", async (snapshot) => {
-            
-
-
-
 
             if (snapshot.val().case_number === case_no) {
 
@@ -69,19 +65,23 @@ const remove: Command = {
                 await warnsRef.child(snapshot.key!).remove();
                 // decrement cases by 1
                 var casesRef = ref.child("config").child(userID).child("cases");
-                casesRef.once("value", (snapshot) => {
-                    var cases = snapshot.val() - 1;
-                    casesRef.set(cases);
+                
+                casesRef.once("value", async (snapshot) => {
+                    casesRef.set(snapshot.val() - 1);
                 });
+
                 await interaction.reply({embeds: [embed]});
                 checker = true;
             }
             
         })
 
-        if (!checker) {
-            await interaction.reply({ content: `Case ${case_no} not found.` + " Use `/modlog @" + userNamed.username + "` to check cases.", ephemeral: true });
-        }
+        // wait 8s for checker to be true
+        setTimeout(() => {
+            if (!checker && interaction.replied === false) {
+                interaction.reply({ content: `Case ${case_no} not found.` + " Use `/modlog @" + userNamed.username + "` to check cases.", ephemeral: true });
+            }
+        }, 8000);
 
 
 	}
