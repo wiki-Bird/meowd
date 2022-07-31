@@ -1,0 +1,37 @@
+import Command from '../types/Command';
+import { CommandInteraction, TextChannel } from 'discord.js';
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { client } from "../index";
+
+const msg: Command = {
+	data: new SlashCommandBuilder()
+		.setName('msg')
+        .addChannelOption(option =>
+            option.setName("channel")
+                .setDescription("The channel to send the message to, #channel.")
+                .setRequired(true)
+        )
+        .addStringOption(option =>
+            option.setName("message")
+                .setDescription("The message to send.")
+                .setRequired(true)
+        )
+		.setDescription('Message a channel as the bot.'),
+	
+	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+
+        var channel = interaction.options.getChannel("channel", true);
+        const message = interaction.options.getString("message", true);
+
+        if (!interaction.guild) {return;}
+        if (channel === null || !(channel instanceof TextChannel)) {
+            interaction.reply({ content: "You must specify text a channel to message.", ephemeral: true });
+        }
+
+        (channel as TextChannel).send(message);
+        interaction.reply({ content: `Message sent to ${channel.name}`, ephemeral: true });
+
+    }
+}
+
+export default msg;
