@@ -1,8 +1,7 @@
 import { client } from "../index";
-import { MessageEmbed, TextChannel, Guild, GuildBan, GuildMember,   } from 'discord.js';
+import { MessageEmbed, TextChannel, GuildMember } from 'discord.js';
 import Event from '../types/Event';
 import getUserConfig from '../functions/getUserConfig';
-import Command from '../types/Command';
 import { ref } from '..';
 
 const guildMemberRemove: Event = {
@@ -94,10 +93,6 @@ const guildMemberRemove: Event = {
                 .setFooter({ text: `ID ${member.user.id}` });
             return channelToSend.send({ embeds: [embed] });
         }
-
-
-
-
     }
 }
 
