@@ -52,7 +52,6 @@ const kick: Command = {
         .setTimestamp();
 
         // if user's role is higher than mine, I can't kick them
-        console.log(userGuildMember.roles.highest.comparePositionTo(interaction.guild.me!.roles.highest));
         if(userGuildMember.roles.highest.comparePositionTo(interaction.guild.me!.roles.highest) >= 0) {
             interaction.editReply("<@!" + userID + "> has a higher role than me, I cannot kick them.");
             return;

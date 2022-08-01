@@ -56,7 +56,6 @@ const mute: Command = {
         if (!interaction.guild) {return;}
 
         if (timeInMS >= 2419200000) {
-            console.log('odas')
             await interaction.editReply("You can't mute for more than 28 days.");
             return;
         }
