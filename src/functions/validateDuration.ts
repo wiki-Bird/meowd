@@ -18,7 +18,12 @@ export default async function validateDuration(time: string, interaction: Comman
         }
     } 
     if ( midPoint == 0 ) {
-        await interaction.reply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1h`, `4m`", ephemeral: true });
+        try{
+            await interaction.reply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1h`, `4m`", ephemeral: true });
+        }
+        catch(e){
+            await interaction.editReply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1h`, `4m`" });
+        }
         return false;
     }
 
@@ -27,7 +32,12 @@ export default async function validateDuration(time: string, interaction: Comman
 
     // check if timeNumber is a number
     if (isNaN(Number(timeNumber)) === true) {
-        await interaction.reply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `4m`", ephemeral: true });
+        try{
+            await interaction.reply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1h`, `4m`", ephemeral: true });
+        }
+        catch(e){
+            await interaction.editReply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1h`, `4m`" });
+        }
         return false;
     }
 
