@@ -1,5 +1,4 @@
-import { GuildMember, User, CommandInteraction } from 'discord.js';
-import { client } from "../index";
+import { CommandInteraction } from 'discord.js';
 
 export interface ValidatedNumber {
     timeInMS: number;

@@ -2,10 +2,12 @@ import Command from '../types/Command';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import validateUser from '../functions/validateUser';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 const unmute: Command = {
-	data: new SlashCommandBuilder()
-		.setName('unmute')
+    data: new SlashCommandBuilder()
+    .setName('unmute')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.Administrator)
         .addStringOption(option =>
             option.setName("user")
                 .setDescription("The user to unmute, ID or @.")

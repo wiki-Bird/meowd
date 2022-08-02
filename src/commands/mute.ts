@@ -1,18 +1,17 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed, Message, GuildMember } from 'discord.js';
-import { getSystemErrorMap } from 'util';
+import { CommandInteraction, MessageEmbed } from 'discord.js';
 import getUserConfig from '../functions/getUserConfig';
 import Command from '../types/Command';
 import { ref } from '..';
 import validateUser from '../functions/validateUser';
 import validateDuration from '../functions/validateDuration';
-import { client } from "../index";
-import guildCreate from '../events/guildCreate';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 const configRef = ref.child("config");
 const mute: Command = {
 	data: new SlashCommandBuilder()
 		.setName('mute')
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.Administrator)
         .addStringOption(option =>
             option.setName("user")
                 .setDescription("The user to mute, ID or @.")

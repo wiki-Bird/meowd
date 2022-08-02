@@ -1,11 +1,12 @@
 import Command from '../types/Command';
 import { CommandInteraction, TextChannel } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { client } from "../index";
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 const msg: Command = {
 	data: new SlashCommandBuilder()
 		.setName('msg')
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.Administrator)
         .addChannelOption(option =>
             option.setName("channel")
                 .setDescription("The channel to send the message to, #channel.")

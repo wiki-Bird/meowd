@@ -1,17 +1,17 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed, Message, GuildMember } from 'discord.js';
-import { getSystemErrorMap } from 'util';
+import { MessageEmbed } from 'discord.js';
 import getUserConfig from '../functions/getUserConfig';
 import Command from '../types/Command';
 import { ref } from '..';
 import { client } from "../index";
 import validateUser from '../functions/validateUser';
 
-const configRef = ref.child("config");
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 const modlog: Command = {
   data: new SlashCommandBuilder()
   .setName('modlog')   
+  .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.Administrator)
   .addStringOption(option =>
     option.setName("user")
         .setDescription("The user to list, ID or @.")

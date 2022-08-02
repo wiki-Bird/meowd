@@ -1,7 +1,8 @@
 import Command from '../types/Command';
-import { CommandInteraction, TextChannel } from 'discord.js';
+import { CommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import validateUser from '../functions/validateUser';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 const dm: Command = {
 	data: new SlashCommandBuilder()
@@ -16,6 +17,7 @@ const dm: Command = {
                 .setDescription("The message to send.")
                 .setRequired(true)
         )
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.Administrator)
 		.setDescription('Message the user as the bot.'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {

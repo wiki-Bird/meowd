@@ -1,12 +1,10 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed, Message, GuildMember } from 'discord.js';
-import { getSystemErrorMap } from 'util';
+import { CommandInteraction, MessageEmbed } from 'discord.js';
 import getUserConfig from '../functions/getUserConfig';
 import Command from '../types/Command';
 import { ref } from '..';
 import validateUser from '../functions/validateUser';
-import { client } from "../index";
-import guildCreate from '../events/guildCreate';
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 const configRef = ref.child("config");
 const kick: Command = {
@@ -22,7 +20,7 @@ const kick: Command = {
                     .setDescription("The reason for the kick.")
                     .setRequired(false)
             )
-          .setDefaultMemberPermissions(0)
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.Administrator)
 		.setDescription('Kicks a user from the server.'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {

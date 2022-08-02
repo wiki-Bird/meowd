@@ -1,7 +1,6 @@
 import Command from '../types/Command';
 import { CommandInteraction, MessageEmbed, Message } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { client } from "../index";
 
 const poll: Command = {
 	data: new SlashCommandBuilder()
