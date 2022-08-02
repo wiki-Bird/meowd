@@ -28,17 +28,21 @@ If you've found an issue with the bot, please open an issue in the [issues tab](
 |:-----------:|:--------------:|:--------------------------------------:|:-----------------------------------------------------:|:--------------:|
 | /report     | @user reason   | ```/report @user they're mean :(```    | Reports a user to the mod team                        | Everyone       |
 | /poll       | title, options, show | ```/poll Red or Blue```, ```/poll Colour Orange, Yellow```| Polls users                  | Everyone       |
-| /whois      | @user          | ```/whois @user```, ```/whois 12345678```| Adds a channel to recieve daily otters                 | Everyone       |
+| /whois      | @user          | ```/whois @user```, ```/whois 12345678```| Adds a channel to recieve daily otters              | Everyone       |
 | /ping       |                | ```/ping```                            | Shares the bot's latency/ping                         | Everyone       |
+| /rule       | number         | ```/rule 5```                          | Provides a server rule                                | Everyone       |
 | /help       |                | ```/help```                            | Provides a list of bot commands                       | Everyone       |
 | /warn       | @user, reason  | ```/warn @user evil```                 | Warns a user                                          | Admin Only     |
 | /kick       | @user, reason  | ```/kick @user evil```                 | Kicks a user from the server                          | Admin Only     |
 | /mute       | @user, length, reason| ```/mute @user 12hr evil```      | Mutes a user                                          | Admin Only     |
+| /unmute     | @user, reason  | ```/un mute @user cool!```             | UnMutes a user                                        | Admin Only     |
 | /ban        | @user, length, reason| ```/ban @user 12hr evil```       | Bans a user                                           | Admin Only     |
+| /unban      | @user, reason  | ```/unban @user cool!```               | UnBans a user                                         | Admin Only     |
 | /dm         | userID, message| ```/dm 12345678 hi there!```           | DMs a given user the specified message                | Admin Only     |
-| /supporter  | @user          | ```/supporter @user```                 | Gives a user the member role                          | Admin Only     |
 | /msg        | channelID, message| ```/msg 12345678 hi there!```       | Msgs a given channel with the specified message       | Admin Only     |
-| /modlog     | @user          | ```/modlog @user```                    | Provides a log of every moderator action on a user    | Everyone       |
+| /modlogs    | @user          | ```/modlogs @user```                   | Provides a log of every moderator action on a user    | Admin Only     |
+| /remove     | @user, case_no | ```/modlogs @user 23```                | Removes a specific modlog case from a user            | Admin Only     |
+| /member     |                | ```/member```                          | Applies the given user for recieving the member role  | Everyone       |
 | /stats      |                | ```/stats```                           | Shares some of PakBot's statistics                    | Everyone       |
 
 </br>
