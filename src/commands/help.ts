@@ -20,13 +20,8 @@ const help: Command = {
                 { name: "/help", value: "Shows this message! \n eg: `/help`" },
             )
 
-
         const row = new MessageActionRow()
 			.addComponents(
-				// new MessageButton()
-				// 	.setCustomId('overview')
-				// 	.setLabel('Overview')
-				// 	.setStyle('PRIMARY'),
                 new MessageButton()
                     .setLabel('Support')
                     .setStyle('LINK')
