@@ -17,7 +17,6 @@ const poll: Command = {
 		.setDescription('Creates a poll.'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
-		// const message = interaction.deferReply;
 		const Title = interaction.options.getString("title");
 		const Options = interaction.options.getString("options");
 
