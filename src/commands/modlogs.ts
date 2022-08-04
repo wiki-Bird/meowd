@@ -71,7 +71,6 @@ const modlog: Command = {
         .setDescription("_ _")
         .setTimestamp();
 
-    // let sentEmbed = false;
     let addedFieldCount = 1;
 
     if (userID === client.user.id) {
