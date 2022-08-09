@@ -17,7 +17,6 @@ export default async function validateUser(user: string, interaction: CommandInt
         if (user?.startsWith("<@!") && user?.endsWith(">")) {
             userID = user.slice(3, -1);
         }
-        // else if user is an ID:
         else if (user?.length === 18 && isNaN(Number(user)) === false) {
             userID = user;
         }
@@ -48,7 +47,7 @@ export default async function validateUser(user: string, interaction: CommandInt
             userNamed = userGuildMember.user;
         }
         else if (interaction.member instanceof GuildMember){
-            userNamed = client.user;
+            userNamed = interaction.user;
             userGuildMember = interaction.member;
         }
         else {
