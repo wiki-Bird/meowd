@@ -28,12 +28,12 @@ import admin from "firebase-admin";
 import { getDatabase } from "firebase-admin/database";
 
 // Fetch the service account key JSON file contents
-var serviceAccount = require("../pakbot-7f806-firebase-adminsdk-ep5hk-02e9bec8e8.json");
+var serviceAccount = require("../meowd-bot-firebase-adminsdk-2g9mv-5423d91b65.json");
 
 // Initialize the app with a service account, granting admin privileges
 const app = admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://pakbot-7f806-default-rtdb.firebaseio.com"
+    databaseURL: "https://meowd-bot-default-rtdb.firebaseio.com/"
 });
 
 const database = getDatabase(app);
@@ -64,14 +64,14 @@ const commandCheck = async () => {
 
     (async () => {
         try {
-            console.log('Started refreshing application (/) commands.');
+            console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
-            await rest.put(
+            const data:any = await rest.put(
                 Routes.applicationCommands(clientId),
                 { body: commands },
             );
 
-            console.log('Successfully reloaded application (/) commands.');
+            console.log(`Successfully reloaded ${data.length} application (/) commands.`);
         } catch (error) {
             console.error(error);
         }
