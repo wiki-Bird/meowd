@@ -27,6 +27,7 @@ const warn: Command = {
 
 
   execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+    
     await interaction.deferReply();
 
 	const user = interaction.options.getString("user", true);
@@ -38,22 +39,27 @@ const warn: Command = {
 
     var isValidUser = await validateUser(user, interaction, true);
 
-    if (!isValidUser) {
-        return;
-    }
+    if (!isValidUser) { return; }
 
     var {userGuildMember, userNamed, userID} = isValidUser;
 
     // if interaction not in guild, return:
-    if (!interaction.guild) {return;}
+    if (!interaction.guild) { return; }
+
+    const serverConfigRef = configRef.child(interaction.guild.id);
+    if (serverConfigRef === null) {
+        console.log("new server")
+        await configRef.child(interaction.guild.id).set({ // empty
+        });
+    }
+
 
     const currentDate = new Date();
 
-
-
     const userConfig = await getUserConfig(userID);
-    if (userConfig === null) {
-        await configRef.child(userID).set({
+    if (serverConfigRef.child(userID) === null) {
+        console.log("new user")
+        await serverConfigRef.child(userID).set({
             warnings: [{
                 reason: reason,
                 date: currentDate.toUTCString(),
@@ -66,22 +72,20 @@ const warn: Command = {
         });
     }
     else {
-        var caseno2 = 0;
-        const caseRef = ref.child("config").child(userID).child("cases");
-        await caseRef.once("value", (snapshot) => {
-            caseno2 = snapshot.val() + 1;
-        });
+        var caseno = await serverConfigRef.child(userID).child("cases").get();
+        if (caseno.exists()) { // increment caseno
+            caseno = caseno.val() + 1;
+            await serverConfigRef.child(userID).child("cases").set(caseno);
+        }
 
-        await configRef.child(userID).child("warnings").push({
+        await serverConfigRef.child(userID).child("warnings").push({
             reason: reason,
             date: currentDate.toUTCString(),
             moderator: moderator.id,
             type: "warning",
             duration: "N/A",
-            case_number: caseno2
+            case_number: caseno
         });
-
-        await configRef.child(userID).child("cases").set(caseno2);
     }
 
     // Send a message to the user, with the reason and the moderator who warned them

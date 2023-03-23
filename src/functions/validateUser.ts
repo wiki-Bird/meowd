@@ -13,15 +13,17 @@ export default async function validateUser(user: string, interaction: CommandInt
     let userID: string;
 
     if (user !== null) {
+
+        console.log("user: " + user)
     
-        if (user?.startsWith("<@!") && user?.endsWith(">")) {
-            userID = user.slice(3, -1);
+        if (user?.startsWith("<@") && user?.endsWith(">")) {
+            userID = user.slice(2, -1);
         }
         else if (user?.length === 18 && isNaN(Number(user)) === false) {
             userID = user;
         }
         else {
-            await interaction.reply({ content: `Invalid user. Please provide a user's ID, @ a user, or provide nothing at all.`, ephemeral: true });
+            await interaction.followUp({ content: `Invalid user. Please provide a user's ID, @ a user, or provide nothing at all.`, ephemeral: true });
             return false;
         }
         
@@ -30,14 +32,14 @@ export default async function validateUser(user: string, interaction: CommandInt
             const drip = await interaction.guild?.members.fetch(userID);
             if (drip === undefined) {
                 if (checker) { 
-                    await interaction.reply({ content: `User not found in this server.`, ephemeral: true });
+                    await interaction.followUp({ content: `User not found in this server.`, ephemeral: true });
                     return false;
                 }
             }
         }
         catch (e) {
             if (checker) {
-                await interaction.reply({ content: `User not found in this server.`, ephemeral: true });
+                await interaction.followUp({ content: `User not found in this server.`, ephemeral: true });
                 return false;
             }
 
@@ -51,7 +53,7 @@ export default async function validateUser(user: string, interaction: CommandInt
             userGuildMember = interaction.member;
         }
         else {
-            await interaction.reply({ content: `User not found.`, ephemeral: true });
+            await interaction.followUp({ content: `User not found.`, ephemeral: true });
             return false;
         }
 
@@ -61,7 +63,7 @@ export default async function validateUser(user: string, interaction: CommandInt
             userGuildMember = interaction.member;
             userID = interaction.user.id;
         } else {
-            await interaction.reply({ content: `This should never blah blah blah`, ephemeral: true });
+            await interaction.followUp({ content: `This should never blah blah blah`, ephemeral: true });
             return false;
         }
 
