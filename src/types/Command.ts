@@ -1,12 +1,17 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 
+
 export default interface Command {
     data: SlashCommandBuilder;
 
     /** The <"cached" | "raw"> is Discord.js's way of showing that this interaction is in a guild. */
     execute: (interaction: CommandInteraction<"cached" | "raw">) => Promise<void>;
+
 }
+
+
+
 
 
 // v This interfact sets what it can be so typescript knows types

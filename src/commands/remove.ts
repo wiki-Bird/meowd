@@ -40,7 +40,9 @@ const remove: Command = {
 
         if (!interaction.guild) {return;}
 
-        const userConfig = await getUserConfig(userID);
+        const guildID = interaction.guild.id;
+
+        const userConfig = await getUserConfig(userID, guildID);
         if (userConfig === null){ return interaction.reply({ content: `User has no logs.`, ephemeral: true }) };
 
 

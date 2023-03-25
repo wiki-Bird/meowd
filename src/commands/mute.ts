@@ -54,9 +54,18 @@ const mute: Command = {
 
         if (!interaction.guild) {return;}
 
+        var guildID = interaction.guild.id;
+
         if (timeInMS >= 2419200000) {
             await interaction.editReply("You can't mute for more than 28 days.");
             return;
+        }
+
+        const serverConfigRef = configRef.child(guildID);
+        if (serverConfigRef === null) {
+            console.log("new server")
+            await configRef.child(guildID).set({ // empty
+            });
         }
 
         const currentDate = new Date();
@@ -84,7 +93,7 @@ const mute: Command = {
             return;
         }
 
-        const userConfig = await getUserConfig(userID);
+        const userConfig = await getUserConfig(userID, guildID);
         if (userConfig === null) {
             await configRef.child(userID).set({
                 warnings: [{
@@ -99,11 +108,11 @@ const mute: Command = {
             });
         }
         else {
-            var caseno2 = 0;
-            const caseRef = ref.child("config").child(userID).child("cases");
-            await caseRef.once("value", (snapshot) => {
-                caseno2 = snapshot.val() + 1;
-            });
+            var caseno = await serverConfigRef.child(userID).child("cases").get();
+            if (caseno.exists()) { // increment caseno
+                caseno = caseno.val() + 1;
+                await serverConfigRef.child(userID).child("cases").set(caseno);
+            }
     
             await configRef.child(userID).child("warnings").push({
                 reason: reason,
@@ -111,10 +120,10 @@ const mute: Command = {
                 moderator: moderator.id,
                 type: "mute",
                 duration: timeInMS,
-                case_number: caseno2
+                case_number: caseno
             });
     
-            await configRef.child(userID).child("cases").set(caseno2);
+            await configRef.child(userID).child("cases").set(caseno);
         }
 
         try {

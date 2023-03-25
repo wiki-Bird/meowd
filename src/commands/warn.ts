@@ -46,18 +46,20 @@ const warn: Command = {
     // if interaction not in guild, return:
     if (!interaction.guild) { return; }
 
-    const serverConfigRef = configRef.child(interaction.guild.id);
+    var guildID = interaction.guild.id;
+
+    const serverConfigRef = configRef.child(guildID);
     if (serverConfigRef === null) {
         console.log("new server")
-        await configRef.child(interaction.guild.id).set({ // empty
+        await configRef.child(guildID).set({ // empty
         });
     }
 
 
     const currentDate = new Date();
 
-    const userConfig = await getUserConfig(userID);
-    if (serverConfigRef.child(userID) === null) {
+    const userConfig = await getUserConfig(userID, guildID);
+    if (userConfig === null) {
         console.log("new user")
         await serverConfigRef.child(userID).set({
             warnings: [{

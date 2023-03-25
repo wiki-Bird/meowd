@@ -30,10 +30,12 @@ const guildBanAdd: Event = {
             reasonGiven = reason!;
         }
 
+        const guildID = guild.id;
+
         const configRef = ref.child("config");
         const userID = ban.user.id;
         const currentDate = new Date();
-        const userConfig = await getUserConfig(userID);
+        const userConfig = await getUserConfig(userID, guildID);
         if (userConfig === null) {
             await configRef.child(userID).set({
                 warnings: [{

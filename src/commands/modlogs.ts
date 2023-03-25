@@ -49,7 +49,11 @@ const modlog: Command = {
 
     var {userGuildMember, userNamed, userID} = isValidUser;
 
-    const userConfig = await getUserConfig(userID);
+    if (!interaction.guild) {return;}
+
+    const serverID = interaction.guild.id;
+
+    const userConfig = await getUserConfig(userID, serverID);
     if (userConfig === null){ return interaction.reply({ content: `User has no logs.`, ephemeral: true }) };
 
     var casenumbers = 0;

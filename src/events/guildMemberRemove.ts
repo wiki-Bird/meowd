@@ -33,11 +33,11 @@ const guildMemberRemove: Event = {
                 reasonGiven = reason!;
             }
 
-
+            const guildID = member.guild.id;
             const configRef = ref.child("config");
             const userID = member.user.id;
             const currentDate = new Date();
-            const userConfig = await getUserConfig(userID);
+            const userConfig = await getUserConfig(userID, guildID);
             if (userConfig === null) {
                 await configRef.child(userID).set({
                     warnings: [{
