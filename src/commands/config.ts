@@ -102,7 +102,10 @@ const config: Command = {
 	execute: async function (interaction): Promise<void> {
 		await interaction.deferReply();
 		const subcommand = interaction.options.getSubcommand();
-		const subcommandGroup = interaction.options.getSubcommandGroup();
+		
+		// if there is a subcommand group, get it
+		// var subcommandGroup = interaction.options.getSubcommandGroup();
+
 
         if (!interaction.guild) {return;}
 
@@ -116,7 +119,17 @@ const config: Command = {
             });
         }
 
-		if (subcommandGroup === "otterchannels") {
+		if (subcommand === "logchannel") {
+			const channel = interaction.options.getChannel("channel", true);
+			await serverConfigRef.child("logChannel").set(channel.id);
+			const embed = new MessageEmbed()
+				.setTitle("Log Channel")
+				.setColor("#69fcfd")
+				.setTimestamp()
+				.setDescription(`Log channel set to <#${channel.id}>`);
+			await interaction.editReply({ embeds: [embed] });
+		}
+		else if (interaction.options.getSubcommandGroup() === "otterchannels") {
 			if (subcommand === "add") {
 				const channel = interaction.options.getChannel("channel", true);
 				if (serverConfigRef.child("otterChannels") === null) { //if otterChannels is null, create it and add the channel
@@ -137,7 +150,10 @@ const config: Command = {
 			} 
 			else if (subcommand === "remove") {
 				const channel = interaction.options.getChannel("channel", true);
-				await serverConfigRef.child("otterChannels").child(channel.id).remove();
+				if (serverConfigRef.child("otterChannels").child(channel.id) !== null){ // if channel exists in otterChannels, remove it
+					await serverConfigRef.child("otterChannels").child(channel.id).remove();
+				}
+	
 				const embed = new MessageEmbed()
 					.setAuthor({name: "OtterBot", iconURL: "https://cdn.discordapp.com/attachments/590667063165583409/1089047115315032125/icon.png"})
 					.setColor("#bee2ff")
@@ -146,12 +162,11 @@ const config: Command = {
 			} 
 			else if (subcommand === "list") {
 				const otterChannels = await serverConfigRef.child("otterChannels").get();
-				// create embed with otter channels
-				const embed = new MessageEmbed()
+				
+				const embed = new MessageEmbed()// create embed with otter channels
 					.setAuthor({name: "OtterBot", iconURL: "https://cdn.discordapp.com/attachments/590667063165583409/1089047115315032125/icon.png"})
 					.setColor("#bee2ff");
 				if (otterChannels.exists()) {
-					// embed.addField("Otter Channels", Object.values(otterChannels.val()).join("\n"));
 					var i = 1;
 					for (const [key, value] of Object.entries(otterChannels.val())) {
 						embed.addField(`Channel #${i}`, `<#${key}>`);
@@ -164,23 +179,74 @@ const config: Command = {
 				await interaction.editReply({ embeds: [embed] });
 			}
 		}
-		else if (subcommandGroup === "rules") {
+
+		else if (interaction.options.getSubcommandGroup() === "rules") {
 			if (subcommand === "add") {
+				var n = 1;
 				const rule = interaction.options.getString("rule", true);
+				if (serverConfigRef.child("rules") === null) { //if rules is null, create it and add the rule
+					await serverConfigRef.child("rules").set({
+						n: rule
+					});
+				}
+				else { // append to existing list
+					// serverConfigRef.child("rules").ref.once("value").then(function(snapshot) {
+					// 	n = snapshot.numChildren() + 1;
+					// })
+					var rulesRef = serverConfigRef.child("rules");
+					await rulesRef.once("value")
+						.then(function(snapshot) {
+							n = snapshot.numChildren() + 1;
+						});
+
+
+					var nNew = n.toString();
+					await serverConfigRef.child("rules").update({[n]: rule});
+				}
+
+				const embed = new MessageEmbed()
+					.setTitle("Rule Added")
+					.setColor("#69fcfd")
+					.setTimestamp()
+					.setDescription(`Rule #${n}: ${rule}`);
+				await interaction.editReply({ embeds: [embed] });
 			} 
 			else if (subcommand === "remove") {
 				const rule = interaction.options.getInteger("rule", true);
+				if (serverConfigRef.child("rules").child(rule.toString()) !== null){ // if rule exists in rules, remove it
+					await serverConfigRef.child("rules").child(rule.toString()).remove();
+					// decrement all rules after the removed rule
+					const rules = await serverConfigRef.child("rules").get();
+					var i = 1;
+					for (const [key, value] of Object.entries(rules.val())) {
+						if (i > rule) {
+							await serverConfigRef.child("rules").child(i.toString()).set(value);
+							await serverConfigRef.child("rules").child((i+1).toString()).remove();
+						}
+						i++;
+					}
+				}
 			} 
 			else if (subcommand === "list") {
-				const embed = new MessageEmbed()
+				// get all rules
+				const rules = await serverConfigRef.child("rules").get();
+				const embed = new MessageEmbed()// create embed with rules
 					.setTitle("Rules")
-					.setDescription("These are the rules.");
-				await interaction.editReply({ embeds: [embed] });
+					.setColor("#69fcfd");
+				if (rules.exists()) {
+					var i = 1;
+					for (const [key, value] of Object.entries(rules.val())) {
+						// embed.addField(`Rule #${key}`, value);
+						console.log(key, value);
+						i++;
+					}
+				}
+				else {
+					embed.addField("Rules", "No rules added. Use `/config rules add` to add rules.");
+				}
 			}
 		}
-		else if (subcommand === "logchannel") {
-			const channel = interaction.options.getChannel("channel", true);
-		}
+
 	}
 };
 
