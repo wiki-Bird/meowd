@@ -41,7 +41,7 @@ const whois: Command = {
             }
             const embed = new MessageEmbed();
             embed
-                .setColor("#1847bf")
+                .setColor("#00f2ff")
                 .setDescription("**" + userNamed.tag + "  -  <@" + userGuildMember.id + ">**")
                 .setThumbnail(userGuildMember.user.displayAvatarURL())
                 .setFooter({ text: `User info requested by ${interaction.user.tag} ` })

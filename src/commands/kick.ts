@@ -55,7 +55,7 @@ const kick: Command = {
         .setDescription("<@!" + userID + `> (` + userID + `) has been kicked by ${moderator.tag} for the following reason:`)
         .addField("Reason:", reason, true)
         .addField("Date:", currentDate.toLocaleDateString(), true)
-        .setColor("#ff0000")
+        .setColor("#00f2ff")
         .setTimestamp();
 
         // if user's role is higher than mine, I can't kick them

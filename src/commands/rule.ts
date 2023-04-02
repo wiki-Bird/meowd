@@ -29,7 +29,17 @@ const rule: Command = {
         var rules = await ref.child("config").child(interaction.guildId).child("rules").get();
         if (rules.exists() && rules.val() !== null) {
             title = "Rule " + ruleNumber;
-            description = rules.child(ruleNumber.toString()).toString();
+            // description = rules.child(ruleNumber.toString()).toString();
+            const rulesRef = ref.child("config").child(interaction.guildId).child("rules");
+            await rulesRef.child(ruleNumber.toString()).once('value', function(snapshot) {
+                const ruleValue = snapshot.val();
+                if (ruleValue !== null) {
+                    description = ruleValue;
+                }
+                else {
+                    description = "Rule not found.";
+                }
+              });
         } else {
             title = `Rule ${ruleNumber} not found.`;
         }
@@ -39,7 +49,7 @@ const rule: Command = {
 
         .setTitle(title)
         .setDescription(description)
-        .setColor('#1847bf')
+        .setColor('#00f2ff')
 
         const messageId = await interaction.reply({ embeds: [embed] });
 

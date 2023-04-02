@@ -71,7 +71,7 @@ const modlog: Command = {
     }
 
     var embed = new MessageEmbed()
-        .setColor("#0099ff")
+        .setColor("#00f2ff")
         .setDescription("_ _")
         .setTimestamp();
 

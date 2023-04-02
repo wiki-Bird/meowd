@@ -76,7 +76,7 @@ const mute: Command = {
         .addField("Reason:", reason, true)
         .addField("Date:", currentDate.toLocaleDateString(), true)
         .addField("Duration:", timeString)
-        .setColor("#ff0000")
+        .setColor("#00f2ff")
         .setTimestamp();
 
         // if user's role is higher than mine, I can't mute them

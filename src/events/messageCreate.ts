@@ -20,7 +20,7 @@ const messageCreate: Event = {
         if (message.channel.type === "DM") {
             console.log("DM message recieved")
             const DMEmbed = new MessageEmbed();
-            DMEmbed.setColor('#1847bf')
+            DMEmbed.setColor('#00f2ff')
                 .setAuthor({ name: `${message.author.tag} sent this message in DMs:`, iconURL: message.author.displayAvatarURL()})
                 .setFooter({ text: `ID: ${message.id}` })
                 .setDescription(message.content);

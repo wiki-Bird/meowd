@@ -57,7 +57,7 @@ const remove: Command = {
 
                 embed.setTitle(`Case ${case_no} Removed`)
                     .setDescription(`Case ${case_no} has been removed from ${userNamed.tag}`)
-                    .setColor("#00ff00")
+                    .setColor("#00f2ff")
                     .setTimestamp()
                     .addField("Original reason:", snapshot.val().reason, true)
                     .addField("Original Date:", snapshot.val().date, true)

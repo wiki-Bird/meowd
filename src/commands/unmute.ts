@@ -54,7 +54,7 @@ const unmute: Command = {
             .setTitle("User Unmuted:")
             .setDescription("<@!" + userID + `> (` + userID + `) has been unmuted by ${interaction.user.tag} for the following reason:`)
             .addField("Reason:", reason, true)
-            .setColor("#ff0000")
+            .setColor("#00f2ff")
             .setTimestamp();
 
         interaction.reply({ embeds: [embed] });

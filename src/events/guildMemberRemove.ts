@@ -19,7 +19,7 @@ const guildMemberRemove: Event = {
             // user left on their own
             const embed = new MessageEmbed()
                 .setTitle(`${member.user.tag} left the server.`)
-                .setColor('#1847bf')
+                .setColor('#00f2ff')
                 .setTimestamp()
                 .setFooter({ text: `ID ${member.user.id}` });
             return channelToSend.send({ embeds: [embed] });
@@ -73,7 +73,7 @@ const guildMemberRemove: Event = {
 
 
             var logEmbed = new MessageEmbed()
-                .setColor("#1847bf")
+                .setColor("#00f2ff")
                 .setAuthor({name: `${member.user.tag} (ID: ${member.user.id}) was kicked.`, iconURL: member.user.displayAvatarURL()})
                 .addFields(
                     { name: "Reason:", value: reasonGiven},
@@ -88,7 +88,7 @@ const guildMemberRemove: Event = {
             // user left on their own
             const embed = new MessageEmbed()
                 .setTitle(`${member.user.tag} left the server.`)
-                .setColor('#1847bf')
+                .setColor('#00f2ff')
                 .setTimestamp()
                 .setFooter({ text: `ID ${member.user.id}` });
             return channelToSend.send({ embeds: [embed] });

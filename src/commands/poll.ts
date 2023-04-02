@@ -23,7 +23,7 @@ const poll: Command = {
 		const embed = new MessageEmbed();
 		embed.setTitle(Title!)
 		.setFooter({ text: `Poll created by ${interaction.user.tag} with /poll` })
-		.setColor("#1847bf");
+		.setColor("#00f2ff");
 
 		if (Options === null) {
 			const replied = await interaction.reply({ embeds: [embed], fetchReply: true });

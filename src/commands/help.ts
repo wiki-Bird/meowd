@@ -11,7 +11,7 @@ const help: Command = {
     execute: async function (interaction) {
         const embed = new MessageEmbed();
 		embed.setAuthor({ name: "Pak-man Help", iconURL: client.user.displayAvatarURL()})
-			.setColor("#1847bf")
+			.setColor("#00f2ff")
             .addFields(
                 { name: "/whois", value: "Investigates a given user \n eg: `/whois @user23`, `/whois`" },
                 { name: "/poll", value: "Creates a poll \n eg: `/poll Red or Blue?`, `/poll Colour? Red, Blue, Orange`" },

@@ -44,7 +44,7 @@ const report: Command = {
         var {userGuildMember, userNamed, userID} = isValidUser;
 
         var reportEmbed = new MessageEmbed()
-            .setColor("#1847bf")
+            .setColor("#00f2ff")
             .setAuthor({name: `${userNamed.tag} (${userNamed.id}) reported by ${reportingUser.tag}`, iconURL: userNamed.displayAvatarURL()})
             .addFields(
                 { name: "Reason:", value: reason},

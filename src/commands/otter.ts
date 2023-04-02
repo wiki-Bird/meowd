@@ -14,8 +14,6 @@ const otter: Command = {
 		)	
 	.setDescription('Sends an otter image 🦦'),
     execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
-		const today = new Date();
-
 		const days = Math.floor((Date.now() - new Date("1/20/2022").getTime()) / (1000 * 3600 * 24));
 		const randomDay = Math.floor(Math.random() * days + 1);
 
@@ -24,7 +22,7 @@ const otter: Command = {
 		const number = interaction.options.getNumber("number");
 
 		const embed = new MessageEmbed()
-			.setColor("#bfe2fe");
+			.setColor("#00f2ff");
 
 		if (number === null) {
 			embed.setAuthor({ name: "Random Otter - Otter " + randomDay, iconURL: "https://media.discordapp.net/attachments/590667063165583409/1089047115315032125/icon.png"})

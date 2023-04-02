@@ -71,7 +71,7 @@ const guildBanAdd: Event = {
         
 
         var logEmbed = new MessageEmbed()
-            .setColor("#1847bf")
+            .setColor("#00f2ff")
             .setAuthor({name: `${ban.user.tag} (ID: ${ban.user.id}) was banned.`, iconURL: ban.user.displayAvatarURL()})
             .addFields(
                 { name: "Reason:", value: reasonGiven},

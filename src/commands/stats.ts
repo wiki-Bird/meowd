@@ -49,7 +49,7 @@ const stats: Command = {
         setTimeout(function(){
 
         const embed = new MessageEmbed();
-		embed.setColor("#bfe2fe")
+		embed.setColor("#00f2ff")
             .setAuthor({ name: "OtterBot Statistics", iconURL: client.user.displayAvatarURL()})
             .setDescription("_ _")
             .addFields(

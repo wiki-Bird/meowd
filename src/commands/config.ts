@@ -124,7 +124,7 @@ const config: Command = {
 			await serverConfigRef.child("logChannel").set(channel.id);
 			const embed = new MessageEmbed()
 				.setTitle("Log Channel")
-				.setColor("#69fcfd")
+				.setColor("#00f2ff")
 				.setTimestamp()
 				.setDescription(`Log channel set to <#${channel.id}>`);
 			await interaction.editReply({ embeds: [embed] });
@@ -190,23 +190,17 @@ const config: Command = {
 					});
 				}
 				else { // append to existing list
-					// serverConfigRef.child("rules").ref.once("value").then(function(snapshot) {
-					// 	n = snapshot.numChildren() + 1;
-					// })
 					var rulesRef = serverConfigRef.child("rules");
 					await rulesRef.once("value")
 						.then(function(snapshot) {
 							n = snapshot.numChildren() + 1;
 						});
-
-
-					var nNew = n.toString();
 					await serverConfigRef.child("rules").update({[n]: rule});
 				}
 
 				const embed = new MessageEmbed()
 					.setTitle("Rule Added")
-					.setColor("#69fcfd")
+					.setColor("#00f2ff")
 					.setTimestamp()
 					.setDescription(`Rule #${n}: ${rule}`);
 				await interaction.editReply({ embeds: [embed] });
@@ -232,18 +226,19 @@ const config: Command = {
 				const rules = await serverConfigRef.child("rules").get();
 				const embed = new MessageEmbed()// create embed with rules
 					.setTitle("Rules")
-					.setColor("#69fcfd");
+					.setColor("#00f2ff");
 				if (rules.exists()) {
 					var i = 1;
 					for (const [key, value] of Object.entries(rules.val())) {
-						// embed.addField(`Rule #${key}`, value);
-						console.log(key, value);
+						var ruleText: string = value as string;
+						embed.addField(`Rule #${i}`, ruleText);
 						i++;
 					}
 				}
 				else {
 					embed.addField("Rules", "No rules added. Use `/config rules add` to add rules.");
 				}
+				await interaction.editReply({ embeds: [embed] });
 			}
 		}
 
