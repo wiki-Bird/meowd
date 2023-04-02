@@ -74,7 +74,7 @@ const kick: Command = {
 
         const userConfig = await getUserConfig(userID, guildID);
         if (userConfig === null) {
-            await configRef.child(userID).set({
+            await serverConfigRef.child(userID).set({
                 warnings: [{
                     reason: reason,
                     date: currentDate.toUTCString(),
@@ -93,7 +93,7 @@ const kick: Command = {
                 await serverConfigRef.child(userID).child("cases").set(caseno);
             }
     
-            await configRef.child(userID).child("warnings").push({
+            await serverConfigRef.child(userID).child("warnings").push({
                 reason: reason,
                 date: currentDate.toUTCString(),
                 moderator: moderator.id,
@@ -102,15 +102,18 @@ const kick: Command = {
                 case_number: caseno
             });
     
-            await configRef.child(userID).child("cases").set(caseno);
+            await serverConfigRef.child(userID).child("cases").set(caseno);
         }
 
         try {
-            await interaction.editReply({ content: `<@${userID}> has been kicked.`, embeds: [embed] });
+            // await interaction.editReply({ content: `<@${userID}> has been kicked.`, embeds: [embed] });
+            await interaction.reply({ content: `<@${userID}> has been kicked.`, embeds: [embed] });
         }
         catch (err) {
-            await interaction.editReply({ content: `Could not DM the kick information to ${userNamed.tag}.`, embeds: [embed] });
+            // await interaction.editReply({ content: `Could not DM the kick information to ${userNamed.tag}.`, embeds: [embed] });
+            await interaction.editReply({ content: `<@${userID}> has been kicked.`, embeds: [embed] });
         }
+        
 
 
 

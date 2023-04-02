@@ -95,7 +95,7 @@ const mute: Command = {
 
         const userConfig = await getUserConfig(userID, guildID);
         if (userConfig === null) {
-            await configRef.child(userID).set({
+            await serverConfigRef.child(userID).set({
                 warnings: [{
                     reason: reason,
                     date: currentDate.toUTCString(),
@@ -114,7 +114,7 @@ const mute: Command = {
                 await serverConfigRef.child(userID).child("cases").set(caseno);
             }
     
-            await configRef.child(userID).child("warnings").push({
+            await serverConfigRef.child(userID).child("warnings").push({
                 reason: reason,
                 date: currentDate.toUTCString(),
                 moderator: moderator.id,
@@ -123,7 +123,7 @@ const mute: Command = {
                 case_number: caseno
             });
     
-            await configRef.child(userID).child("cases").set(caseno);
+            await serverConfigRef.child(userID).child("cases").set(caseno);
         }
 
         try {
