@@ -103,10 +103,6 @@ const config: Command = {
 		await interaction.deferReply();
 		const subcommand = interaction.options.getSubcommand();
 		
-		// if there is a subcommand group, get it
-		// var subcommandGroup = interaction.options.getSubcommandGroup();
-
-
         if (!interaction.guild) {return;}
 
         var guildID = interaction.guild.id;
@@ -142,12 +138,14 @@ const config: Command = {
 						[channel.id]: channel.name
 					});
 				}
+
 				const embed = new MessageEmbed()
 					.setAuthor({name: "OtterBot", iconURL: "https://cdn.discordapp.com/attachments/590667063165583409/1089047115315032125/icon.png"})
 					.setColor("#bee2ff")
 					.addField("Otter Channel Added", `<#${channel.id}>`);
 				await interaction.editReply({embeds: [embed]});
 			} 
+
 			else if (subcommand === "remove") {
 				const channel = interaction.options.getChannel("channel", true);
 				if (serverConfigRef.child("otterChannels").child(channel.id) !== null){ // if channel exists in otterChannels, remove it
@@ -160,6 +158,7 @@ const config: Command = {
 					.addField("Otter Channel Removed", `<#${channel.id}>`);
 				await interaction.editReply({embeds: [embed]});
 			} 
+		
 			else if (subcommand === "list") {
 				const otterChannels = await serverConfigRef.child("otterChannels").get();
 				
@@ -175,7 +174,8 @@ const config: Command = {
 				}
 				else {
 					embed.addField("Otter Channels", "No Otter channels added. Use `/config otterchannels add` to add otter channels.");
-				}	
+				}
+
 				await interaction.editReply({ embeds: [embed] });
 			}
 		}
@@ -205,22 +205,44 @@ const config: Command = {
 					.setDescription(`Rule #${n}: ${rule}`);
 				await interaction.editReply({ embeds: [embed] });
 			} 
+			
 			else if (subcommand === "remove") {
 				const rule = interaction.options.getInteger("rule", true);
-				if (serverConfigRef.child("rules").child(rule.toString()) !== null){ // if rule exists in rules, remove it
-					await serverConfigRef.child("rules").child(rule.toString()).remove();
-					// decrement all rules after the removed rule
-					const rules = await serverConfigRef.child("rules").get();
-					var i = 1;
-					for (const [key, value] of Object.entries(rules.val())) {
-						if (i > rule) {
-							await serverConfigRef.child("rules").child(i.toString()).set(value);
-							await serverConfigRef.child("rules").child((i+1).toString()).remove();
+				if (serverConfigRef.child("rules").child(rule.toString()) !== null) { // if rule exists in rules, remove it
+					const rulesRef = serverConfigRef.child("rules");
+				
+					// Decrement the key of every element after the removed one
+					await rulesRef.once("value", (snapshot) => {
+						const data = snapshot.val();
+						const newData: {[key: string]: any} = {}; // add index signature here
+					
+						for (const key in data) {
+							if (parseInt(key) < rule) {
+								newData[key] = data[key];
+							} else if (parseInt(key) > rule) {
+								newData[(parseInt(key) - 1).toString()] = data[key]; // convert key back to string
+							}
 						}
-						i++;
-					}
+					
+						// Remove the last element (if any)
+						const lastKey = Object.keys(newData).pop();
+						if (lastKey && !newData[lastKey]) {
+							delete newData[lastKey];
+						}
+					
+						// Update the data with the new values
+						rulesRef.set(newData);
+					});
+				
+					const embed = new MessageEmbed()
+					.setTitle("Rule Removed")
+					.setColor("#00f2ff")
+					.setTimestamp()
+					.setDescription(`Rule ${rule} removed.`);
+					await interaction.editReply({ embeds: [embed] });
 				}
-			} 
+			}
+			  
 			else if (subcommand === "list") {
 				// get all rules
 				const rules = await serverConfigRef.child("rules").get();
@@ -241,7 +263,6 @@ const config: Command = {
 				await interaction.editReply({ embeds: [embed] });
 			}
 		}
-
 	}
 };
 
