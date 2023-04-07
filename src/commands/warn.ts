@@ -96,7 +96,7 @@ const warn: Command = {
         .setDescription("<@!" + userID + `> (` + userID + `) has been warned by ${moderator.tag} for the following reason:`)
         .addField("Reason:", reason, true)
         .addField("Date:", currentDate.toLocaleDateString(), true)
-        .setColor("#00f2ff")
+        .setColor("#ffd200")
         .setTimestamp();
     
     try {

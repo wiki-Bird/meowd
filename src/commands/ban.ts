@@ -7,21 +7,21 @@ import validateUser from '../functions/validateUser';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 const configRef = ref.child("config");
-const kick: Command = {
+const ban: Command = {
 	data: new SlashCommandBuilder()
-		.setName('kick')
+		.setName('ban')
         .addStringOption(option =>
             option.setName("user")
-                .setDescription("The user to kick, ID or @.")
+                .setDescription("The user to ban, ID or @.")
                 .setRequired(true)
             )
             .addStringOption(option =>
                 option.setName("reason")
-                    .setDescription("The reason for the kick.")
+                    .setDescription("The reason for the ban.")
                     .setRequired(false)
             )
-        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.Administrator)
-		.setDescription('Kicks a user from the server.'),
+        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers | PermissionFlagsBits.Administrator)
+		.setDescription('Ban a user from the server.'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
         await interaction.deferReply();
@@ -51,23 +51,23 @@ const kick: Command = {
         const currentDate = new Date();
 
         const embed = new MessageEmbed()
-        .setTitle("User Kicked:")
-        .setDescription("<@!" + userID + `> (` + userID + `) has been kicked by ${moderator.tag} for the following reason:`)
+        .setTitle("User Banned:")
+        .setDescription("<@!" + userID + `> (` + userID + `) has been banned by ${moderator.tag} for the following reason:`)
         .addField("Reason:", reason, true)
         .addField("Date:", currentDate.toLocaleDateString(), true)
-        .setColor("#ff9c00")
+        .setColor("#ff0000")
         .setTimestamp();
 
-        // if user's role is higher than mine, I can't kick them
+        // if user's role is higher than mine, I can't ban them
         if(userGuildMember.roles.highest.comparePositionTo(interaction.guild.me!.roles.highest) >= 0) {
-            interaction.editReply("<@!" + userID + "> has a higher role than me, I cannot kick them.");
+            interaction.editReply("<@!" + userID + "> has a higher role than me, I cannot ban them.");
             return;
         }
 
         try {
-            const dm = await userGuildMember.kick(reason);
+            await userGuildMember.ban({reason: reason, days: 0});
         } catch (e) {
-            interaction.editReply(`Error: Could not kick user.`);
+            interaction.editReply(`Error: Could not ban user.`);
             console.log(e);
             return;
         }
@@ -79,7 +79,7 @@ const kick: Command = {
                     reason: reason,
                     date: currentDate.toUTCString(),
                     moderator: moderator.id,
-                    type: "kick",
+                    type: "ban",
                     duration: "N/A",
                     case_number: 1
                 }],
@@ -97,7 +97,7 @@ const kick: Command = {
                 reason: reason,
                 date: currentDate.toUTCString(),
                 moderator: moderator.id,
-                type: "kick",
+                type: "ban",
                 duration: "N/A",
                 case_number: caseno
             });
@@ -106,14 +106,18 @@ const kick: Command = {
         }
 
         try {
-            // await interaction.editReply({ content: `<@${userID}> has been kicked.`, embeds: [embed] });
-            await interaction.reply({ content: `<@${userID}> has been kicked.`, embeds: [embed] });
+            // await interaction.editReply({ content: `<@${userID}> has been banned.`, embeds: [embed] });
+            await interaction.reply({ content: `<@${userID}> has been banned.`, embeds: [embed] });
         }
         catch (err) {
-            // await interaction.editReply({ content: `Could not DM the kick information to ${userNamed.tag}.`, embeds: [embed] });
-            await interaction.editReply({ content: `<@${userID}> has been kicked.`, embeds: [embed] });
+            // await interaction.editReply({ content: `Could not DM the banned information to ${userNamed.tag}.`, embeds: [embed] });
+            await interaction.editReply({ content: `<@${userID}> has been banned.`, embeds: [embed] });
         }
+        
+
+
+
     }
 }
 
-export default kick;
+export default ban;

@@ -11,7 +11,7 @@ const guildBanAdd: Event = {
     name: 'guildBanAdd',
     execute: async function (ban: GuildBan) {
         const channelToSend = client.channels.cache.get('575434603607621695') as TextChannel;
-        const guild = client.guilds.cache.get('575434603607621695') as Guild;
+        const guild = ban.guild;
         var reasonGiven = "No reason given.";
 
 
@@ -32,46 +32,46 @@ const guildBanAdd: Event = {
 
         const guildID = guild.id;
 
-        const configRef = ref.child("config");
-        const userID = ban.user.id;
-        const currentDate = new Date();
-        const userConfig = await getUserConfig(userID, guildID);
-        if (userConfig === null) {
-            await configRef.child(userID).set({
-                warnings: [{
-                    reason: reason,
-                    date: currentDate.toUTCString(),
-                    moderator: executor!.id,
-                    type: "ban",
-                    duration: "N/A",
-                    case_number: 1
-                }],
-                cases: 1
-            });
-        }
-        else {
-            var caseno2 = 0;
-            const caseRef = ref.child("config").child(userID).child("cases");
-            await caseRef.once("value", (snapshot) => {
-                caseno2 = snapshot.val() + 1;
-            });
+        // const configRef = ref.child("config");
+        // const userID = ban.user.id;
+        // const currentDate = new Date();
+        // const userConfig = await getUserConfig(userID, guildID);
+        // if (userConfig === null) {
+        //     await configRef.child(userID).set({
+        //         warnings: [{
+        //             reason: reason,
+        //             date: currentDate.toUTCString(),
+        //             moderator: executor!.id,
+        //             type: "ban",
+        //             duration: "N/A",
+        //             case_number: 1
+        //         }],
+        //         cases: 1
+        //     });
+        // }
+        // else {
+        //     var caseno2 = 0;
+        //     const caseRef = ref.child("config").child(userID).child("cases");
+        //     await caseRef.once("value", (snapshot) => {
+        //         caseno2 = snapshot.val() + 1;
+        //     });
     
-            await configRef.child(userID).child("warnings").push({
-                reason: reason,
-                date: currentDate.toUTCString(),
-                moderator: executor!.id,
-                type: "ban",
-                duration: "N/A",
-                case_number: caseno2
-            });
+        //     await configRef.child(userID).child("warnings").push({
+        //         reason: reason,
+        //         date: currentDate.toUTCString(),
+        //         moderator: executor!.id,
+        //         type: "ban",
+        //         duration: "N/A",
+        //         case_number: caseno2
+        //     });
     
-            await configRef.child(userID).child("cases").set(caseno2);
-        }
+        //     await configRef.child(userID).child("cases").set(caseno2);
+        // }
 
         
 
         var logEmbed = new MessageEmbed()
-            .setColor("#00f2ff")
+            .setColor("#ff0000")
             .setAuthor({name: `${ban.user.tag} (ID: ${ban.user.id}) was banned.`, iconURL: ban.user.displayAvatarURL()})
             .addFields(
                 { name: "Reason:", value: reasonGiven},
