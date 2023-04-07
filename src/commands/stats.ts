@@ -50,7 +50,7 @@ const stats: Command = {
 
         const embed = new MessageEmbed();
 		embed.setColor("#00f2ff")
-            .setAuthor({ name: "OtterBot Statistics", iconURL: client.user.displayAvatarURL()})
+            .setAuthor({ name: "Meowd Statistics", iconURL: client.user.displayAvatarURL()})
             .setDescription("_ _")
             .addFields(
                 { name: "📈 Server Statistics", value: "\n• :computer: " + numberOfGuilds + " Servers\n• :bust_in_silhouette: " + AllMemCount + " Users\n• :hash: " + numberOfChannels + " Channels ", inline: true },
