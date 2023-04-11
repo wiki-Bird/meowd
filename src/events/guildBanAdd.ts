@@ -1,16 +1,14 @@
 // if user banned
 
 import { client } from "../index";
-import { CommandInteraction, MessageEmbed, TextChannel, Guild, GuildBan  } from 'discord.js';
+import { MessageEmbed, TextChannel, GuildBan  } from 'discord.js';
 import Event from '../types/Event';
-import getUserConfig from '../functions/getUserConfig';
-import Command from '../types/Command';
 import { ref } from '..';
 
 const guildBanAdd: Event = {
     name: 'guildBanAdd',
     execute: async function (ban: GuildBan) {
-        const channelToSend = client.channels.cache.get('575434603607621695') as TextChannel;
+        var channelToSend;
         const guild = ban.guild;
         var reasonGiven = "No reason given.";
 
@@ -32,44 +30,18 @@ const guildBanAdd: Event = {
 
         const guildID = guild.id;
 
-        // const configRef = ref.child("config");
-        // const userID = ban.user.id;
-        // const currentDate = new Date();
-        // const userConfig = await getUserConfig(userID, guildID);
-        // if (userConfig === null) {
-        //     await configRef.child(userID).set({
-        //         warnings: [{
-        //             reason: reason,
-        //             date: currentDate.toUTCString(),
-        //             moderator: executor!.id,
-        //             type: "ban",
-        //             duration: "N/A",
-        //             case_number: 1
-        //         }],
-        //         cases: 1
-        //     });
-        // }
-        // else {
-        //     var caseno2 = 0;
-        //     const caseRef = ref.child("config").child(userID).child("cases");
-        //     await caseRef.once("value", (snapshot) => {
-        //         caseno2 = snapshot.val() + 1;
-        //     });
-    
-        //     await configRef.child(userID).child("warnings").push({
-        //         reason: reason,
-        //         date: currentDate.toUTCString(),
-        //         moderator: executor!.id,
-        //         type: "ban",
-        //         duration: "N/A",
-        //         case_number: caseno2
-        //     });
-    
-        //     await configRef.child(userID).child("cases").set(caseno2);
-        // }
-
+        const serverConfigRef = ref.child("config").child(guildID)
         
+        const logChannel = await serverConfigRef.child("logChannel").get();
+        const channelID = logChannel.val();
 
+        if (logChannel.exists()) {
+            channelToSend = client.channels.cache.get(channelID) as TextChannel;
+        } else {
+            console.log("no log channel")
+            return;
+        }
+        
         var logEmbed = new MessageEmbed()
             .setColor("#ff0000")
             .setAuthor({name: `${ban.user.tag} (ID: ${ban.user.id}) was banned.`, iconURL: ban.user.displayAvatarURL()})
@@ -80,7 +52,8 @@ const guildBanAdd: Event = {
             )
             .setTimestamp();
 
-        (channelToSend as TextChannel).send({ embeds: [logEmbed], content: `<@!${ban.user.id}> was banned by <@!${executor!.id}>` });
+        channelToSend.send({embeds: [logEmbed]});
+        
     }
 }
 

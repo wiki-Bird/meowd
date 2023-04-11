@@ -1,13 +1,32 @@
 import { client } from "../index";
-import { MessageEmbed, TextChannel, GuildMember } from 'discord.js';
+import { MessageEmbed, TextChannel, GuildMember  } from 'discord.js';
 import Event from '../types/Event';
-import getUserConfig from '../functions/getUserConfig';
 import { ref } from '..';
 
 const guildMemberRemove: Event = {
     name: 'guildMemberRemove',
     execute: async function(member: GuildMember) {
-        const channelToSend = client.channels.cache.get('575434603607621695') as TextChannel;
+        const guild = member.guild;
+        const guildID = guild.id;
+        var channelToSend;
+        console.log(guildID)
+
+        const serverConfigRef = ref.child("config").child(guildID)
+        
+        if (serverConfigRef === null) {
+            console.log("new server")
+            return;
+        }
+
+        const logChannel = await serverConfigRef.child("logChannel").get();
+        const channelID = logChannel.val();
+
+        if (logChannel.exists()) {
+            channelToSend = client.channels.cache.get(channelID) as TextChannel;
+        } else {
+            console.log("no log channel")
+            return;
+        }
 
         const fetchedLogs = await member.guild.fetchAuditLogs({
             limit: 1,
@@ -18,7 +37,7 @@ const guildMemberRemove: Event = {
         if (!kickLog) {
             // user left on their own
             const embed = new MessageEmbed()
-                .setTitle(`${member.user.tag} left the server.`)
+                .setAuthor({name: `${member.user.tag} left the server.`, iconURL: member.user.displayAvatarURL()})
                 .setColor('#00f2ff')
                 .setTimestamp()
                 .setFooter({ text: `ID ${member.user.id}` });
@@ -33,45 +52,6 @@ const guildMemberRemove: Event = {
                 reasonGiven = reason!;
             }
 
-            const guildID = member.guild.id;
-            const configRef = ref.child("config");
-            const userID = member.user.id;
-            const currentDate = new Date();
-            const userConfig = await getUserConfig(userID, guildID);
-            if (userConfig === null) {
-                await configRef.child(userID).set({
-                    warnings: [{
-                        reason: reason,
-                        date: currentDate.toUTCString(),
-                        moderator: executor!.id,
-                        type: "kick",
-                        duration: "N/A",
-                        case_number: 1
-                    }],
-                    cases: 1
-                });
-            }
-            else {
-                var caseno2 = 0;
-                const caseRef = ref.child("config").child(userID).child("cases");
-                await caseRef.once("value", (snapshot) => {
-                    caseno2 = snapshot.val() + 1;
-                });
-        
-                await configRef.child(userID).child("warnings").push({
-                    reason: reason,
-                    date: currentDate.toUTCString(),
-                    moderator: executor!.id,
-                    type: "kick",
-                    duration: "N/A",
-                    case_number: caseno2
-                });
-        
-                await configRef.child(userID).child("cases").set(caseno2);
-            }
-
-
-
             var logEmbed = new MessageEmbed()
                 .setColor("#00f2ff")
                 .setAuthor({name: `${member.user.tag} (ID: ${member.user.id}) was kicked.`, iconURL: member.user.displayAvatarURL()})
@@ -82,7 +62,7 @@ const guildMemberRemove: Event = {
                 )
                 .setTimestamp();
 
-            (channelToSend as TextChannel).send({ embeds: [logEmbed], content: `<@!${member.user.id}> was kicked by <@!${executor!.id}>` });
+            channelToSend.send({ embeds: [logEmbed], content: `<@!${member.user.id}> was kicked by <@!${executor!.id}>` });
         }
         else{
             // user left on their own
