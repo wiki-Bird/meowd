@@ -8,3 +8,4 @@ Procfile
 tsconfig.json
 yarn.lock
 .yarn/
+.yarn

@@ -2,6 +2,7 @@ import Command from '../types/Command';
 import { CommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { client } from "../index";
+import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 const purge: Command = {
 	data: new SlashCommandBuilder()
@@ -13,6 +14,7 @@ const purge: Command = {
 			.setMinValue(1)
 			.setMaxValue(99)
 	)
+	.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages | PermissionFlagsBits.Administrator)
 	.setDescription('Removes a given number of messages from the channel.'),
 		// .addStringOption(option =>
 		// 	option.setName('user')

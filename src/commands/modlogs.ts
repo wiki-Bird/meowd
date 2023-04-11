@@ -37,11 +37,11 @@ const modlog: Command = {
     )
   .setDescription('View the moderation history of a given user.'),    
   execute: async function (interaction) {
-    const user = interaction.options.getString("user") || interaction.user.id;
+    const user = interaction.options.getString("user") ?? interaction.user.id;
     var type = interaction.options.getString("type");
     var page = interaction.options.getNumber("page");
     
-    var isValidUser = await validateUser(user, interaction, false);
+    var isValidUser = await validateUser(user, interaction, true);
 
     if (!isValidUser) {
         return;
@@ -57,7 +57,7 @@ const modlog: Command = {
     if (userConfig === null){ return interaction.reply({ content: `User has no logs.`, ephemeral: true }) };
 
     var casenumbers = 0;
-    const caseRef = ref.child("config").child(userID).child("cases");
+    const caseRef = ref.child("config").child(serverID).child(userID).child("cases");
     await caseRef.once("value", (snapshot) => {
         casenumbers = snapshot.val() + 1;
     });
@@ -94,7 +94,7 @@ const modlog: Command = {
         //warnsRef.orderByChild("case_number").startAt((page - 1) * 15).endAt(page * 15).on("child_added", async (snapshot) => {
 
     
-    var warnsRef = ref.child("config").child(userID).child("warnings");
+    var warnsRef = ref.child("config").child(serverID).child(userID).child("warnings");
     var lastCase = 0;
     if (type === null || type === "all") {
         var i = 1;
