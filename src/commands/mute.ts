@@ -19,7 +19,7 @@ const mute: Command = {
             )
             .addStringOption(option =>
                 option.setName("time")
-                    .setDescription("The time to mute the user for, eg: 3min, 3hr, 3d.")
+                    .setDescription("The time to mute the user for, eg: 3m, 3hr, 3d.")
                     .setRequired(true)
             )
             .addStringOption(option =>
