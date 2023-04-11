@@ -43,11 +43,17 @@ const purge: Command = {
 		// }
 
 		if (interaction.channel !== null) {
-			await interaction.channel.messages.fetch({ limit: amount + 1 })
-				.then(messages => {
-					interaction.channel?.bulkDelete(messages);
-				})
-				.catch(console.error);
+			try {
+				await interaction.channel.messages.fetch({ limit: amount + 1 })
+					.then(messages => {
+						interaction.channel?.bulkDelete(messages);
+					})
+					.catch(console.error);
+			} catch (error) {
+				console.error(error);
+				interaction.reply({ content: `Error: ${error}`, ephemeral: true });
+				return;
+			}
 		}
 
 		await interaction.reply({ content: `Purged ${amount} messages from ${channel.name}.`, ephemeral: false });
