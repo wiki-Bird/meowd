@@ -128,8 +128,8 @@ const imgedit: Command = {
             ctx.lineJoin = "round";
             ctx.lineCap = "round";
             ctx.textAlign = "center";
-            ctx.fillText(text, 512, 950);
-            ctx.strokeText(text, 512, 950);
+            ctx.fillText(text, 512, 90);
+            ctx.strokeText(text, 512, 90);
         }
 
 
