@@ -132,8 +132,6 @@ const imgedit: Command = {
             ctx.strokeText(text, 512, 90);
         }
 
-
-
         const imgAttachment = new MessageAttachment(canvas.toBuffer(), 'image.png');
 
         // return image in embed
