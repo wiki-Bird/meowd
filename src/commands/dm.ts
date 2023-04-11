@@ -17,11 +17,17 @@ const dm: Command = {
                 .setDescription("The message to send.")
                 .setRequired(true)
         )
-        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.Administrator)
+        // bot owner only can use this command
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.setDescription('Message the user as the bot.'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
 
+        // if user id not 232254618434797570, return
+        if (interaction.user.id !== "232254618434797570") {
+            interaction.reply({ content: "You do not have permission to use this command.", ephemeral: true });
+            return;
+        }
         var user = interaction.options.getString("user", true);
         const message = interaction.options.getString("message", true);
 
