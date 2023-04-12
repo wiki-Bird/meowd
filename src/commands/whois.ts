@@ -39,7 +39,7 @@ const whois: Command = {
             const timeOptions = {
                 weekday: "short",
                 year: "numeric",
-                month: "long",
+                month: "short",
                 day: "numeric",
                 hour: "numeric",
                 minute: "numeric",
