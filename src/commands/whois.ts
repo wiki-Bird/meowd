@@ -23,13 +23,9 @@ const whois: Command = {
         }
     
         var {userGuildMember, userNamed, userID} = isValidUser;
-    
-
 
         // if interaction not in guild, return:
         if (!interaction.guild) {return;}
-
-        const currentDate = new Date();
 
 
         if (userGuildMember instanceof GuildMember) {
@@ -40,11 +36,20 @@ const whois: Command = {
                 roleCount = "No roles";
             }
             const embed = new MessageEmbed();
+            const timeOptions = {
+                weekday: "short",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+            } as const;
             embed
                 .setColor("#00f2ff")
                 .setDescription("**" + userNamed.tag + "  -  <@" + userGuildMember.id + ">**")
                 .setThumbnail(userGuildMember.user.displayAvatarURL())
                 .setFooter({ text: `User info requested by ${interaction.user.tag} ` })
+                .setTimestamp()
                 .addFields(
                     { name: "_ _", value: "_ _"},
 
@@ -52,8 +57,8 @@ const whois: Command = {
                     
                     // { name: "\u200B", value: "\u200B", inline: false}, //newline
 
-                    { name: "Joined Server", value: userGuildMember.joinedAt!.toLocaleDateString() + "    ", inline: true },
-                    { name: "Account Created", value: userNamed.createdAt.toLocaleDateString(), inline: true },
+                    { name: "Joined Server", value: userGuildMember.joinedAt!.toLocaleDateString("en-US", timeOptions) + "_      _", inline: true },
+                    { name: "Account Created", value: userNamed.createdAt.toLocaleDateString("en-US", timeOptions), inline: true },
                     
                     { name: "Roles", value: roleCount},
 
