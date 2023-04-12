@@ -48,6 +48,19 @@ const embed: Command = {
         var image = interaction.options.getAttachment("image", false);
         var embed = new MessageEmbed();
 
+
+        if (!title && !description && !footer && !image) {
+            interaction.reply({ content: "You must provide at least one of the following: title, description, footer, image.", ephemeral: true });
+            return;
+        }
+
+        if (interaction.guild) {
+            var guild = client.guilds.cache.get(interaction.guild.id);
+            if (guild) {
+                embed.setAuthor({ name: guild.name, iconURL: `${guild.iconURL()}` });
+            }
+        }
+        
         if (title) {
             embed.setTitle(title);
         }
