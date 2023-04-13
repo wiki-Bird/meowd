@@ -67,6 +67,8 @@ const imgedit: Command = {
             return;
         }
 
+        await interaction.deferReply();
+
         var canvas = createCanvas(1024, 1024);
         var ctx = canvas.getContext('2d');
 
@@ -128,8 +130,46 @@ const imgedit: Command = {
             ctx.lineJoin = "round";
             ctx.lineCap = "round";
             ctx.textAlign = "center";
-            ctx.fillText(text, 512, 90);
-            ctx.strokeText(text, 512, 90);
+
+            let y = 90;
+            let x = 512;
+
+            const textWidth = ctx.measureText(text).width;
+            if (textWidth > canvas.width - 20) {
+                const maxWidth = canvas.width - 20;
+                // Split the text into multiple lines
+                const words = text.split(' ');
+                let line = '';
+                const lines = [];
+
+                for (let i = 0; i < words.length; i++) {
+                    const testLine = line + words[i] + ' ';
+                    const testWidth = ctx.measureText(testLine).width;
+                    if (testWidth > maxWidth) {
+                    lines.push(line);
+                    line = words[i] + ' ';
+                    } else {
+                    line = testLine;
+                    }
+                }
+                lines.push(line);
+
+                // Draw each line of text
+                
+                for (let i = 0; i < lines.length; i++) {
+                    ctx.fillText(lines[i], x, y);
+                    ctx.strokeText(lines[i], x, y);
+                    y += 60;
+                }
+                
+            } else {
+                // Draw the text normally
+                ctx.fillText(text, x, y);
+                ctx.strokeText(text, x, y);
+            }
+
+            // ctx.fillText(text, 512, 90);
+            // ctx.strokeText(text, 512, 90);
         }
 
         const imgAttachment = new MessageAttachment(canvas.toBuffer(), 'image.png');
@@ -142,7 +182,7 @@ const imgedit: Command = {
             .setTimestamp();
 
         // send embed
-        interaction.reply({ embeds: [embed], files: [imgAttachment] });
+        await interaction.editReply({ embeds: [embed], files: [imgAttachment] });
         
     }
 }

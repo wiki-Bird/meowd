@@ -1,7 +1,8 @@
 import Command from '../types/Command';
-import { CommandInteraction, MessageEmbed, Message, GuildMember } from 'discord.js';
+import { CommandInteraction, MessageEmbed, ColorResolvable, GuildMember } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import validateUser from '../functions/validateUser';
+import { createCanvas, loadImage } from 'canvas';
 
 const whois: Command = {
 	data: new SlashCommandBuilder()
@@ -44,13 +45,31 @@ const whois: Command = {
                 hour: "numeric",
                 minute: "numeric",
             } as const;
+
+            // get which rgba color the user's avatar has the most of:
+            const canvas = createCanvas(1, 1);
+            const ctx = canvas.getContext('2d');
+            const avatar = await loadImage(userGuildMember.user.displayAvatarURL({ format: "png", size: 128 }));
+            ctx.drawImage(avatar, 0, 0, 1, 1);
+            const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+            const color = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+
             embed
-                .setColor("#00f2ff")
+                // .setColor("#00f2ff")
+                // .setColor(userGuildMember.displayHexColor)
+                .setColor(color as ColorResolvable)
                 .setDescription("**" + userNamed.tag + "  -  <@" + userGuildMember.id + ">**")
                 .setThumbnail(userGuildMember.user.displayAvatarURL())
                 .setFooter({ text: `User info requested by ${interaction.user.tag} ` })
-                .setTimestamp()
-                .addFields(
+                .setTimestamp();
+
+            // if user has a role that is (igorning case) "she/her" "he/him" or "they/them", add pronouns to embed:
+            if (userGuildMember.roles.cache.some(role => role.name.toLowerCase() === "she/her" || role.name.toLowerCase() === "he/him" || role.name.toLowerCase() === "they/them")) {
+                embed.addFields(
+                    { name: "Pronouns", value: userGuildMember.roles.cache.filter(role => role.name.toLowerCase() === "she/her" || role.name.toLowerCase() === "he/him" || role.name.toLowerCase() === "they/them").map(role => role.name).join(", "), inline: true },
+                )
+            }
+            embed.addFields(
                     { name: "_ _", value: "_ _"},
 
                     // { name: "Member Status", value: userGuildMember.roles.cache.has("739098680109879072") ? "Member" : "Not a member", inline: true },
@@ -64,10 +83,12 @@ const whois: Command = {
 
                     { name: "Nickname", value: userGuildMember.nickname || "None", inline: true },
                     { name: "ID", value: userGuildMember.id, inline: true },
-
-                    { name: "_ _", value: "_ _"},
                     
                 );
+
+
+
+            embed.addField("_ _", "_ _");
 
             await interaction.reply({ embeds: [embed] });
             
