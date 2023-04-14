@@ -108,9 +108,9 @@ const stats: Command = {
 			var playerPortrait;
 			var privateProfile;
 
-			var playerRankDPS;
-			var playerRankTank;
-			var playerRankSupport;
+			var playerRankDPS: string = "N/A";
+			var playerRankTank: string = "N/A";
+			var playerRankSupport: string = "N/A";
 
 			var playtimeComp;
 			var playtimeQuickplay;
@@ -199,12 +199,19 @@ const stats: Command = {
 						return;
 					}
 					//@ts-ignore
-					playerRankDPS = json.competitive.offense.rank;
-					// playerRankDPSIcon = json.competitive.damage.icon;
-
-					playerRankTank = json.competitive.tank.rank;
-					// playerRankTankIcon = json.competitive.tank.icon;
-					playerRankSupport = json.competitive.support.rank;
+					if (json.competitive.offense && json.competitive.offense.rank) {
+						//@ts-ignore
+						playerRankDPS = json.competitive.offense.rank.toString();
+					  }
+					  
+					  if (json.competitive.tank && json.competitive.tank.rank) {
+						playerRankTank = json.competitive.tank.rank.toString();
+					  }
+					  
+					  if (json.competitive.support && json.competitive.support.rank) {
+						playerRankSupport = json.competitive.support.rank.toString();
+					  }
+					
 					// playerRankSupportIcon = json.competitive.support.icon;
 					
 					playtimeComp = json.playtime.competitive;
