@@ -194,7 +194,9 @@ const stats: Command = {
 					embed.setThumbnail(playerPortrait);
 
 					if (privateProfile){
-						embed.setDescription("This profile is private.");
+						// embed.setDescription("This profile is private.");
+						// clear fields:
+						embed.spliceFields(0, 5, { name: "This profile is private.", value: "No information can be displayed." });
 						interaction.editReply({ embeds: [embed] });
 						return;
 					}
@@ -280,7 +282,17 @@ const stats: Command = {
 					[key: string]: any;
 				}
 
-				console.log(json.stats.game.competitive)
+				var privateProfile = json.private;
+
+				if (privateProfile){
+					embed.setDescription("This profile is private!");
+					// clear fields:
+					embed.spliceFields(0, 4, { name: "_ _", value: "No information can be displayed." });
+					interaction.editReply({ embeds: [embed] });
+					return;
+				}
+
+				console.log(json.stats)
 
 				var playtimeComp = json.stats.top_heroes.competitive.played;
 				var playtimeQuickplay = json.stats.top_heroes.quickplay.played;
@@ -341,15 +353,17 @@ const stats: Command = {
 				console.log(bestHeroes);
 				console.log(bestHeroScores);
 
-				embed.spliceFields(4, 1, {
-					name: "Best Heroes:",
-					value: `
-					1️⃣ ${bestHeroes[0]}
-					2️⃣ ${bestHeroes[1]}
-					3️⃣ ${bestHeroes[2]}
-					`,
-					inline: true
-				})
+				if (bestHeroes.length > 0 || bestHeroes[0] != undefined){
+					embed.spliceFields(4, 1, {
+						name: "Best Heroes:",
+						value: `
+						1️⃣ ${bestHeroes[0]}
+						2️⃣ ${bestHeroes[1]}
+						3️⃣ ${bestHeroes[2]}
+						`,
+						inline: true
+					})
+				}
 
 
 				interaction.editReply({ embeds: [embed] });
