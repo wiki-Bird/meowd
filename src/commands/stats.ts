@@ -68,6 +68,7 @@ const stats: Command = {
 				{ name: "Winrate:", value: "Loading...", inline: true },
 				{ name: "Best Heroes:", value: "Loading...", inline: true },
 			)
+			.setFooter({ text: "Overwatch 2 Stats from /stats", iconURL: "https://i.imgur.com/HKiAsth.png" });
 		
 		const embedLoading = new MessageEmbed()
 			.setAuthor({ name: "Loading...", iconURL: "https://i.imgur.com/fMqUG5J.gif" })
@@ -244,9 +245,7 @@ const stats: Command = {
 					embed.spliceFields(0, 1, {
 						name: `Ranks:`, 
 						value: `
-							<:tank:1096258995108450355> **Tank:** ${playerRankTank}_ _
-							<:dps:1096258990096265266> **DPS:** ${playerRankDPS}_ _
-							<:support:1096258993283944589> **Supp:** ${playerRankSupport}_ _`,
+							<:tank:1096258995108450355> **Tank:** ${playerRankTank}_ _\n<:dps:1096258990096265266> **DPS:** ${playerRankDPS}_ _\n<:support:1096258993283944589> **Supp:** ${playerRankSupport}_ _`,
 						inline: true
 					})
 					embed.spliceFields(1, 1, {

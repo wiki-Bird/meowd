@@ -18,6 +18,7 @@ const imgedit: Command = {
                     { name: "Rainbow", value: "rainbow" },
                     { name: "Jerma", value: "jerma" },
                     { name: "Invert", value: "invert" },
+                    { name: "1984", value: "1984" },
                 )
         )
         .addStringOption(option =>
@@ -121,6 +122,18 @@ const imgedit: Command = {
 
             ctx.putImageData(imgData, 0, 0);
         }
+        else if (action === "1984") {
+            // set background to https://i.imgur.com/ezs1Gf0.png
+            ctx.drawImage(img, 20, 0, 1000, 800);
+            // drag https://i.imgur.com/00mhtBU.png over it
+            var img2 = await loadImage("https://i.imgur.com/00mhtBU.png");
+            ctx.drawImage(img2, 0, 0, 1024, 1024);
+        }
+
+
+            // draw "img" on top, from  
+
+
 
         if (text) {
             ctx.font = "bold 80px Arial";
