@@ -229,7 +229,8 @@ const stats: Command = {
 
 					winsComp = json.games.competitive.won;
 					lossesComp = json.games.competitive.lost;
-					winrateComp = json.games.competitive.win_rate;
+					// winrateComp = json.games.competitive.win_rate; // NO LONGER SUPPORTED
+					winrateComp = winsComp / (json.games.competitive.played!) * 100;
 
 					winsQuickplay = json.games.quickplay.won;
 					lossesQuickplay = json.games.quickplay.played! - winsQuickplay;
@@ -253,7 +254,7 @@ const stats: Command = {
 							value: ` 
 							<:quickplay:1096265136479678524> **QP:  ** ${playtimeQuickplayHours}
 							<:comp:1096265140011290675> **Comp:** ${playtimeCompHours}
-							🕙 **Total:** ${playtimeTotal.toFixed(2)}`,
+							🕙 **Total:** ${playtimeTotal.toFixed(2)}hrs`,
 							inline: true
 					})
 					embed.spliceFields(3, 1, {
@@ -363,6 +364,9 @@ const stats: Command = {
 						inline: true
 					})
 				}
+
+				// add empty fields to fill the embed
+				embed.spliceFields(5, 1, { name: "_ _", value: "_ _", inline: true });
 
 
 				interaction.editReply({ embeds: [embed] });

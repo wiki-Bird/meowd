@@ -8,15 +8,14 @@ Neep help? Check out <a href="https://meowd.ramiels.me/">meowd.ramiels.me</a>.</
 
 <h3 align="center"> 🏗️ Currently under development </h3>
 
-</br>
 
+</br>
 
 ## 🤕 Issues:
 
 #### If you've found an issue with the bot, please open an issue in the [issues tab](https://github.com/wiki-Bird/meowd/issues). 
 
 </br>
-
 
 ## 🐱 Features:
 
@@ -29,7 +28,6 @@ Neep help? Check out <a href="https://meowd.ramiels.me/">meowd.ramiels.me</a>.</
 
 
 </br>
-
 
 ## ⌨️ Commands:
 
@@ -49,7 +47,6 @@ Neep help? Check out <a href="https://meowd.ramiels.me/">meowd.ramiels.me</a>.</
 
 </br>
 
-
 ## 💡 Future plans:
 
 #### For a full list, visit [projects](https://github.com/users/wiki-Bird/projects/4).
@@ -62,3 +59,10 @@ Neep help? Check out <a href="https://meowd.ramiels.me/">meowd.ramiels.me</a>.</
 - [ ] Starboard
 - [ ] Web dashboard
 - [x] Add pronouns to `/whois`
+
+
+</br>
+
+## 🌐 Website Repository:
+
+#### View the Meowd website repository [here](https://github.com/wiki-Bird/meowd-site)
