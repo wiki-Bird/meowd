@@ -1,0 +1,40 @@
+{
+  "name": "meowd",
+  "version": "1.0.0",
+  "description": "A Discord bot",
+  "engines": {
+    "node": "16.15.1"
+  },
+  "main": "build/index.js",
+  "scripts": {
+    "start": "node build/index.js",
+    "build": "tsc",
+    "postinstall": "yarn build",
+    "dev": "nodemon src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "wiki-Bird",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://www.google.com"
+  },
+  "homepage": "#",
+  "dependencies": {
+    "@discordjs/builders": "^0.15.0",
+    "@discordjs/rest": "^0.5.0",
+    "canvas": "^2.11.2",
+    "discord-api-types": "^0.36.1",
+    "discord.js": "^13.15.1",
+    "firebase-admin": "^11.0.0",
+    "overwatch-api": "^0.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.3",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
+  }
+}

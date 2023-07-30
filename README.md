@@ -43,6 +43,7 @@ Neep help? Check out <a href="https://meowd.ramiels.me/">meowd.ramiels.me</a>.</
    - `/help`
 - Fun:
    - `/otter`, `/imgedit`
+   - `/stats <overwatch>`
 
 
 </br>

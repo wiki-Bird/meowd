@@ -3,9 +3,28 @@ build/
 config.json
 pakbot-7f806-firebase-adminsdk-ep5hk-02e9bec8e8.json
 meowd-bot-firebase-adminsdk-2g9mv-5423d91b65.json
-package.json
+# package.json
 Procfile
-tsconfig.json
-yarn.lock
-.yarn/
-.yarn
+# tsconfig.json
+# yarn.lock
+# .yarn/
+# .yarn
+
+### yarn ###
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+
+.yarn/*
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# if you are NOT using Zero-installs, then:
+# comment the following lines
+!.yarn/cache
+
+# and uncomment the following lines
+# .pnp.*
+
+# End of https://www.toptal.com/developers/gitignore/api/yarn
