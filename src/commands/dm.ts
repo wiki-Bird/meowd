@@ -1,5 +1,5 @@
 import Command from '../types/Command';
-import { CommandInteraction } from 'discord.js';
+import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import validateUser from '../functions/validateUser';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -24,10 +24,10 @@ const dm: Command = {
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
 
         // if user id not 232254618434797570, return
-        if (interaction.user.id !== "232254618434797570") {
-            interaction.reply({ content: "You do not have permission to use this command.", ephemeral: true });
-            return;
-        }
+        // if (interaction.user.id !== "232254618434797570") {
+        //     interaction.reply({ content: "You do not have permission to use this command.", ephemeral: true });
+        //     return;
+        // }
         var user = interaction.options.getString("user", true);
         const message = interaction.options.getString("message", true);
 
@@ -44,7 +44,17 @@ const dm: Command = {
             return;
         }
 
-        userGuildMember.user.send(message);
+        const serverName = interaction.guild.name;
+        const serverIcon = interaction.guild.iconURL();
+
+        // create embed
+        const embed = new MessageEmbed()
+            .setAuthor({ name: `${serverName}'s Administrators sent you a message:`, iconURL: `${serverIcon}` })
+            .setDescription(message)
+            .setFooter({ text: `Message content not endorsed by Meowd.`});
+
+        // userGuildMember.user.send(message);
+        userGuildMember.user.send({ embeds: [embed] });
 
         interaction.reply({ content: `Message sent to ${userGuildMember.user.tag}`, ephemeral: true });
 

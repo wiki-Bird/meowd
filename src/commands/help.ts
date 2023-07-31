@@ -13,8 +13,8 @@ const help: Command = {
 		embed.setAuthor({ name: "Meowd Help", iconURL: client.user.displayAvatarURL()})
 			.setColor("#00f2ff")
             .addFields(
-                { name: "Command me :)", value: "[Get a full list of bot commands](https://meowd.kwiii.xyz/commands)"},
-                { name: "Need help?", value: "[Check out the setup guide](https://meowd.kwiii.xyz/guide) **(COMING SOON)**"},
+                { name: "Commands", value: "[Get a full list of bot commands](https://meowd.ramiels.me/commands)"},
+                { name: "Need help?", value: "[Check out the setup guide](https://meowd.ramiels.me/guide) **(COMING SOON)**"},
                 { name: "Some helpful commands", value: "`/poll`, `/report`, `/rule`, `/whois`, `/otter`, `/modlogs`, `/config`"},
             )
         const row = new MessageActionRow()
@@ -22,7 +22,7 @@ const help: Command = {
                 new MessageButton()
                     .setLabel('Support')
                     .setStyle('LINK')
-                    .setURL('https://meowd.kwiii.xyz'),
+                    .setURL('https://meowd.ramiels.me/'),
 			);
 			
 		await interaction.reply({ embeds: [embed], components: [row], ephemeral: true });
