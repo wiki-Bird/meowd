@@ -94,6 +94,54 @@ data.addSubcommandGroup(subcommandGroup =>
 		)
 );
 
+data.addSubcommandGroup(subcommandGroup =>
+	subcommandGroup
+		.setName("wordsblacklist")
+		.setDescription("Change the words blacklist.")
+		// add, remove, or list words. change punishment
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("add")
+				.setDescription("Add a word.")
+				.addStringOption(option =>
+					option.setName("word")
+						.setDescription("The word to add.")
+						.setRequired(true)
+		))
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("remove")
+				.setDescription("Remove a word.")
+					.addStringOption(option =>
+						option.setName("word")
+							.setDescription("The word to remove.")
+							.setRequired(true)
+		))
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("list")
+				.setDescription("List words.")
+		)
+		.addSubcommand (subcommand =>
+			subcommand
+				.setName("punishment")
+				.setDescription("Change the punishment for blacklisted words.")
+				.addStringOption(option =>
+					option.setName("punishment")
+						.setDescription("The punishment to use.")
+						.setRequired(true)
+						.addChoices(
+							{ name: "None", value: "none" },
+							{ name: "Warn", value: "warn" },
+							{ name: "Mute", value: "mute" },
+							{ name: "Kick", value: "kick" },
+							{ name: "Ban", value: "ban" }
+						)
+				)
+		)
+);
+
+
 
 const config: Command = {
 
@@ -142,7 +190,7 @@ const config: Command = {
 				const embed = new MessageEmbed()
 					.setAuthor({name: "OtterBot", iconURL: "https://cdn.discordapp.com/attachments/590667063165583409/1089047115315032125/icon.png"})
 					.setColor("#bee2ff")
-					.addField("Otter Channel Added", `<#${channel.id}>`);
+					.addFields({ name: "Otter Channel Added", value: `<#${channel.id}>` })
 				await interaction.editReply({embeds: [embed]});
 			} 
 
@@ -155,7 +203,7 @@ const config: Command = {
 				const embed = new MessageEmbed()
 					.setAuthor({name: "OtterBot", iconURL: "https://cdn.discordapp.com/attachments/590667063165583409/1089047115315032125/icon.png"})
 					.setColor("#bee2ff")
-					.addField("Otter Channel Removed", `<#${channel.id}>`);
+					.addFields({ name: "Otter Channel Removed", value: `<#${channel.id}>` })
 				await interaction.editReply({embeds: [embed]});
 			} 
 		
@@ -168,12 +216,12 @@ const config: Command = {
 				if (otterChannels.exists()) {
 					var i = 1;
 					for (const [key, value] of Object.entries(otterChannels.val())) {
-						embed.addField(`Channel #${i}`, `<#${key}>`);
+						embed.addFields({ name: `Channel #${i}`, value: `<#${key}>` })
 						i++;
 					}
 				}
 				else {
-					embed.addField("Otter Channels", "No Otter channels added. Use `/config otterchannels add` to add otter channels.");
+					embed.addFields({ name: "Otter Channels", value: "No Otter channels added. Use `/config otterchannels add` to add otter channels." })
 				}
 
 				await interaction.editReply({ embeds: [embed] });
@@ -253,12 +301,89 @@ const config: Command = {
 					var i = 1;
 					for (const [key, value] of Object.entries(rules.val())) {
 						var ruleText: string = value as string;
-						embed.addField(`Rule #${i}`, ruleText);
+						embed.addFields({ name: `Rule #${i}`, value: ruleText });
 						i++;
 					}
 				}
 				else {
-					embed.addField("Rules", "No rules added. Use `/config rules add` to add rules.");
+					embed.addFields({ name: "Rules", value: "No rules added. Use `/config rules add` to add rules." })
+				}
+				await interaction.editReply({ embeds: [embed] });
+			}
+		}
+
+		else if (interaction.options.getSubcommandGroup() === "wordsblacklist") {
+			if (subcommand === "add") { // add word to server's word blacklist
+				var n = 1;
+				const word = interaction.options.getString("word", true);
+				if (serverConfigRef.child("blacklistedWords") === null) { //if blacklistedWords is null, create it and add the channel
+					await serverConfigRef.child("blacklistedWords").set({
+						n: word
+					});
+				}
+				else { // append to existing list
+					var blacklistRef = serverConfigRef.child("blacklistedWords");
+					await blacklistRef.once("value")
+						.then(function(snapshot) {
+							n = snapshot.numChildren() + 1;
+						});
+					await serverConfigRef.child("blacklistedWords").update({[n]: word});
+				}
+
+				const embed = new MessageEmbed()
+					.setTitle("Word Added to Blacklist")
+					.setColor("#00f2ff")
+					.setTimestamp()
+					.setDescription(`Word ${word} added.`);
+				await interaction.editReply({ embeds: [embed] });
+			}
+			else if (subcommand === "remove") { // remove word from server's word blacklist
+				const word = interaction.options.getString("word", true);
+				if (serverConfigRef.child("blacklistedWords") !== null) { // if word exists in blacklist, remove it
+					const wordsRef = serverConfigRef.child("blacklistedWords");
+					await wordsRef.once("value", (snapshot) => {
+						var words = snapshot.val();
+						var index = words.indexOf(word);
+						if (index > -1) {
+							words.splice(index, 1);
+						}
+						wordsRef.set(words);
+					});
+				}
+
+				const embed = new MessageEmbed()
+					.setTitle("Word Removed from Blacklist")
+					.setColor("#00f2ff")
+					.setTimestamp()
+					.setDescription(`Word ${word} removed.`);
+				await interaction.editReply({ embeds: [embed] });
+			}
+			else if (subcommand === "punishment") { // set punishment for word blacklist
+				const punishment = interaction.options.getString("punishment", true);
+				await serverConfigRef.child("blacklistedWordsPunishment").set(punishment);
+
+				const embed = new MessageEmbed()
+					.setTitle("Punishment Set")
+					.setColor("#00f2ff")
+					.setTimestamp()
+					.setDescription(`Blackword violation punishment set to ${punishment}.`);
+				await interaction.editReply({ embeds: [embed] });
+			}
+			else { // list words in server's word blacklist
+				const words = await serverConfigRef.child("blacklistedWords").get();
+				const embed = new MessageEmbed()// create embed with words
+					.setTitle("Blacklisted Words")
+					.setColor("#00f2ff");
+				if (words.exists()) {
+					var i = 1;
+					for (const [key, value] of Object.entries(words.val())) {
+						var wordText: string = value as string;
+						embed.addFields({name: `Word #${i}`, value: wordText});
+						i++;
+					}
+				}
+				else {
+					embed.addFields({name: "Blacklisted Words", value: "No words added. Use `/config wordsblacklist add` to add words."});
 				}
 				await interaction.editReply({ embeds: [embed] });
 			}

@@ -366,7 +366,7 @@ const stats: Command = {
 				}
 
 				// add empty fields to fill the embed
-				embed.spliceFields(5, 1, { name: "_ _", value: "_ _", inline: true });
+				// embed.spliceFields(5, 1, { name: "_ _", value: "_ _", inline: false });
 
 
 				interaction.editReply({ embeds: [embed] });

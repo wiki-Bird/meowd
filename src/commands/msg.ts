@@ -6,7 +6,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v9';
 const msg: Command = {
 	data: new SlashCommandBuilder()
 		.setName('msg')
-        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.Administrator)
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addChannelOption(option =>
             option.setName("channel")
                 .setDescription("The channel to send the message to, #channel.")
@@ -20,6 +20,11 @@ const msg: Command = {
 		.setDescription('Message a channel as the bot.'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+
+        if (interaction.user.id !== "232254618434797570") {
+            interaction.reply({ content: "You do not have permission to use this testing command.", ephemeral: true });
+            return;
+        }
 
         var channel = interaction.options.getChannel("channel", true);
         const message = interaction.options.getString("message", true);
