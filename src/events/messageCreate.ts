@@ -1,10 +1,11 @@
 import { client } from '..';
 import { TextChannel, Message, MessageEmbed, Guild } from 'discord.js';
 import Event from '../types/Event';
+import { ref } from '..';
 
 const messageCreate: Event = {
     name: 'messageCreate',
-    execute: function (message: Message) {
+    execute: async function (message: Message) {
 
         // if message comes from a bot, ignore it.
         if (message.author.bot) return;
@@ -33,6 +34,36 @@ const messageCreate: Event = {
         //     return;
         // }
 
+        if (message.channel.type === "DM") { // Update the bot's status
+            if (message.author.id === '232254618434797570') {
+                client.user!.setActivity(message.content);
+                message.channel.send('Status set.');
+            }
+        }
+        else {
+            // if message is from a server with a words blacklist
+            const guildID = message.guild!.id;
+            const configRef = ref.child("config");
+            const serverConfigRef = configRef.child(guildID);
+
+            const words = await serverConfigRef.child("blacklistedWords").get();
+
+            if (words.exists()) { 
+                const wordsArray = Object.values(words.val());
+                const wordsString = wordsArray.join("|");
+                const regex = new RegExp(wordsString, "gi");
+                if (regex.test(message.content)) {
+                    message.delete();
+                    const embed = new MessageEmbed()
+                        .setColor('#ff0000')
+                        .setTitle('Banned Message Deleted')
+                        .setAuthor({ name: `${message.author.tag}`, iconURL: message.author.displayAvatarURL()})
+                        .setFooter({ text: "Change banned words using /config blacklist" })
+                    
+                    message.channel.send({ embeds: [embed] });
+                }
+            }
+        }
     }
 }
 
