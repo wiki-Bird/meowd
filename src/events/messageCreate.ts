@@ -36,8 +36,16 @@ const messageCreate: Event = {
 
         if (message.channel.type === "DM") { // Update the bot's status
             if (message.author.id === '232254618434797570') {
-                client.user!.setActivity(message.content);
-                message.channel.send('Status set.');
+                if (message.content.toLowerCase().includes("watch")) {
+                    const status = message.content.replace("watch", "");
+                    client.user!.setActivity(status, { type: 'WATCHING' });
+                    message.channel.send('Status set.');
+                }
+                else if (message.content.toLowerCase().includes("play")) {
+                    const status = message.content.replace("play", "");
+                    client.user!.setActivity(status, { type: 'PLAYING' });
+                    message.channel.send('Status set.');
+                }
             }
         }
         else {
@@ -54,12 +62,65 @@ const messageCreate: Event = {
                 const regex = new RegExp(wordsString, "gi");
                 if (regex.test(message.content)) {
                     message.delete();
+
                     const embed = new MessageEmbed()
-                        .setColor('#ff0000')
-                        .setTitle('Banned Message Deleted')
-                        .setAuthor({ name: `${message.author.tag}`, iconURL: message.author.displayAvatarURL()})
-                        .setFooter({ text: "Change banned words using /config blacklist" })
-                    
+                    .setColor('#ff0000')
+                    .setTitle('Banned Message Deleted')
+                    .setAuthor({ name: `${message.author.tag}`, iconURL: message.author.displayAvatarURL()})
+                    .setFooter({ text: "Change banned words using /config blacklist" })
+
+                    // if server punishment is set
+                    const punishment = await serverConfigRef.child("blacklistedWordsPunishment").get();
+                    if (punishment.exists()) {
+                        const punishmentString = punishment.val();
+                        if (punishmentString === "ban") {
+                            message.member!.ban({ reason: "Banned word detected" });
+
+                            embed.setDescription("User banned");
+                        }
+                        else if (punishmentString === "kick") {
+                            message.member!.kick("Kicked for using banned word");
+                            embed.setDescription("User kicked");
+                        }
+                        else if (punishmentString === "mute") {
+                            const userGuildMember = message.guild!.members.cache.get(message.author.id)!;
+                            userGuildMember.timeout(600000, "Muted for using banned phrase: " + message.content);
+                            embed.setDescription("User muted for 10 minutes");
+                        }
+                        else if (punishmentString === "warn") {
+                            const userConfig = await serverConfigRef.child(message.author.id).get();
+                            if (userConfig.exists()) {
+                                var caseno = await serverConfigRef.child(message.author.id).child("cases").get();
+                                if (caseno.exists()) { // increment caseno
+                                    caseno = caseno.val() + 1;
+                                    await serverConfigRef.child(message.author.id).child("cases").set(caseno);
+                                }
+                        
+                                await serverConfigRef.child(message.author.id).child("warnings").push({
+                                    reason: "Warned for using banned phrase: " + message.content,
+                                    date: new Date().toUTCString(),
+                                    moderator: client.user!.id,
+                                    type: "warn",
+                                    case_number: caseno
+                                });
+                        
+                                await serverConfigRef.child(message.author.id).child("cases").set(caseno);
+                            }
+                            else {
+                                await serverConfigRef.child(message.author.id).set({
+                                    warnings: [{
+                                        reason: "Warned for using banned phrase: " + message.content,
+                                        date: new Date().toUTCString(),
+                                        moderator: client.user!.id,
+                                        type: "warn",
+                                        case_number: 1
+                                    }],
+                                    cases: 1
+                                });
+                            }
+                            embed.setDescription("User warned");
+                        }
+                    }
                     message.channel.send({ embeds: [embed] });
                 }
             }
