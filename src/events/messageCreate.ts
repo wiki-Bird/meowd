@@ -2,6 +2,8 @@ import { client } from '..';
 import { TextChannel, Message, MessageEmbed, Guild } from 'discord.js';
 import Event from '../types/Event';
 import { ref } from '..';
+import muteUser from '../functions/muteUser';
+import MemberServerPair from '../types/MemberServerPair';
 
 const messageCreate: Event = {
     name: 'messageCreate',
@@ -84,8 +86,13 @@ const messageCreate: Event = {
                         }
                         else if (punishmentString === "mute") {
                             const userGuildMember = message.guild!.members.cache.get(message.author.id)!;
-                            userGuildMember.timeout(600000, "Muted for using banned phrase: " + message.content);
-                            embed.setDescription("User muted for 10 minutes");
+                            const server = message.guild!;
+                            const memberServer: MemberServerPair = {
+                                member: userGuildMember,
+                                server: server
+                            };
+                            
+                            const muteUserVar = await muteUser(undefined, message.author.id, `Banned word: ${message.content}`, "3600000", client.user!, memberServer);
                         }
                         else if (punishmentString === "warn") {
                             const userConfig = await serverConfigRef.child(message.author.id).get();

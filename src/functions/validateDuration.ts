@@ -6,7 +6,7 @@ export interface ValidatedNumber {
 }
 
 
-export default async function validateDuration(time: string, interaction: CommandInteraction<"cached" | "raw">): Promise<ValidatedNumber | false> {
+export default async function validateDuration(time: string, interaction: CommandInteraction<"cached" | "raw"> | undefined): Promise<ValidatedNumber | false> {
 
     // first part of time will be a number, the second part will be m, h, d. Break it into these two parts.
     var midPoint = 0;
@@ -18,10 +18,10 @@ export default async function validateDuration(time: string, interaction: Comman
     } 
     if ( midPoint == 0 ) {
         try{
-            await interaction.reply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1h`, `4m`", ephemeral: true });
+            if (interaction !== undefined) await interaction.reply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1h`, `4m`", ephemeral: true });
         }
         catch(e){
-            await interaction.editReply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1h`, `4m`" });
+            if (interaction !== undefined) await interaction.editReply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1h`, `4m`" });
         }
         return false;
     }
@@ -32,10 +32,10 @@ export default async function validateDuration(time: string, interaction: Comman
     // check if timeNumber is a number
     if (isNaN(Number(timeNumber)) === true) {
         try{
-            await interaction.reply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1h`, `4m`", ephemeral: true });
+            if (interaction !== undefined) await interaction.reply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1h`, `4m`", ephemeral: true });
         }
         catch(e){
-            await interaction.editReply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1h`, `4m`" });
+            if (interaction !== undefined) await interaction.editReply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1h`, `4m`" });
         }
         return false;
     }
