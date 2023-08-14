@@ -7,6 +7,11 @@ Neep help? Check out <a href="https://meowd.ramiels.me/">meowd.ramiels.me</a>.</
 </br>
 
 <h3 align="center"> 🏗️ Currently under development </h3>
+<div align="center">
+   <img src="https://github.com/wiki-Bird/meowd/actions/workflows/codeql.yml/badge.svg">
+   <img src="https://github.com/wiki-Bird/meowd/actions/workflows/node.js.yml/badge.svg">
+   <img src="https://github.com/wiki-Bird/meowd/actions/workflows/eslint.yml/badge.svg">
+</div>
 
 
 </br>
