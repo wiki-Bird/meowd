@@ -31,22 +31,18 @@ const warn: Command = {
     await interaction.deferReply();
 
 	const user = interaction.options.getString("user", true);
-    var reason = interaction.options.getString("reason");
-    if (reason === null) {
-        reason = "No reason given.";
-    }
+
+    let reason = interaction.options.getString("reason");
+    if (reason === null) { reason = "No reason given."; }
+
     const moderator = interaction.user;
 
-    var isValidUser = await validateUser(user, interaction, true);
-
+    const isValidUser = await validateUser(user, interaction, true);
     if (!isValidUser) { return; }
+    const {userGuildMember, userNamed, userID} = isValidUser;
 
-    var {userGuildMember, userNamed, userID} = isValidUser;
-
-    // if interaction not in guild, return:
     if (!interaction.guild) { return; }
-
-    var guildID = interaction.guild.id;
+    const guildID = interaction.guild.id;
 
     const serverConfigRef = configRef.child(guildID);
     if (serverConfigRef === null) {
@@ -74,7 +70,7 @@ const warn: Command = {
         });
     }
     else {
-        var caseno = await serverConfigRef.child(userID).child("cases").get();
+        let caseno = await serverConfigRef.child(userID).child("cases").get();
         if (caseno.exists()) { // increment caseno
             caseno = caseno.val() + 1;
             await serverConfigRef.child(userID).child("cases").set(caseno);

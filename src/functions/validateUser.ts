@@ -1,5 +1,4 @@
-import { GuildMember, User, CommandInteraction, Guild } from 'discord.js';
-import { client } from "../index";
+import { GuildMember, User, CommandInteraction } from 'discord.js';
 import MemberServerPair from '../types/MemberServerPair';
 
 export interface ValidatedUser {

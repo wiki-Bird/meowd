@@ -1,5 +1,4 @@
 import Command from '../types/Command';
-import { CommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { client } from "../index";
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -26,10 +25,10 @@ const purge: Command = {
 		// await interaction.deferReply();
 
 		const amount = interaction.options.getInteger('amount', true);
-		const user = interaction.options.getString('user');
+		// const user = interaction.options.getString('user');
 
 		if (!interaction.guild) { return; }
-		const guildID = interaction.guild.id;
+		// const guildID = interaction.guild.id;
 
 		const channel = client.channels.cache.get(interaction.channelId);
 		if (!channel) { return; }

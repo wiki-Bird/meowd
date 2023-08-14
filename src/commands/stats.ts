@@ -1,11 +1,6 @@
 import Command from '../types/Command';
-import { SlashCommandBuilder, SlashCommandSubcommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
-import { MessageActionRow, MessageButton } from 'discord.js';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { client } from "../index";
-import { ref } from '..';
-import validateUser from '../functions/validateUser';
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { MessageEmbed } from 'discord.js';
 import * as overwatch from 'overwatch-api';
 
 const data = new SlashCommandBuilder() 
@@ -74,7 +69,7 @@ const stats: Command = {
 			.setAuthor({ name: "Loading...", iconURL: "https://i.imgur.com/fMqUG5J.gif" })
 			.setColor("#00f2ff");
 		
-		let embedError = new MessageEmbed()
+		const embedError = new MessageEmbed()
 			.setTimestamp()
 
 
@@ -83,16 +78,16 @@ const stats: Command = {
 			embedLoading.setColor("#ed6516");
 			embedError.setColor("#ed6516");
 
-			var platform = interaction.options.getString("platform", false);
+			let platform = interaction.options.getString("platform", false);
 			if (platform === null) {
 				platform = "pc";
 			}
-			var region = interaction.options.getString("region", false);
+			let region = interaction.options.getString("region", false);
 			if (region === null) {
 				region = "global";
 			}
 			const battletag = interaction.options.getString("battletag", true);
-			var battleTagNew: string;
+			let battleTagNew: string;
 
 			// check if battletag is valid format; eg: Name#1234, Name2#12345
 			const battletagRegex = /^[a-zA-Z0-9]+#[0-9]{4,5}$/;
@@ -106,41 +101,38 @@ const stats: Command = {
 
 			await interaction.editReply({ embeds: [embedLoading] });
 
-			var playerPortrait;
-			var privateProfile;
+			let playerPortrait;
+			let privateProfile;
 
-			var playerRankDPS: string = "N/A";
-			var playerRankTank: string = "N/A";
-			var playerRankSupport: string = "N/A";
+			let playerRankDPS: string = "N/A";
+			let playerRankTank: string = "N/A";
+			let playerRankSupport: string = "N/A";
 
-			var playtimeComp;
-			var playtimeQuickplay;
-			var playtimeTotal;
+			let playtimeComp;
+			let playtimeQuickplay;
+			let playtimeTotal;
 
-			var endorsementLevel;
-			var endorsementTemp;
-			var endorsementIcon: string;
+			let endorsementLevel;
+			let endorsementTemp;
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			let endorsementIcon: string;
 
-			var winsQuickplay;
-			var lossesQuickplay;
-			var winrateQuickplay;
+			let winsQuickplay;
+			let lossesQuickplay;
+			let winrateQuickplay;
 
-			var winsComp;
-			var lossesComp;
-			var winrateComp;
+			let winsComp;
+			let lossesComp;
+			let winrateComp;
 
-			var winsTotal;
-			var lossesTotal;
-			var winRateTotal;
+			let winsTotal;
+			let lossesTotal;
+			let winRateTotal;
 
-			var playtimeCompHours;
-			var playtimeQuickplayHours;
+			let playtimeCompHours;
+			let playtimeQuickplayHours;
 
-			var endorsementIconPng: string;
-
-
-			
-
+			let endorsementIconPng: string;
 
 			// overwatch.getProfile(platform, region, tag, (err, json) => {
 			overwatch.getProfile(platform as OverwatchAPI.PLATFORM, region as OverwatchAPI.REGION, battleTagNew, (err, json) => {
@@ -158,7 +150,7 @@ const stats: Command = {
 					endorsementTemp = json.endorsement.toString();
 
 					// get the charecter before "-" in endorsementTemp
-					var endorsementLevelTemp = endorsementTemp.split("-")[0];
+					const endorsementLevelTemp = endorsementTemp.split("-")[0];
 					// get last character of endorsementLevelTemp
 					endorsementLevel = parseInt(endorsementLevelTemp.charAt(endorsementLevelTemp.length - 1));
 					// endorsementLevel = ;endorsementLevelTemp)
@@ -201,19 +193,22 @@ const stats: Command = {
 						interaction.editReply({ embeds: [embed] });
 						return;
 					}
+
+					// offense exists, but TS doesn't know that so we have to use @ts-ignore.
+					// However, now eslint is complaining, so we have to disable that too.
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					//@ts-ignore
 					if (json.competitive.offense && json.competitive.offense.rank) {
+						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						//@ts-ignore
 						playerRankDPS = json.competitive.offense.rank.toString();
-					  }
-					  
-					  if (json.competitive.tank && json.competitive.tank.rank) {
+					}
+					if (json.competitive.tank && json.competitive.tank.rank) {
 						playerRankTank = json.competitive.tank.rank.toString();
-					  }
-					  
-					  if (json.competitive.support && json.competitive.support.rank) {
+					} 
+					if (json.competitive.support && json.competitive.support.rank) {
 						playerRankSupport = json.competitive.support.rank.toString();
-					  }
+					}
 					
 					// playerRankSupportIcon = json.competitive.support.icon;
 					
@@ -282,7 +277,7 @@ const stats: Command = {
 					[key: string]: any;
 				}
 
-				var privateProfile = json.private;
+				const privateProfile = json.private;
 
 				if (privateProfile){
 					embed.setDescription("This profile is private!");
@@ -294,47 +289,43 @@ const stats: Command = {
 
 				console.log(json.stats)
 
-				var playtimeComp = json.stats.top_heroes.competitive.played;
-				var playtimeQuickplay = json.stats.top_heroes.quickplay.played;
-				var winrateComp = json.stats.top_heroes.competitive.win_rate;
+				const playtimeComp = json.stats.top_heroes.competitive.played;
+				// const playtimeQuickplay = json.stats.top_heroes.quickplay.played;
+				const winrateComp = json.stats.top_heroes.competitive.win_rate;
 				// best hero is the one with the highest winrate * playtime
 				// get the highest winrate * playtime, knowing that .played and .win_rate are not in the same order
 				// start by saving things like this: "hero1": [winrateComp, winrateQP, playtimeComp, playtimeQP]
-				let heroStats: heroStats = new Object();
+				const heroStats: heroStats = new Object();
 
-				for (var i=0; i<playtimeComp.length; i++){
-					var heroName = playtimeComp[i].hero;
+				for (let i=0; i<playtimeComp.length; i++){
+					const heroName = playtimeComp[i].hero;
+					let heroPlaytimeComp;
 					// convert playtime to minutes, its currently hrs:mins:secs as a string, so split it and convert to int
 					// playtime can be less than 1hr, and if this is the case its just mins:secs, so check for that
 					if (playtimeComp[i].played.split(":").length == 2){
-						var heroPlaytimeComp = parseInt(playtimeComp[i].played.split(":")[0]) + parseInt(playtimeComp[i].played.split(":")[1]) / 60;
+						heroPlaytimeComp = parseInt(playtimeComp[i].played.split(":")[0]) + parseInt(playtimeComp[i].played.split(":")[1]) / 60;
 					} else {
-						var heroPlaytimeComp = parseInt(playtimeComp[i].played.split(":")[0]) * 60 + parseInt(playtimeComp[i].played.split(":")[1]);
+						heroPlaytimeComp = parseInt(playtimeComp[i].played.split(":")[0]) * 60 + parseInt(playtimeComp[i].played.split(":")[1]);
 					}
 
 					// var heroPlaytimeComp = parseInt(playtimeComp[i].played.split(":")[0]) * 60 + parseInt(playtimeComp[i].played.split(":")[1]);
 					heroStats[heroName] = [heroPlaytimeComp];
 				}
-				// for (var i=0; i<playtimeQuickplay.length; i++){
-				// 	var heroName = playtimeQuickplay[i].hero;
-				// 	// convert playtime to minutes, its currently hrs:mins:secs as a string, so split it and convert to int
-				// 	var heroPlaytimeQP = parseInt(playtimeQuickplay[i].played.split(":")[0]) * 60 + parseInt(playtimeQuickplay[i].played.split(":")[1]);
-				// 	heroStats[heroName][0] += heroPlaytimeQP;
-				// }
-				for (var i=0; i<winrateComp.length; i++){
-					var heroName = winrateComp[i].hero;
+
+				for (let i=0; i<winrateComp.length; i++){
+					const heroName = winrateComp[i].hero;
 					// remove the % at the end of the string
-					var heroWinrateComp = parseInt(winrateComp[i].win_rate.slice(0, winrateComp[i].win_rate.length - 1));
+					const heroWinrateComp = parseInt(winrateComp[i].win_rate.slice(0, winrateComp[i].win_rate.length - 1));
 					heroStats[heroName].push(heroWinrateComp);
 				}
 
 				console.log(heroStats);
 
 				// now that we have all the data, we can calculate the best 3 heroes
-				var bestHeroes = [];
-				var bestHeroScores = [];
-				for (var hero in heroStats){
-					var heroScore = heroStats[hero][0] * (heroStats[hero][1] * 10);
+				const bestHeroes = [];
+				const bestHeroScores = [];
+				for (const hero in heroStats){
+					const heroScore = heroStats[hero][0] * (heroStats[hero][1] * 10);
 					if (bestHeroScores.length < 3){
 						bestHeroes.push(hero);
 						bestHeroScores.push(heroScore);

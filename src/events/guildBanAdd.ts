@@ -8,9 +8,9 @@ import { ref } from '..';
 const guildBanAdd: Event = {
     name: 'guildBanAdd',
     execute: async function (ban: GuildBan) {
-        var channelToSend;
+        let channelToSend;
         const guild = ban.guild;
-        var reasonGiven = "No reason given.";
+        let reasonGiven = "No reason given.";
 
 
         const fetchedLogs = await ban.guild.fetchAuditLogs({
@@ -42,7 +42,7 @@ const guildBanAdd: Event = {
             return;
         }
         
-        var logEmbed = new MessageEmbed()
+        const logEmbed = new MessageEmbed()
             .setColor("#ff0000")
             .setAuthor({name: `${ban.user.tag} (ID: ${ban.user.id}) was banned.`, iconURL: ban.user.displayAvatarURL()})
             .addFields(

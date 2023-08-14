@@ -3,14 +3,14 @@ import { Routes, RESTPostAPIApplicationCommandsJSONBody as RawSlashCommand } fro
 import Command from './types/Command';
 import fs from 'node:fs';
 
-const { token } = require('../config.json');
+import { token } from '../config.json';
 
 const commands: RawSlashCommand[] = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 // Place your client and guild ids here
 const clientId = '994046329678463026';
-const guildId = '521856622998323202';
+// const guildId = '521856622998323202';
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`) as Command;

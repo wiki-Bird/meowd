@@ -26,16 +26,16 @@ const ban: Command = {
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
         await interaction.deferReply();
         const user = interaction.options.getString("user", true);
-        var reason = interaction.options.getString("reason");
+        let reason = interaction.options.getString("reason");
         if (reason === null) {
             reason = "No reason given.";
         }
         const moderator = interaction.user;
-        var isValidUser = await validateUser(user, interaction, true);
+        const isValidUser = await validateUser(user, interaction, true);
         if (!isValidUser) {
             return;
         }
-        var {userGuildMember, userNamed, userID} = isValidUser;
+        const {userGuildMember, userNamed, userID} = isValidUser;
 
         if (!interaction.guild) {return;}
 
@@ -87,7 +87,7 @@ const ban: Command = {
             });
         }
         else {
-            var caseno = await serverConfigRef.child(userID).child("cases").get();
+            let caseno = await serverConfigRef.child(userID).child("cases").get();
             if (caseno.exists()) { // increment caseno
                 caseno = caseno.val() + 1;
                 await serverConfigRef.child(userID).child("cases").set(caseno);

@@ -1,7 +1,6 @@
 import Command from '../types/Command';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { client } from "../index";
 
 const otter: Command = {
     data: new SlashCommandBuilder()

@@ -22,20 +22,17 @@ const unmute: Command = {
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
 
-        var user = interaction.options.getString("user", true);
-        var reason = interaction.options.getString("reason", false);
+        const user = interaction.options.getString("user", true);
 
-        if (reason === null) {
-            reason = "No reason given.";
-        }
-
+        let reason = interaction.options.getString("reason", false);
+        if (reason === null) { reason = "No reason given."; }
         if (!interaction.guild) {return;}
 
-        var isValidUser = await validateUser(user, interaction, true);
+        const isValidUser = await validateUser(user, interaction, true);
         if (!isValidUser) {
             return;
         }
-        var {userGuildMember, userNamed, userID} = isValidUser;
+        const {userGuildMember, userNamed, userID} = isValidUser;
 
         if (userGuildMember === null) {
             interaction.reply({ content: "You must specify a user to unmute.", ephemeral: true });
@@ -50,7 +47,7 @@ const unmute: Command = {
 
         userGuildMember.timeout(null, reason);
 
-        var embed = new MessageEmbed()
+        const embed = new MessageEmbed()
             .setTitle("User Unmuted:")
             .setDescription("<@!" + userID + `> (` + userID + `) has been unmuted by ${interaction.user.tag} for the following reason:`)
             .addField("Reason:", reason, true)

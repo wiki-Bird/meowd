@@ -2,18 +2,18 @@
 // a slash command that lets server admins add channels to a database
 // a file that checks when the bot joins a new guild and runs said command
 
-import { Client, Collection, Intents, PartialTypes  } from 'discord.js';
+import { Client, Collection, Intents } from 'discord.js';
 import OtterClient from './types/OtterClient';
 import { readdirSync } from 'fs';
 import { join } from 'path';
 import { REST } from '@discordjs/rest';
-import { Routes, ActivityType } from 'discord-api-types/v9';
+import { Routes } from 'discord-api-types/v9';
 
 // const express = require('express');
-const { token } = require('../config.json');
-const { clientId } = require('../config.json');
+import { token } from '../config.json';
+import { clientId } from '../config.json';
 
-const myIntents = new Intents();
+// const myIntents = new Intents();
 // myIntents.add('DIRECT_MESSAGES', 'FLAGS.GUILDS', 'MESSAGE_CONTENT', 'AUTO_MODERATION_EXECUTION','GUILD_MESSAGE_REACTIONS',
 // 'GUILD_BANS', 'GUILD_MEMBERS', 'GUILDS');
 //add all intents:
@@ -28,7 +28,7 @@ import admin from "firebase-admin";
 import { getDatabase } from "firebase-admin/database";
 
 // Fetch the service account key JSON file contents
-var serviceAccount = require("../meowd-bot-firebase-adminsdk-2g9mv-5423d91b65.json");
+const serviceAccount = require("../meowd-bot-firebase-adminsdk-2g9mv-5423d91b65.json");
 
 // Initialize the app with a service account, granting admin privileges
 const app = admin.initializeApp({
@@ -109,7 +109,8 @@ const init = async () => {
 
 
     // process.env.PORT lets the port be set by Heroku
-    const port = process.env.PORT || 8080;
+    // const port = process.env.PORT || 8080;
+    // HEROKU NO LONGER USED
 
 }
 

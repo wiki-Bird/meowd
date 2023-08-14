@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed, TextChannel, Guild  } from 'discord.js';
+import { CommandInteraction, MessageEmbed, TextChannel  } from 'discord.js';
 import Command from '../types/Command';
 import { client } from "../index";
 import validateUser from '../functions/validateUser';
@@ -33,7 +33,7 @@ const report: Command = {
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
         const user = interaction.options.getString("user", true);
         const reason = interaction.options.getString("reason", true);
-        var channel = interaction.options.getChannel("channel");
+        let channel = interaction.options.getChannel("channel");
         const image = interaction.options.getAttachment("image");
 
         const reportingUser = interaction.user;
@@ -43,13 +43,13 @@ const report: Command = {
             channel = interaction.channel!;
         }
 
-        var isValidUser = await validateUser(user, interaction, true);
+        const isValidUser = await validateUser(user, interaction, true);
         if (!isValidUser) {
             return;
         }
-        var {userGuildMember, userNamed, userID} = isValidUser;
+        const {userGuildMember, userNamed, userID} = isValidUser;
 
-        var reportEmbed = new MessageEmbed()
+        const reportEmbed = new MessageEmbed()
             .setColor("#00f2ff")
             .setAuthor({name: `${userNamed.tag} (${userNamed.id}) reported by ${reportingUser.tag}`, iconURL: userNamed.displayAvatarURL()})
             .addFields(
@@ -72,16 +72,15 @@ const report: Command = {
         const channelID = logChannel.val();
 
         if (logChannel.exists()) {
-            var channelToLog = client.channels.cache.get(channelID) as TextChannel;
+            const channelToLog = client.channels.cache.get(channelID) as TextChannel;
+            (channelToLog as TextChannel).send({ embeds: [reportEmbed], content: `<@!${reportingUser.id}> reported <@!${userID}>` });
         } else {
             console.log("no log channel")
             interaction.reply({ content: "No log channel set so the report cannot be processed. Contact server staff to set up reports.", ephemeral: true });
             return;
         }
 
-        (channelToLog as TextChannel).send({ embeds: [reportEmbed], content: `<@!${reportingUser.id}> reported <@!${userID}>` });
         interaction.reply({ content: `${userNamed.tag} reported to the mod team.`, ephemeral: true });
-
 	}
 }
 

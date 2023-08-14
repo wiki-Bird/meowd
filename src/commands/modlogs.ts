@@ -38,16 +38,12 @@ const modlog: Command = {
   .setDescription('View the moderation history of a given user.'),    
   execute: async function (interaction) {
     const user = interaction.options.getString("user") ?? interaction.user.id;
-    var type = interaction.options.getString("type");
-    var page = interaction.options.getNumber("page");
+    const type = interaction.options.getString("type");
+    let page = interaction.options.getNumber("page");
     
-    var isValidUser = await validateUser(user, interaction, true);
-
-    if (!isValidUser) {
-        return;
-    }
-
-    var {userGuildMember, userNamed, userID} = isValidUser;
+    const isValidUser = await validateUser(user, interaction, true);
+    if (!isValidUser) { return; }
+    const {userGuildMember, userNamed, userID} = isValidUser;
 
     if (!interaction.guild) {return;}
 
@@ -56,13 +52,13 @@ const modlog: Command = {
     const userConfig = await getUserConfig(userID, serverID);
     if (userConfig === null){ return interaction.reply({ content: `User has no logs.`, ephemeral: true }) };
 
-    var casenumbers = 0;
+    let casenumbers = 0;
     const caseRef = ref.child("config").child(serverID).child(userID).child("cases");
     await caseRef.once("value", (snapshot) => {
         casenumbers = snapshot.val() + 1;
     });
 
-    var totalPages = Math.ceil(casenumbers / 15);
+    let totalPages = Math.ceil(casenumbers / 15);
     if (page === null){
         page = 1;
     }
@@ -70,7 +66,7 @@ const modlog: Command = {
         page = totalPages;
     }
 
-    var embed = new MessageEmbed()
+    const embed = new MessageEmbed()
         .setColor("#00f2ff")
         .setDescription("_ _")
         .setTimestamp();
@@ -94,10 +90,9 @@ const modlog: Command = {
         //warnsRef.orderByChild("case_number").startAt((page - 1) * 15).endAt(page * 15).on("child_added", async (snapshot) => {
 
     
-    var warnsRef = ref.child("config").child(serverID).child(userID).child("warnings");
-    var lastCase = 0;
+    const warnsRef = ref.child("config").child(serverID).child(userID).child("warnings");
     if (type === null || type === "all") {
-        var i = 1;
+        let i = 1;
         warnsRef.orderByChild("case_number").startAt((page-1)*15).on("child_added", async (snapshot) => {
             if (i <= 15) {
                 embed.addFields({
@@ -111,7 +106,7 @@ const modlog: Command = {
         })
     }
     else {
-        var i = 1;
+        let i = 1;
         warnsRef.orderByChild("case_number").startAt((page-1)*15).on("child_added", async (snapshot) => {
             if (i <= 15 && snapshot.val().type === type) {
                 embed.addFields({
@@ -144,7 +139,7 @@ const modlog: Command = {
     await interaction.deferReply();
 
     await interaction.editReply({ embeds: [embed] });
-    if (addedFieldCount !== casenumbers && addedFieldCount !== (casenumbers % 15) + 1 && addedFieldCount !== 16 && i !== 1) {
+    if (addedFieldCount !== casenumbers && addedFieldCount !== (casenumbers % 15) + 1 && addedFieldCount !== 16) { // && i !== 1 was here, but broken
         embed.setFooter({  text: `Some cases could not be shown. Please try again shortly.` });
         await interaction.editReply({ embeds: [embed] });
         setTimeout(async () => {

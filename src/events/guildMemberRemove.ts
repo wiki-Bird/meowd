@@ -8,7 +8,7 @@ const guildMemberRemove: Event = {
     execute: async function(member: GuildMember) {
         const guild = member.guild;
         const guildID = guild.id;
-        var channelToSend;
+        let channelToSend;
         console.log(guildID)
 
         const serverConfigRef = ref.child("config").child(guildID)
@@ -46,13 +46,14 @@ const guildMemberRemove: Event = {
 
 
         if (kickLog.target!.id === member.id && kickLog.createdAt > member.joinedAt!) {
+
             const { executor, target, reason } = kickLog;
-            var reasonGiven = "No reason given.";
+            let reasonGiven = "No reason given.";
             if (reason !== null || reason !== undefined) {
                 reasonGiven = reason!;
             }
 
-            var logEmbed = new MessageEmbed()
+            const logEmbed = new MessageEmbed()
                 .setColor("#00f2ff")
                 .setAuthor({name: `${member.user.tag} (ID: ${member.user.id}) was kicked.`, iconURL: member.user.displayAvatarURL()})
                 .addFields(

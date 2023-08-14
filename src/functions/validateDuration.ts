@@ -9,8 +9,8 @@ export interface ValidatedNumber {
 export default async function validateDuration(time: string, interaction: CommandInteraction<"cached" | "raw"> | undefined): Promise<ValidatedNumber | false> {
 
     // first part of time will be a number, the second part will be m, h, d. Break it into these two parts.
-    var midPoint = 0;
-    for (var i = 0; i < time.length; i++) {
+    let midPoint = 0;
+    for (let i = 0; i < time.length; i++) {
         if (time[i] === 'm' || time[i] === 'h' || time[i] === 'd') {
             midPoint = i;
             break;
@@ -26,8 +26,8 @@ export default async function validateDuration(time: string, interaction: Comman
         return false;
     }
 
-    var timeNumber = time.slice(0, midPoint);
-    var timeUnit = time.slice(midPoint);
+    const timeNumber = time.slice(0, midPoint);
+    const timeUnit = time.slice(midPoint);
 
     // check if timeNumber is a number
     if (isNaN(Number(timeNumber)) === true) {

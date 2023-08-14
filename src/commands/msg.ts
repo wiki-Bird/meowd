@@ -26,7 +26,7 @@ const msg: Command = {
             return;
         }
 
-        var channel = interaction.options.getChannel("channel", true);
+        const channel = interaction.options.getChannel("channel", true);
         const message = interaction.options.getString("message", true);
 
         if (!interaction.guild) {return;}

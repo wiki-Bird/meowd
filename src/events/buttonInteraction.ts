@@ -1,4 +1,3 @@
-import { client } from "../index";
 import Event from '../types/Event';
 
 

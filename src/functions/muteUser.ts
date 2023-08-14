@@ -1,25 +1,24 @@
-import { Guild, GuildMember, Interaction, User } from 'discord.js';
+import { User } from 'discord.js';
 import { ref } from '..';
 const configRef = ref.child("config");
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import getUserConfig from './getUserConfig'; 
 import validateDuration from './validateDuration';
 import validateUser from './validateUser';
-import { client } from "../index";
 import MemberServerPair from '../types/MemberServerPair';
 
 /** Pre-existing config for a specified guild. */
 export default async function muteUser(interaction: CommandInteraction<"cached" | "raw"> | undefined, user: string, reason: string, time: string, moderator: User, memberServer?: MemberServerPair): Promise<string[] | null> {
 
     let server = undefined;
-    let guildMember = undefined;
+    // let guildMember = undefined;
     if (interaction !== undefined) {
         server = interaction.guild;
-        guildMember = interaction.member;
+        // guildMember = interaction.member;
     }
     else if (memberServer !== undefined) {
         server = memberServer.server;
-        guildMember = memberServer.member;
+        // guildMember = memberServer.member;
     }
     else {
         console.log("interaction and memberServerPair are both undefined.")
@@ -27,23 +26,23 @@ export default async function muteUser(interaction: CommandInteraction<"cached" 
     }
 
 
-    var isValidUser = await validateUser(user, interaction, true, memberServer);
+    const isValidUser = await validateUser(user, interaction, true, memberServer);
     if (!isValidUser) {
         if (interaction !== undefined) await interaction.editReply("Invalid user.");
         return null;
     }
-    var {userGuildMember, userNamed, userID} = isValidUser;
+    const {userGuildMember, userNamed, userID} = isValidUser;
 
-    var isValidTime = await validateDuration(time, interaction);
+    const isValidTime = await validateDuration(time, interaction);
     if (!isValidTime) {
         if (interaction !== undefined) await interaction.editReply("Invalid time.");
         return null;
     }
-    var {timeInMS, timeString} = isValidTime;
+    const {timeInMS, timeString} = isValidTime;
 
     if (interaction && !interaction.guild) {return null;}
 
-    var guildID;
+    let guildID;
     if (interaction !== undefined) {
         guildID = interaction.guild?.id;
     } else {
@@ -105,7 +104,7 @@ export default async function muteUser(interaction: CommandInteraction<"cached" 
         });
     }
     else {
-        var caseno = await serverConfigRef.child(userID).child("cases").get();
+        let caseno = await serverConfigRef.child(userID).child("cases").get();
         if (caseno.exists()) { // increment caseno
             caseno = caseno.val() + 1;
             await serverConfigRef.child(userID).child("cases").set(caseno);

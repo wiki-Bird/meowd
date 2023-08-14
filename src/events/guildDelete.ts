@@ -1,4 +1,3 @@
-import { client } from '..';
 import { Interaction } from 'discord.js';
 import Event from '../types/Event';
 

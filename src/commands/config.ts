@@ -1,11 +1,8 @@
 import Command from '../types/Command';
-import { SlashCommandBuilder, SlashCommandSubcommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
-import { MessageActionRow, MessageButton } from 'discord.js';
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { MessageEmbed } from 'discord.js';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
-import { client } from "../index";
 import { ref } from '..';
-import validateUser from '../functions/validateUser';
 
 // const subCommandLogChannel = new SlashCommandSubcommandBuilder()
 // 	.setName("logchannel")
@@ -153,7 +150,7 @@ const config: Command = {
 		
         if (!interaction.guild) {return;}
 
-        var guildID = interaction.guild.id;
+        const guildID = interaction.guild.id;
 		const configRef = ref.child("config");
 
 		const serverConfigRef = configRef.child(guildID);
@@ -214,7 +211,7 @@ const config: Command = {
 					.setAuthor({name: "OtterBot", iconURL: "https://cdn.discordapp.com/attachments/590667063165583409/1089047115315032125/icon.png"})
 					.setColor("#bee2ff");
 				if (otterChannels.exists()) {
-					var i = 1;
+					let i = 1;
 					for (const [key, value] of Object.entries(otterChannels.val())) {
 						embed.addFields({ name: `Channel #${i}`, value: `<#${key}>` })
 						i++;
@@ -230,7 +227,7 @@ const config: Command = {
 
 		else if (interaction.options.getSubcommandGroup() === "rules") {
 			if (subcommand === "add") {
-				var n = 1;
+				let n = 1;
 				const rule = interaction.options.getString("rule", true);
 				if (serverConfigRef.child("rules") === null) { //if rules is null, create it and add the rule
 					await serverConfigRef.child("rules").set({
@@ -238,7 +235,7 @@ const config: Command = {
 					});
 				}
 				else { // append to existing list
-					var rulesRef = serverConfigRef.child("rules");
+					const rulesRef = serverConfigRef.child("rules");
 					await rulesRef.once("value")
 						.then(function(snapshot) {
 							n = snapshot.numChildren() + 1;
@@ -290,7 +287,6 @@ const config: Command = {
 					await interaction.editReply({ embeds: [embed] });
 				}
 			}
-			  
 			else if (subcommand === "list") {
 				// get all rules
 				const rules = await serverConfigRef.child("rules").get();
@@ -298,9 +294,9 @@ const config: Command = {
 					.setTitle("Rules")
 					.setColor("#00f2ff");
 				if (rules.exists()) {
-					var i = 1;
+					let i = 1;
 					for (const [key, value] of Object.entries(rules.val())) {
-						var ruleText: string = value as string;
+						const ruleText: string = value as string;
 						embed.addFields({ name: `Rule #${i}`, value: ruleText });
 						i++;
 					}
@@ -314,7 +310,7 @@ const config: Command = {
 
 		else if (interaction.options.getSubcommandGroup() === "wordsblacklist") {
 			if (subcommand === "add") { // add word to server's word blacklist
-				var n = 1;
+				let n = 1;
 				const word = interaction.options.getString("word", true);
 				if (serverConfigRef.child("blacklistedWords") === null) { //if blacklistedWords is null, create it and add the channel
 					await serverConfigRef.child("blacklistedWords").set({
@@ -322,7 +318,7 @@ const config: Command = {
 					});
 				}
 				else { // append to existing list
-					var blacklistRef = serverConfigRef.child("blacklistedWords");
+					const blacklistRef = serverConfigRef.child("blacklistedWords");
 					await blacklistRef.once("value")
 						.then(function(snapshot) {
 							n = snapshot.numChildren() + 1;
@@ -342,8 +338,8 @@ const config: Command = {
 				if (serverConfigRef.child("blacklistedWords") !== null) { // if word exists in blacklist, remove it
 					const wordsRef = serverConfigRef.child("blacklistedWords");
 					await wordsRef.once("value", (snapshot) => {
-						var words = snapshot.val();
-						var index = words.indexOf(word);
+						const words = snapshot.val();
+						const index = words.indexOf(word);
 						if (index > -1) {
 							words.splice(index, 1);
 						}
@@ -375,9 +371,9 @@ const config: Command = {
 					.setTitle("Blacklisted Words")
 					.setColor("#00f2ff");
 				if (words.exists()) {
-					var i = 1;
+					let i = 1;
 					for (const [key, value] of Object.entries(words.val())) {
-						var wordText: string = value as string;
+						const wordText: string = value as string;
 						embed.addFields({name: `Word #${i}`, value: wordText});
 						i++;
 					}

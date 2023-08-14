@@ -1,8 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageAttachment, MessageEmbed } from 'discord.js';
-import getUserConfig from '../functions/getUserConfig';
+import { MessageAttachment, MessageEmbed } from 'discord.js';
 import Command from '../types/Command';
-import { ref } from '..';
 import validateUser from '../functions/validateUser';
 import { createCanvas, loadImage } from 'canvas';
 
@@ -39,11 +37,13 @@ const imgedit: Command = {
 		.setDescription('Do fun stuff with images.'),
 	
     execute: async function (interaction): Promise<void> {
-        var action = interaction.options.getString("action", true);
-        var user = interaction.options.getString("user", false);
-        var attachment = interaction.options.getAttachment("attachment", false);
-        var text = interaction.options.getString("text", false);
-        var image;
+        const action = interaction.options.getString("action", true);
+        const user = interaction.options.getString("user", false);
+        const attachment = interaction.options.getAttachment("attachment", false);
+        const text = interaction.options.getString("text", false);
+        
+        let image;
+
 
         if (!interaction.guild) {return;}
 
@@ -52,11 +52,11 @@ const imgedit: Command = {
             image = interaction.user.displayAvatarURL({ format: "png", size: 1024 });
         }
         else if (user && !attachment) {
-            var isValidUser = await validateUser(user, interaction, true);
+            const isValidUser = await validateUser(user, interaction, true);
             if (!isValidUser) {
                 return;
             }
-            var {userGuildMember, userNamed, userID} = isValidUser;
+            const {userGuildMember, userNamed, userID} = isValidUser;
 
             image = userGuildMember.user.displayAvatarURL({ format: "png", size: 1024 });
         }
@@ -70,15 +70,15 @@ const imgedit: Command = {
 
         await interaction.deferReply();
 
-        var canvas = createCanvas(1024, 1024);
-        var ctx = canvas.getContext('2d');
+        const canvas = createCanvas(1024, 1024);
+        const ctx = canvas.getContext('2d');
 
         // set background to clear
         ctx.fillStyle = "rgba(0, 0, 0, 0)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // load image
-        var img = await loadImage(image);
+        const img = await loadImage(image);
         ctx.drawImage(img, 0, 0, 1024, 1024);
 
         // if action is speechbubble
@@ -103,18 +103,18 @@ const imgedit: Command = {
         }
         else if (action === "rainbow") {
             // draw pride circle around image
-            var pride = await loadImage("https://cdn.discordapp.com/attachments/669394205705240606/1095209363452469349/pride2.png");
+            const pride = await loadImage("https://cdn.discordapp.com/attachments/669394205705240606/1095209363452469349/pride2.png");
             ctx.drawImage(pride, 0, 0, 1024, 1024);
         }
         else if (action === "jerma") {
-            var jerma = await loadImage("https://cdn.discordapp.com/attachments/669394205705240606/1095204244447043615/jerma.png");
+            const jerma = await loadImage("https://cdn.discordapp.com/attachments/669394205705240606/1095204244447043615/jerma.png");
             ctx.drawImage(jerma, 0, 124, 900, 900);
         }
         else if (action === "invert") {
-            var imgData = ctx.getImageData(0, 0, 1024, 1024);
-            var data = imgData.data;
+            const imgData = ctx.getImageData(0, 0, 1024, 1024);
+            const data = imgData.data;
 
-            for (var i = 0; i < data.length; i += 4) {
+            for (let i = 0; i < data.length; i += 4) {
                 data[i] = 255 - data[i];     // red
                 data[i + 1] = 255 - data[i + 1]; // green
                 data[i + 2] = 255 - data[i + 2]; // blue
@@ -126,7 +126,7 @@ const imgedit: Command = {
             // set background to https://i.imgur.com/ezs1Gf0.png
             ctx.drawImage(img, 20, 0, 1000, 800);
             // drag https://i.imgur.com/00mhtBU.png over it
-            var img2 = await loadImage("https://i.imgur.com/00mhtBU.png");
+            const img2 = await loadImage("https://i.imgur.com/00mhtBU.png");
             ctx.drawImage(img2, 0, 0, 1024, 1024);
         }
 
@@ -145,7 +145,7 @@ const imgedit: Command = {
             ctx.textAlign = "center";
 
             let y = 90;
-            let x = 512;
+            const x = 512;
 
             const textWidth = ctx.measureText(text).width;
             if (textWidth > canvas.width - 20) {
@@ -188,7 +188,7 @@ const imgedit: Command = {
         const imgAttachment = new MessageAttachment(canvas.toBuffer(), 'image.png');
 
         // return image in embed
-        var embed = new MessageEmbed()
+        const embed = new MessageEmbed()
             .setTitle(`Image Edit: ${action}`)
             .setImage("attachment://image.png")
             .setColor("#00f2ff")

@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import Command from '../types/Command';
 import { client } from "../index";
@@ -40,13 +40,13 @@ const embed: Command = {
     )
     .setDescription('Create a custom embed.'),
     execute: async function (interaction) {
-        var title = interaction.options.getString("title", false);
-        var description = interaction.options.getString("description", false);
-        var color = interaction.options.getString("color", false);
-        var footer = interaction.options.getString("footer", false);
-        var thumbnail = interaction.options.getAttachment("thumbnail", false);
-        var image = interaction.options.getAttachment("image", false);
-        var embed = new MessageEmbed();
+        const title = interaction.options.getString("title", false);
+        const description = interaction.options.getString("description", false);
+        let color = interaction.options.getString("color", false);
+        const footer = interaction.options.getString("footer", false);
+        const thumbnail = interaction.options.getAttachment("thumbnail", false);
+        const image = interaction.options.getAttachment("image", false);
+        const embed = new MessageEmbed();
 
 
         if (!title && !description && !footer && !image) {
@@ -55,7 +55,7 @@ const embed: Command = {
         }
 
         if (interaction.guild) {
-            var guild = client.guilds.cache.get(interaction.guild.id);
+            const guild = client.guilds.cache.get(interaction.guild.id);
             if (guild) {
                 embed.setAuthor({ name: guild.name, iconURL: `${guild.iconURL()}` });
             }

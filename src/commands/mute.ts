@@ -1,13 +1,10 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { CommandInteraction } from 'discord.js';
 import muteUser from '../functions/muteUser';
 import Command from '../types/Command';
-import { ref } from '..';
-import validateUser from '../functions/validateUser';
-import validateDuration from '../functions/validateDuration';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 
-const configRef = ref.child("config");
+
 const mute: Command = {
 	data: new SlashCommandBuilder()
 		.setName('mute')
@@ -33,14 +30,14 @@ const mute: Command = {
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
         await interaction.deferReply();
         const user = interaction.options.getString("user", true);
-        var reason = interaction.options.getString("reason");
-        var time = interaction.options.getString("time", true);
+        let reason = interaction.options.getString("reason");
+        const time = interaction.options.getString("time", true);
         if (reason === null) {
             reason = "No reason given.";
         }
         const moderator = interaction.user;
 
-        const muteUserVar = await muteUser(interaction, user, reason, time, moderator);
+        await muteUser(interaction, user, reason, time, moderator);
 
     }
 }

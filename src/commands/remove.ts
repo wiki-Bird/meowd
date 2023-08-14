@@ -28,29 +28,29 @@ const remove: Command = {
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
 		const user = interaction.options.getString("user", true);
-        var case_no = interaction.options.getNumber("case_no", true);
+        const case_no = interaction.options.getNumber("case_no", true);
         const moderator = interaction.user;
 
-        var isValidUser = await validateUser(user, interaction, true);
+        const isValidUser = await validateUser(user, interaction, true);
         if (!isValidUser) {
             return;
         }
 
-        var {userGuildMember, userNamed, userID} = isValidUser;
+        const {userGuildMember, userNamed, userID} = isValidUser;
 
         if (!interaction.guild) {return;}
 
         const guildID = interaction.guild.id;
 
         const userConfig = await getUserConfig(userID, guildID);
-        if (userConfig === null){ return interaction.reply({ content: `User has no logs.`, ephemeral: true }) };
+        if (userConfig === null) return interaction.reply({ content: `User has no logs.`, ephemeral: true })
 
 
-        var checker = false;
-        var embed = new MessageEmbed();
+        let checker = false;
+        const embed = new MessageEmbed();
         embed.setTitle("Loading...");
 
-        var warnsRef = ref.child("config").child(userID).child("warnings");
+        const warnsRef = ref.child("config").child(userID).child("warnings");
         warnsRef.orderByChild("case_number").on("child_added", async (snapshot) => {
 
             if (snapshot.val().case_number === case_no) {
@@ -66,7 +66,7 @@ const remove: Command = {
 
                 await warnsRef.child(snapshot.key!).remove();
                 // decrement cases by 1
-                var casesRef = ref.child("config").child(userID).child("cases");
+                const casesRef = ref.child("config").child(userID).child("cases");
                 
                 casesRef.once("value", async (snapshot) => {
                     casesRef.set(snapshot.val() - 1);

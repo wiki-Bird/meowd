@@ -28,16 +28,16 @@ const dm: Command = {
         //     interaction.reply({ content: "You do not have permission to use this command.", ephemeral: true });
         //     return;
         // }
-        var user = interaction.options.getString("user", true);
+        const user = interaction.options.getString("user", true);
         const message = interaction.options.getString("message", true);
 
         if (!interaction.guild) {return;}
 
-        var isValidUser = await validateUser(user, interaction, true);
+        const isValidUser = await validateUser(user, interaction, true);
         if (!isValidUser) {
             return;
         }
-        var {userGuildMember, userNamed, userID} = isValidUser;
+        const {userGuildMember, userNamed, userID} = isValidUser;
 
         if (userGuildMember === null) {
             interaction.reply({ content: "You must specify a user to message.", ephemeral: true });

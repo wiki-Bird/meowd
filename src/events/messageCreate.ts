@@ -1,5 +1,5 @@
 import { client } from '..';
-import { TextChannel, Message, MessageEmbed, Guild } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import Event from '../types/Event';
 import { ref } from '..';
 import muteUser from '../functions/muteUser';
@@ -92,12 +92,12 @@ const messageCreate: Event = {
                                 server: server
                             };
                             
-                            const muteUserVar = await muteUser(undefined, message.author.id, `Banned word: ${message.content}`, "3600000", client.user!, memberServer);
+                            await muteUser(undefined, message.author.id, `Banned word: ${message.content}`, "3600000", client.user!, memberServer);
                         }
                         else if (punishmentString === "warn") {
                             const userConfig = await serverConfigRef.child(message.author.id).get();
                             if (userConfig.exists()) {
-                                var caseno = await serverConfigRef.child(message.author.id).child("cases").get();
+                                let caseno = await serverConfigRef.child(message.author.id).child("cases").get();
                                 if (caseno.exists()) { // increment caseno
                                     caseno = caseno.val() + 1;
                                     await serverConfigRef.child(message.author.id).child("cases").set(caseno);

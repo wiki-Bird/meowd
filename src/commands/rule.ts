@@ -1,10 +1,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
-import getUserConfig from '../functions/getUserConfig';
 import Command from '../types/Command';
 import { ref } from '..';
-import validateUser from '../functions/validateUser';
-import { PermissionFlagsBits } from 'discord-api-types/v9';
 
 const rule: Command = {
 	data: new SlashCommandBuilder()
@@ -19,14 +16,14 @@ const rule: Command = {
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
 		const ruleNumber = interaction.options.getNumber("number") ?? 1;
-        var title = "";
-        var description = "";
+        let title = "";
+        let description = "";
 
         // get rules from database
         // ref -> config -> guildID -> rules
         // if no rules, return error
 
-        var rules = await ref.child("config").child(interaction.guildId).child("rules").get();
+        const rules = await ref.child("config").child(interaction.guildId).child("rules").get();
         if (rules.exists() && rules.val() !== null) {
             title = "Rule " + ruleNumber;
             // description = rules.child(ruleNumber.toString()).toString();
@@ -45,14 +42,12 @@ const rule: Command = {
         }
         
 
-        var embed = new MessageEmbed()
+        const embed = new MessageEmbed()
+            .setTitle(title)
+            .setDescription(description)
+            .setColor('#00f2ff')
 
-        .setTitle(title)
-        .setDescription(description)
-        .setColor('#00f2ff')
-
-        const messageId = await interaction.reply({ embeds: [embed] });
-
+        await interaction.reply({ embeds: [embed] });
 	}
 }
 

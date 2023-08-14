@@ -2,8 +2,6 @@ import Command from '../types/Command';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { client } from "../index";
-import { ref } from '..';
-
 
 const botstats: Command = {
 	data: new SlashCommandBuilder()
@@ -13,7 +11,7 @@ const botstats: Command = {
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
         // interaction.deferReply();
         const numberOfGuilds = client.guilds.cache.size;
-        const numberOfUsers = client.users.cache.size;
+        // const numberOfUsers = client.users.cache.size;
         const ram1 = process.memoryUsage().heapUsed / 1024 / 1024;
         const ram = Math.round(ram1 * 100) / 100;
 
@@ -37,27 +35,29 @@ const botstats: Command = {
         }
 
         const numberOfChannels = client.channels.cache.size;
-        let numberOfOtterChannels = 0;
+
+
+        // OTTER STATS -- UNUSED:
+        // let numberOfOtterChannels = 0;
         
-        const configRef = ref.child("config");
-        configRef.orderByValue().on('value', (snapshot) => {
-            snapshot.forEach((data) => {
-                numberOfOtterChannels += data.val().length;
-            })
-        });
-        const days = Math.floor((Date.now() - new Date("1/20/2022").getTime()) / (1000 * 3600 * 24));
+        // const configRef = ref.child("config");
+        // configRef.orderByValue().on('value', (snapshot) => {
+        //     snapshot.forEach((data) => {
+        //         numberOfOtterChannels += data.val().length;
+        //     })
+        // });
+        // const days = Math.floor((Date.now() - new Date("1/20/2022").getTime()) / (1000 * 3600 * 24));
         setTimeout(function(){
+            const embed = new MessageEmbed();
+            embed.setColor("#00f2ff")
+                .setAuthor({ name: "Meowd Statistics", iconURL: client.user.displayAvatarURL()})
+                .setDescription("_ _")
+                .addFields(
+                    { name: "📈 Server Statistics", value: "\n• :computer: " + numberOfGuilds + " Servers\n• :bust_in_silhouette: " + AllMemCount + " Users\n• :hash: " + numberOfChannels + " Channels ", inline: true },
+                    { name: "🤖 Bot Statistics", value: "\n• 💾 " + ram + "mb RAM\n• 🕐 " + uptimePost + " Uptime", inline: true },
+                )
 
-        const embed = new MessageEmbed();
-		embed.setColor("#00f2ff")
-            .setAuthor({ name: "Meowd Statistics", iconURL: client.user.displayAvatarURL()})
-            .setDescription("_ _")
-            .addFields(
-                { name: "📈 Server Statistics", value: "\n• :computer: " + numberOfGuilds + " Servers\n• :bust_in_silhouette: " + AllMemCount + " Users\n• :hash: " + numberOfChannels + " Channels ", inline: true },
-                { name: "🤖 Bot Statistics", value: "\n• 💾 " + ram + "mb RAM\n• 🕐 " + uptimePost + " Uptime", inline: true },
-            )
-
-        interaction.reply({ embeds: [embed]});
+            interaction.reply({ embeds: [embed]});
         }, 500);
     }
 

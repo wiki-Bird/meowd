@@ -17,13 +17,10 @@ const whois: Command = {
         // checks if user is mentioned or ID is given:
         const user = interaction.options.getString("user") || interaction.user.id;
 
-        var isValidUser = await validateUser(user, interaction, true);
-
-        if (!isValidUser) {
-            return;
-        }
+        const isValidUser = await validateUser(user, interaction, true);
+        if (!isValidUser) { return; }
     
-        var {userGuildMember, userNamed, userID} = isValidUser;
+        const {userGuildMember, userNamed, userID} = isValidUser;
 
         // if interaction not in guild, return:
         if (!interaction.guild) {return;}
@@ -31,7 +28,7 @@ const whois: Command = {
 
         if (userGuildMember instanceof GuildMember) {
 
-            var roleCount = userGuildMember.roles.cache.map((role) => "<@&" + role.id + ">").join(' ');
+            let roleCount = userGuildMember.roles.cache.map((role) => "<@&" + role.id + ">").join(' ');
             roleCount = roleCount.substring(0, roleCount.length - 22);
             if (roleCount.length <= 0) {
                 roleCount = "No roles";
@@ -73,7 +70,6 @@ const whois: Command = {
                     { name: "_ _", value: "_ _"},
 
                     // { name: "Member Status", value: userGuildMember.roles.cache.has("739098680109879072") ? "Member" : "Not a member", inline: true },
-                    
                     // { name: "\u200B", value: "\u200B", inline: false}, //newline
 
                     { name: "Joined Server", value: userGuildMember.joinedAt!.toLocaleDateString("en-US", timeOptions) + "_      _", inline: true },
@@ -83,12 +79,9 @@ const whois: Command = {
 
                     { name: "Nickname", value: userGuildMember.nickname || "None", inline: true },
                     { name: "ID", value: userGuildMember.id, inline: true },
-                    
+
+                    { name: "_ _", value: "_ _"},
                 );
-
-
-
-            embed.addField("_ _", "_ _");
 
             await interaction.reply({ embeds: [embed] });
             

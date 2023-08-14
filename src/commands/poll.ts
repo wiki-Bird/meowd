@@ -42,12 +42,12 @@ const poll: Command = {
 			}
 
 			// A - T (20 emojis)
-			let emojiList = ["🇦", "🇧", "🇨", "🇩", "🇪",
+			const emojiList = ["🇦", "🇧", "🇨", "🇩", "🇪",
 			"🇫", "🇬", "🇭", "🇮", "🇯",
 			"🇰", "🇱", "🇲", "🇳", "🇴",
 			"🇵", "🇶", "🇷", "🇸", "🇹"];
 
-			var optionsText = "";
+			let optionsText = "";
 			for (let i = 0; i < OptionsArray.length; i++) {
 				optionsText += `${emojiList[i]} ${OptionsArray[i]}` + "\n\n";
 			}

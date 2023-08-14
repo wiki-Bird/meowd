@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import { MessageActionRow, MessageButton } from 'discord.js';
 import Command from '../types/Command';
 import { client } from "../index";
