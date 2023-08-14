@@ -10,8 +10,8 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 
 // const express = require('express');
-import { token } from '../config.json';
-import { clientId } from '../config.json';
+const { token } = require('../config.json');
+const { clientId } = require('../config.json');
 
 // const myIntents = new Intents();
 // myIntents.add('DIRECT_MESSAGES', 'FLAGS.GUILDS', 'MESSAGE_CONTENT', 'AUTO_MODERATION_EXECUTION','GUILD_MESSAGE_REACTIONS',

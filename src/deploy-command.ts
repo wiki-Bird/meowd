@@ -3,7 +3,7 @@ import { Routes, RESTPostAPIApplicationCommandsJSONBody as RawSlashCommand } fro
 import Command from './types/Command';
 import fs from 'node:fs';
 
-import { token } from '../config.json';
+const { token } = require('../config.json');
 
 const commands: RawSlashCommand[] = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
