@@ -12,7 +12,8 @@
         "resolveJsonModule": true,
         "skipLibCheck": true,
         "noFallthroughCasesInSwitch": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "build"]
