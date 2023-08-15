@@ -39,9 +39,6 @@ jobs:
       - name: Create config.json
         run: echo "${{ secrets.CONFIG_JSON }}" > config.json
 
-      - name: Display config.json
-        run: cat config.json
-
       - name: Create firebase service account key
         run: echo "${{ secrets.FIREBASE_JSON }}" > meowd-bot-firebase-adminsdk-2g9mv-5423d91b65.json]
 
