@@ -295,7 +295,8 @@ const stats: Command = {
 				// best hero is the one with the highest winrate * playtime
 				// get the highest winrate * playtime, knowing that .played and .win_rate are not in the same order
 				// start by saving things like this: "hero1": [winrateComp, winrateQP, playtimeComp, playtimeQP]
-				const heroStats: heroStats = new Object();
+				const heroStats = new Object() as heroStats;
+
 
 				for (let i=0; i<playtimeComp.length; i++){
 					const heroName = playtimeComp[i].hero;

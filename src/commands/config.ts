@@ -212,7 +212,7 @@ const config: Command = {
 					.setColor("#bee2ff");
 				if (otterChannels.exists()) {
 					let i = 1;
-					for (const [key, value] of Object.entries(otterChannels.val())) {
+					for (const [key] of Object.entries(otterChannels.val())) {
 						embed.addFields({ name: `Channel #${i}`, value: `<#${key}>` })
 						i++;
 					}
@@ -259,7 +259,7 @@ const config: Command = {
 					// Decrement the key of every element after the removed one
 					await rulesRef.once("value", (snapshot) => {
 						const data = snapshot.val();
-						const newData: {[key: string]: any} = {}; // add index signature here
+						const newData: {[key: string]: unknown} = {}; // add index signature here
 					
 						for (const key in data) {
 							if (parseInt(key) < rule) {
@@ -295,7 +295,7 @@ const config: Command = {
 					.setColor("#00f2ff");
 				if (rules.exists()) {
 					let i = 1;
-					for (const [key, value] of Object.entries(rules.val())) {
+					for (const [, value] of Object.entries(rules.val())) {
 						const ruleText: string = value as string;
 						embed.addFields({ name: `Rule #${i}`, value: ruleText });
 						i++;
@@ -372,7 +372,7 @@ const config: Command = {
 					.setColor("#00f2ff");
 				if (words.exists()) {
 					let i = 1;
-					for (const [key, value] of Object.entries(words.val())) {
+					for (const [, value] of Object.entries(words.val())) {
 						const wordText: string = value as string;
 						embed.addFields({name: `Word #${i}`, value: wordText});
 						i++;
