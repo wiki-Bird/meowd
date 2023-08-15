@@ -2,7 +2,8 @@ import { client } from '..';
 import { Interaction } from 'discord.js';
 import Event from '../types/Event';
 
-const interactionCreate: Event = {
+// const interactionCreate: Event = {
+const interactionCreate: Event<[Interaction]> = {
     name: 'interactionCreate',
     execute: function (interaction: Interaction) {
         if (!interaction.isCommand() || !interaction.inGuild()) return;

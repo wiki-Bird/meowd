@@ -5,7 +5,8 @@ import { ref } from '..';
 import muteUser from '../functions/muteUser';
 import MemberServerPair from '../types/MemberServerPair';
 
-const messageCreate: Event = {
+// const messageCreate: Event = {
+const messageCreate: Event<[Message]> = {
     name: 'messageCreate',
     execute: async function (message: Message) {
 

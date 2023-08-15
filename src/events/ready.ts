@@ -1,7 +1,8 @@
 import Event from '../types/Event';
 import OtterClient from '../types/OtterClient';
 
-const ready: Event = {
+//const ready: Event = {
+const ready: Event<[OtterClient]> = {
 	name: 'ready',
 	once: true,
 	execute: function (client: OtterClient) {

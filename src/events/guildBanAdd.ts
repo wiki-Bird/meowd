@@ -5,7 +5,8 @@ import { MessageEmbed, TextChannel, GuildBan  } from 'discord.js';
 import Event from '../types/Event';
 import { ref } from '..';
 
-const guildBanAdd: Event = {
+// const guildBanAdd: Event = {
+const guildBanAdd: Event<[GuildBan]> = {
     name: 'guildBanAdd',
     execute: async function (ban: GuildBan) {
         let channelToSend;
@@ -21,10 +22,10 @@ const guildBanAdd: Event = {
 
         if (!latestBan) return console.log(`${ban.user.tag} was banned from ${ban.guild.name} but no audit log could be found.`);
 
-        const { executor, target, reason } = latestBan;
+        const { executor, reason } = latestBan;
 
 
-        if (reason !== null || reason !== undefined) {
+        if (reason !== null && reason !== undefined) {
             reasonGiven = reason!;
         }
 

@@ -40,9 +40,8 @@ const database = getDatabase(app);
 export const ref = database.ref("restricted_access/secret_document");
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules
-ref.once("value", function(snapshot) {
-//   console.log(snapshot.val());
-    console.log("Database loaded");
+ref.once("value", function() {
+    console.log("Connected to Firebase Database");
 });
 
 

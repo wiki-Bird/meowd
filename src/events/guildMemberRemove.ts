@@ -3,7 +3,8 @@ import { MessageEmbed, TextChannel, GuildMember  } from 'discord.js';
 import Event from '../types/Event';
 import { ref } from '..';
 
-const guildMemberRemove: Event = {
+// const guildMemberRemove: Event = {
+const guildMemberRemove: Event<[GuildMember]> = {
     name: 'guildMemberRemove',
     execute: async function(member: GuildMember) {
         const guild = member.guild;
@@ -47,9 +48,9 @@ const guildMemberRemove: Event = {
 
         if (kickLog.target!.id === member.id && kickLog.createdAt > member.joinedAt!) {
 
-            const { executor, target, reason } = kickLog;
+            const { executor, reason } = kickLog;
             let reasonGiven = "No reason given.";
-            if (reason !== null || reason !== undefined) {
+            if (reason !== null && reason !== undefined) {
                 reasonGiven = reason!;
             }
 
