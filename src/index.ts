@@ -14,7 +14,7 @@ import { Routes } from 'discord-api-types/v9';
 // const { clientId } = require('../config.json');
 
 import config from '../config.json';
-const { token, clientId } = config as { token: string; clientId: string; };
+const { token, clientId } = config;
 
 // const myIntents = new Intents();
 // myIntents.add('DIRECT_MESSAGES', 'FLAGS.GUILDS', 'MESSAGE_CONTENT', 'AUTO_MODERATION_EXECUTION','GUILD_MESSAGE_REACTIONS',

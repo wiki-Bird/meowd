@@ -5,8 +5,7 @@ import fs from 'node:fs';
 
 // const { token } = require('../config.json');
 import config from '../config.json';
-const { token, clientId } = config as { token: string; clientId: string; };
-
+const { token, clientId } = config;
 
 const commands: RawSlashCommand[] = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));

@@ -40,11 +40,22 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      # - name: Create config.json
+      #   run: echo "${{ secrets.CONFIG_JSON }}" > config.json
+
+      # - name: Create firebase service account key
+      #   run: echo "${{ secrets.FIREBASE_JSON }}" > meowd-bot-firebase-adminsdk-2g9mv-5423d91b65.json]
+
       - name: Create config.json
-        run: echo "${{ secrets.CONFIG_JSON }}" > config.json
+        run: echo "${{ secrets.CONFIG_JSON }}" > $GITHUB_WORKSPACE/config.json
 
       - name: Create firebase service account key
-        run: echo "${{ secrets.FIREBASE_JSON }}" > meowd-bot-firebase-adminsdk-2g9mv-5423d91b65.json
+        run: echo "${{ secrets.FIREBASE_JSON }}" > $GITHUB_WORKSPACE/meowd-bot-firebase-adminsdk-2g9mv-5423d91b65.json
+
+
+      - name: List directory contents
+        run: ls -al
+
 
       - name: Build
         run: yarn build
