@@ -10,11 +10,9 @@ const { token, clientId } = config;
 const commands: RawSlashCommand[] = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-// Place your client and guild ids here
-// const clientId = '994046329678463026';
-// const guildId = '521856622998323202';
-
 for (const file of commandFiles) {
+	// ESLint doesn't like dynamic imports, but ¯\_(ツ)_/¯
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const command = require(`./commands/${file}`) as Command;
 	commands.push(command.data.toJSON());
 }

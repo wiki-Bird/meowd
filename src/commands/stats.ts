@@ -274,6 +274,8 @@ const stats: Command = {
 					return;
 				}
 				interface heroStats {
+					// ESlint doesn't like this, but it works ¯\_(ツ)_/¯ L?
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					[key: string]: any;
 				}
 

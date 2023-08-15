@@ -31,6 +31,8 @@ import admin from "firebase-admin";
 import { getDatabase } from "firebase-admin/database";
 
 // Fetch the service account key JSON file contents
+// ESLint doesn't like this, but it's needed to use json files
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const serviceAccount = require("../meowd-bot-firebase-adminsdk-2g9mv-5423d91b65.json");
 
 // Initialize the app with a service account, granting admin privileges
@@ -58,7 +60,9 @@ const commandCheck = async () => {
     const commandFiles = readdirSync(basePath).filter(file => file.endsWith('.js') || file.endsWith('.ts'));
 
     for (const file of commandFiles) {
-        const command = require(join(basePath, file)).default;
+        // const command = require(join(basePath, file)).default;
+        const commandModule = await import(join(basePath, file));
+        const command = commandModule.default;
         commands.push(command.data.toJSON());
     }
 
@@ -68,6 +72,8 @@ const commandCheck = async () => {
         try {
             console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
+            // ESlint doesn't like this, but any is needed
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const data:any = await rest.put(
                 Routes.applicationCommands(clientId),
                 { body: commands },
@@ -89,7 +95,9 @@ const init = async () => {
 
     for (const file of commandFiles) {
         const filePath = join(commandsPath, file);
-        const command = require(filePath).default;
+        // const command = require(filePath).default;
+        const commandModule = await import(filePath);
+        const command = commandModule.default;
         client.commands.set(command.data.name, command);
     }
 
@@ -98,7 +106,9 @@ const init = async () => {
     
     for (const file of eventFiles) {
         const filePath = join(eventsPath, file);
-        const event = require(filePath).default;
+        // const event = require(filePath).default;
+        const eventModule = await import(filePath);
+        const event = eventModule.default;
         if (event.once) {
             client.once(event.name, (...args) => event.execute(...args));
         } else {
@@ -108,7 +118,6 @@ const init = async () => {
 
 
     client.login(token);
-
 
     // process.env.PORT lets the port be set by Heroku
     // const port = process.env.PORT || 8080;
