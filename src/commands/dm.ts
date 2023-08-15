@@ -37,7 +37,7 @@ const dm: Command = {
         if (!isValidUser) {
             return;
         }
-        const {userGuildMember, userNamed, userID} = isValidUser;
+        const {userGuildMember} = isValidUser;
 
         if (userGuildMember === null) {
             interaction.reply({ content: "You must specify a user to message.", ephemeral: true });

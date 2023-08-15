@@ -56,7 +56,7 @@ const imgedit: Command = {
             if (!isValidUser) {
                 return;
             }
-            const {userGuildMember, userNamed, userID} = isValidUser;
+            const {userGuildMember} = isValidUser;
 
             image = userGuildMember.user.displayAvatarURL({ format: "png", size: 1024 });
         }

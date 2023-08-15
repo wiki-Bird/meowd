@@ -43,14 +43,14 @@ const modlog: Command = {
     
     const isValidUser = await validateUser(user, interaction, true);
     if (!isValidUser) { return; }
-    const {userGuildMember, userNamed, userID} = isValidUser;
+    const {userNamed, userID} = isValidUser;
 
     if (!interaction.guild) {return;}
 
     const serverID = interaction.guild.id;
 
     const userConfig = await getUserConfig(userID, serverID);
-    if (userConfig === null){ return interaction.reply({ content: `User has no logs.`, ephemeral: true }) };
+    if (userConfig === null){ return interaction.reply({ content: `User has no logs.`, ephemeral: true }) }
 
     let casenumbers = 0;
     const caseRef = ref.child("config").child(serverID).child(userID).child("cases");

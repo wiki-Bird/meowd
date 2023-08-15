@@ -47,7 +47,7 @@ const report: Command = {
         if (!isValidUser) {
             return;
         }
-        const {userGuildMember, userNamed, userID} = isValidUser;
+        const {userNamed, userID} = isValidUser;
 
         const reportEmbed = new MessageEmbed()
             .setColor("#00f2ff")

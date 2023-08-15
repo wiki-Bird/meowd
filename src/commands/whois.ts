@@ -20,7 +20,7 @@ const whois: Command = {
         const isValidUser = await validateUser(user, interaction, true);
         if (!isValidUser) { return; }
     
-        const {userGuildMember, userNamed, userID} = isValidUser;
+        const {userGuildMember, userNamed} = isValidUser;
 
         // if interaction not in guild, return:
         if (!interaction.guild) {return;}

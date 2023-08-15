@@ -36,7 +36,7 @@ const remove: Command = {
             return;
         }
 
-        const {userGuildMember, userNamed, userID} = isValidUser;
+        const {userNamed, userID} = isValidUser;
 
         if (!interaction.guild) {return;}
 

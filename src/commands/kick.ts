@@ -35,7 +35,7 @@ const kick: Command = {
         if (!isValidUser) {
             return;
         }
-        const {userGuildMember, userNamed, userID} = isValidUser;
+        const {userGuildMember, userID} = isValidUser;
 
         if (!interaction.guild) {return;}
 
