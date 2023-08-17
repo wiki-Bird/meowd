@@ -3,9 +3,11 @@ import { Routes, RESTPostAPIApplicationCommandsJSONBody as RawSlashCommand } fro
 import Command from './types/Command';
 import fs from 'node:fs';
 
-// const { token } = require('../config.json');
-import config from '../config.json';
-const { token, clientId } = config;
+// ESLint doesn't like this, but it's needed to fix yarn build
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { token, clientId } = require('../config.json');
+// import config from '../config.json';
+// const { token, clientId } = config;
 
 const commands: RawSlashCommand[] = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));

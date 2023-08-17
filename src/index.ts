@@ -10,11 +10,12 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 
 // const express = require('express');
-// const { token } = require('../config.json');
-// const { clientId } = require('../config.json');
 
-import config from '../config.json';
-const { token, clientId } = config;
+// ESLint doesn't like this, but it's needed to fix yarn build
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { token, clientId } = require('../config.json');
+// import config from '../config.json';
+// const { token, clientId } = config;
 
 // const myIntents = new Intents();
 // myIntents.add('DIRECT_MESSAGES', 'FLAGS.GUILDS', 'MESSAGE_CONTENT', 'AUTO_MODERATION_EXECUTION','GUILD_MESSAGE_REACTIONS',
