@@ -15,6 +15,8 @@ const rule: Command = {
 		.setDescription('Shows the specified rule.'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+        await interaction.deferReply();
+
 		const ruleNumber = interaction.options.getNumber("number") ?? 1;
         let title = "";
         let description = "";
@@ -47,7 +49,7 @@ const rule: Command = {
             .setDescription(description)
             .setColor('#00f2ff')
 
-        await interaction.reply({ embeds: [embed] });
+        await interaction.editReply({ embeds: [embed] });
 	}
 }
 

@@ -21,6 +21,8 @@ const unmute: Command = {
 		.setDescription('Unmutes a user'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+        await interaction.deferReply();
+
 
         const user = interaction.options.getString("user", true);
 
@@ -35,13 +37,13 @@ const unmute: Command = {
         const {userGuildMember, userID} = isValidUser;
 
         if (userGuildMember === null) {
-            interaction.reply({ content: "You must specify a user to unmute.", ephemeral: true });
+            interaction.editReply({ content: "You must specify a user to unmute." });
             return;
         }
 
         // if member timeout is not set, set it to 0
         if (userGuildMember.timeout === null) {
-            interaction.reply({ content: "User is not timed out.", ephemeral: true });
+            interaction.editReply({ content: "User is not timed out." });
             return;
         }
 
@@ -50,11 +52,11 @@ const unmute: Command = {
         const embed = new MessageEmbed()
             .setTitle("User Unmuted:")
             .setDescription("<@!" + userID + `> (` + userID + `) has been unmuted by ${interaction.user.tag} for the following reason:`)
-            .addField("Reason:", reason, true)
+            .addFields({ name: "Reason:", value: reason, inline: true })
             .setColor("#3cff00")
             .setTimestamp();
 
-        interaction.reply({ embeds: [embed] });
+        interaction.editReply({ embeds: [embed] });
 
     }
 }

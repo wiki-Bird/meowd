@@ -37,6 +37,8 @@ const imgedit: Command = {
 		.setDescription('Do fun stuff with images.'),
 	
     execute: async function (interaction): Promise<void> {
+        await interaction.deferReply();
+
         const action = interaction.options.getString("action", true);
         const user = interaction.options.getString("user", false);
         const attachment = interaction.options.getAttachment("attachment", false);
@@ -61,14 +63,17 @@ const imgedit: Command = {
             image = userGuildMember.user.displayAvatarURL({ format: "png", size: 1024 });
         }
         else if (!user && attachment) {
+            // if attachment is not an image, return
+            if (!attachment.url.endsWith(".png") && !attachment.url.endsWith(".jpg") && !attachment.url.endsWith(".jpeg") && !attachment.url.endsWith(".gif")) {
+                interaction.editReply({ content: "You must specify a jpg, gif, or png image." });
+                return;
+            }
             image = attachment.url;
         }
         else {
-            interaction.reply({ content: "You can't specify both a user and an attachment.", ephemeral: true });
+            interaction.editReply({ content: "You can't specify both a user and an attachment." });
             return;
         }
-
-        await interaction.deferReply();
 
         const canvas = createCanvas(1024, 1024);
         const ctx = canvas.getContext('2d');

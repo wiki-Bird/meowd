@@ -14,6 +14,8 @@ const whois: Command = {
 		.setDescription('Investigates a user.'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+        await interaction.deferReply();
+
         // checks if user is mentioned or ID is given:
         const user = interaction.options.getString("user") || interaction.user.id;
 
@@ -83,7 +85,7 @@ const whois: Command = {
                     { name: "_ _", value: "_ _"},
                 );
 
-            await interaction.reply({ embeds: [embed] });
+            await interaction.editReply({ embeds: [embed] });
             
         }
 	}

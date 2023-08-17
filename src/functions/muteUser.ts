@@ -28,14 +28,14 @@ export default async function muteUser(interaction: CommandInteraction<"cached" 
 
     const isValidUser = await validateUser(user, interaction, true, memberServer);
     if (!isValidUser) {
-        if (interaction !== undefined) await interaction.editReply("Invalid user.");
+        // if (interaction !== undefined) await interaction.editReply("Invalid user.");
         return null;
     }
     const {userGuildMember, userNamed, userID} = isValidUser;
 
     const isValidTime = await validateDuration(time, interaction);
     if (!isValidTime) {
-        if (interaction !== undefined) await interaction.editReply("Invalid time.");
+        // if (interaction !== undefined) await interaction.editReply("Invalid time.");
         return null;
     }
     const {timeInMS, timeString} = isValidTime;

@@ -30,7 +30,7 @@ export default async function validateUser(user: string, interaction: CommandInt
 
     if (user !== null && server !== undefined) {
 
-        console.log("user: " + user)
+        // console.log("user: " + user)
     
         if (user?.startsWith("<@") && user?.endsWith(">")) {
             userID = user.slice(2, -1);
@@ -39,23 +39,43 @@ export default async function validateUser(user: string, interaction: CommandInt
             userID = user;
         }
         else {
-            if (interaction !== undefined) await interaction.followUp({ content: `Invalid user. Please provide a user's ID, @ a user, or provide nothing at all.`, ephemeral: true });
+            if (interaction !== undefined) {
+                try {
+                    await interaction.followUp({ content: `Invalid user. Please provide a user's ID, @ a user, or nothing at all.`, ephemeral: true });
+                }
+                catch (e) {
+                    await interaction.reply({ content: `Invalid user. Please provide a user's ID, @ a user, or nothing at all.` });
+                }
+            }
             return false;
         }
         
-
         try {
             const serverUser = await server?.members.fetch(userID);
             if (serverUser === undefined) {
                 if (checker) { 
-                    if (interaction !== undefined) await interaction.followUp({ content: `User not found in this server.`, ephemeral: true });
+                    if (interaction !== undefined) {
+                        try {
+                            await interaction.followUp({ content: `Invalid user. Please provide a user's ID, @ a user, or nothing at all.`, ephemeral: true });
+                        }
+                        catch (e) {
+                            await interaction.reply({ content: `Invalid user. Please provide a user's ID, @ a user, or nothing at all.` });
+                        }
+                    }
                     return false;
                 }
             }
         }
         catch (e) {
             if (checker) {
-                if (interaction !== undefined) await interaction.followUp({ content: `User not found in this server.`, ephemeral: true });
+                if (interaction !== undefined) {
+                    try {
+                        await interaction.followUp({ content: `User not found in this server.`, ephemeral: true });
+                    }
+                    catch (e) {
+                        await interaction.reply({ content: `User not found in this server.`, ephemeral: true });
+                    }
+                }
                 return false;
             }
 
@@ -69,7 +89,14 @@ export default async function validateUser(user: string, interaction: CommandInt
             userGuildMember = guildMember;
         }
         else {
-            if (interaction !== undefined) await interaction.followUp({ content: `User not found.`, ephemeral: true });
+            if (interaction !== undefined) {
+                try {
+                    await interaction.followUp({ content: `User not found.`, ephemeral: true });
+                }
+                catch (e) {
+                    await interaction.reply({ content: `User not found.`, ephemeral: true });
+                }
+            }
             return false;
         }
 
@@ -79,7 +106,14 @@ export default async function validateUser(user: string, interaction: CommandInt
         userGuildMember = guildMember;
         userID = guildMember.user.id;
     } else {
-        if (interaction !== undefined) await interaction.followUp({ content: `This should never blah blah blah`, ephemeral: true });
+        if (interaction !== undefined) {
+            try {
+                await interaction.followUp({ content: `This should never happen! Contact support`, ephemeral: true });
+            }
+            catch (e) {
+                await interaction.reply({ content: `This should never happen! Contact support`, ephemeral: true });
+            }
+        }
         return false;
     }
 

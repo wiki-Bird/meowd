@@ -27,6 +27,9 @@ const remove: Command = {
 
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+        await interaction.deferReply();
+
+
 		const user = interaction.options.getString("user", true);
         const case_no = interaction.options.getNumber("case_no", true);
         const moderator = interaction.user;

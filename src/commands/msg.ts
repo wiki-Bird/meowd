@@ -20,7 +20,9 @@ const msg: Command = {
 		.setDescription('Message a channel as the bot.'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+        await interaction.deferReply();
 
+        
         if (interaction.user.id !== "232254618434797570") {
             interaction.reply({ content: "You do not have permission to use this testing command.", ephemeral: true });
             return;

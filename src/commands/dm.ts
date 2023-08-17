@@ -22,7 +22,7 @@ const dm: Command = {
 		.setDescription('Message the user as the bot.'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
-
+        await interaction.deferReply();
         // if user id not 232254618434797570, return
         // if (interaction.user.id !== "232254618434797570") {
         //     interaction.reply({ content: "You do not have permission to use this command.", ephemeral: true });
@@ -40,7 +40,7 @@ const dm: Command = {
         const {userGuildMember} = isValidUser;
 
         if (userGuildMember === null) {
-            interaction.reply({ content: "You must specify a user to message.", ephemeral: true });
+            interaction.editReply({ content: "You must specify a user to message."});
             return;
         }
 
@@ -56,7 +56,7 @@ const dm: Command = {
         // userGuildMember.user.send(message);
         userGuildMember.user.send({ embeds: [embed] });
 
-        interaction.reply({ content: `Message sent to ${userGuildMember.user.tag}`, ephemeral: true });
+        interaction.editReply({ content: `Message sent to ${userGuildMember.user.tag}`});
 
     }
 }
