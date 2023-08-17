@@ -22,7 +22,7 @@ Neep help? Check out <a href="https://meowd.ramiels.me/">meowd.ramiels.me</a>.</
 
 </br>
 
-## 🐱 Features:
+## 🐱 Some Features:
 
 #### For a full list, visit [meowd.ramiels.me/features](https://meowd.ramiels.me/features).
 
@@ -34,7 +34,7 @@ Neep help? Check out <a href="https://meowd.ramiels.me/">meowd.ramiels.me</a>.</
 
 </br>
 
-## ⌨️ Commands:
+## ⌨️ Some Commands:
 
 #### For a full list, and examples, visit [meowd.ramiels.me/commands](https://meowd.ramiels.me/commands).
 
@@ -53,19 +53,17 @@ Neep help? Check out <a href="https://meowd.ramiels.me/">meowd.ramiels.me</a>.</
 
 </br>
 
-## 💡 Future plans:
+## 💡 Some Future plans:
 
 #### For a full list, visit [projects](https://github.com/users/wiki-Bird/projects/4).
 
+- [x] Overwatch stats
+- [x] Add pronouns to `/whois`
 - [ ] Website guide
 - [ ] Banned words/websites
 - [ ] Whitelisted websites
 - [ ] System logging
-- [x] Overwatch stats
-- [ ] Starboard
-- [ ] Web dashboard
-- [x] Add pronouns to `/whois`
-
+- [ ] Timezone/Currency conversion
 
 </br>
 
