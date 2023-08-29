@@ -34,7 +34,7 @@ data.addSubcommand(addSubcommand =>
 		.setDescription("Advanced dice rolling.")
 		.addStringOption(option =>
 			option.setName("formula")
-				.setDescription("The formula to use, e.g. 2d6+1, 3d4-2, 1d20x2")
+				.setDescription("The comma seperated formula to use, e.g. 2d6+1, 3d4-2, 1d20x2")
 				.setRequired(true)
 		)
 )
@@ -182,49 +182,50 @@ const roll: Command = {
 				}
 		
 				let totalResult = "";
+				let sumResult = 0;
 				for (let j = 0; j < count; j++) {
-					let singleRoll = Math.floor(Math.random() * maxNumber) + 1;
+					const singleRoll = Math.floor(Math.random() * maxNumber) + 1;
 		
-					if (modifier !== "") {
-						console.log(modifier);
-						const operation = modifier[0];
-						const value = Number(modifier.slice(1));
-
-						console.log("Operation:", operation);
-						console.log("Value:", value);
-					
-						switch(operation) {
-							case '+':
-								singleRoll += value;
-								break;
-							case '-':
-								singleRoll -= value;
-								break;
-							case 'x':  
-							case '*':
-								singleRoll *= value;
-								break;
-							case '/':
-								await interaction.reply({ content: `Division is not supported yet. Sorry.`, ephemeral: true });
-								return;
-								// if (value === 0) {
-								// 	await interaction.reply({ content: `Cannot divide by zero.`, ephemeral: true });
-								// 	return;
-								// }
-								// singleRoll = Math.floor(singleRoll / value);
-								// break;
-							case '%':
-								singleRoll %= value;
-								break;
-							case '^':
-								singleRoll = Math.pow(singleRoll, value);
-								break;
-						}
-					}
-					totalResult += singleRoll + ", ";
+					totalResult += singleRoll + "+";
+					sumResult += singleRoll;
 				}
-				embed.addFields({ name: ` `, value: `**Dice ${i + 1} (d${maxNumber}):** ` + totalResult.slice(0, -2) });
-				// Add totalResult to embed or however you wish to use it...
+				if (modifier !== "") {
+					const operation = modifier[0];
+					const value = Number(modifier.slice(1));
+				
+					switch(operation) {
+						case '+':
+							sumResult += value;
+							break;
+						case '-':
+							sumResult -= value;
+							break;
+						case 'x':  
+						case '*':
+							sumResult *= value;
+							break;
+						case '/':
+							await interaction.reply({ content: `Division is not supported yet. Sorry.`, ephemeral: true });
+							return;
+							// if (value === 0) {
+							// 	await interaction.reply({ content: `Cannot divide by zero.`, ephemeral: true });
+							// 	return;
+							// }
+							// singleRoll = Math.floor(singleRoll / value);
+							// break;
+						case '%':
+							sumResult %= value;
+							break;
+						case '^':
+							sumResult = Math.pow(sumResult, value);
+							break;
+					}
+				}
+				embed.addFields(
+					{ name: ` `, value: `**Die ${i + 1} - ${formulas[i]}:** `, inline: true },
+					{ name: ` `, value: `${sumResult}`, inline: true },
+					{ name: ` `, value: `(${totalResult.slice(0, -1)})${modifier}`, inline: true },
+				);
 			}
 		
 			// Send the embed..
