@@ -11,7 +11,7 @@ export default async function validateDuration(time: string, interaction: Comman
     // first part of time will be a number, the second part will be m/min, h/hrs/hours/etc, d. Break it into these two parts.
     let midPoint = 0;
     for (let i = 0; i < time.length; i++) {
-        if (time[i] === 'm' || time[i] === 'h' || time[i] === 'd') {
+        if (time[i] === 'm' || time[i] === 'h' || time[i] === 'd' || time[i] === 's') {
             midPoint = i;
             break;
         }
@@ -27,7 +27,7 @@ export default async function validateDuration(time: string, interaction: Comman
     }
 
     const timeNumber = time.slice(0, midPoint);
-    const timeUnit = time[midPoint]; // D.js only handles m, h, d, so we don't need to check for anything else -- even if the user enters it.
+    const timeUnit = time[midPoint]; // D.js only handles m, h, d, s, so we don't need to check for anything else -- even if the user enters it.
 
     // check if timeNumber is a number
     if (isNaN(Number(timeNumber)) === true) {
@@ -41,7 +41,7 @@ export default async function validateDuration(time: string, interaction: Comman
     }
 
     return {
-        timeInMS: Number(timeNumber) * (timeUnit === 'm' ? 60000 : timeUnit === 'h' ? 3600000 : timeUnit === 'd' ? 86400000 : 0),
+        timeInMS: Number(timeNumber) * (timeUnit === 'm' ? 60000 : timeUnit === 'h' ? 3600000 : timeUnit === 'd' ? 86400000 : timeUnit === 's' ? 1000 : 0),
         timeString: timeNumber + timeUnit
     }
 

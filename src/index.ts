@@ -73,12 +73,10 @@ const commandCheck = async () => {
         try {
             console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
-            // ESlint doesn't like this, but any is needed
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const data:any = await rest.put(
+            const data = await rest.put(
                 Routes.applicationCommands(clientId),
                 { body: commands },
-            );
+            ) as unknown[];
 
             console.log(`Successfully reloaded ${data.length} application (/) commands.`);
         } catch (error) {

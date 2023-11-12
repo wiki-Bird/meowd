@@ -64,8 +64,10 @@ const imgedit: Command = {
         }
         else if (!user && attachment) {
             // if attachment is not an image, return
-            if (!attachment.url.endsWith(".png") && !attachment.url.endsWith(".jpg") && !attachment.url.endsWith(".jpeg") && !attachment.url.endsWith(".gif")) {
-                interaction.editReply({ content: "You must specify a jpg, gif, or png image." });
+            console.log(attachment.contentType)
+            // if (!attachment.url.endsWith(".png") && !attachment.url.endsWith(".jpg") && !attachment.url.endsWith(".jpeg") && !attachment.url.endsWith(".gif")) {
+            if (!attachment.contentType!.startsWith("image/")) {
+                interaction.editReply({ content: "You must upload an image." });
                 return;
             }
             image = attachment.url;
