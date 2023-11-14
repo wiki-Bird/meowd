@@ -29,6 +29,8 @@
     "discord-api-types": "^0.36.1",
     "discord.js": "^13.15.1",
     "firebase-admin": "^11.0.0",
+    "luxon": "^3.4.4",
+    "luxon-parser": "^0.9.4",
     "nth-check": "^2.1.1",
     "overwatch-api": "^0.13.0",
     "protobufjs": "^7.2.4",
@@ -37,6 +39,7 @@
     "word-wrap": "^1.2.5"
   },
   "devDependencies": {
+    "@types/luxon": "^3.3.4",
     "@types/node": "^18.0.3",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
