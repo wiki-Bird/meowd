@@ -78,6 +78,13 @@ const convert: Command = {
                 timeString = currentTime.toFormat("HH:mm");
             }
 
+            switch (timezoneFrom) {
+                case "NZT" || "NZDT": timezoneFrom = "Pacific/Auckland"; break;
+                case "AEST" || "AEDT" || "AET": timezoneFrom = "Australia/Sydney"; break;
+                case "ACST" || "ACDT" || "ACT": timezoneFrom = "Australia/Adelaide"; break;
+                case "AWST": timezoneFrom = "Australia/Perth"; break;
+            }
+
             // Check for AM/PM in the time string
             const isAmOrPm = timeString.includes('am') || timeString.includes('pm');
             
