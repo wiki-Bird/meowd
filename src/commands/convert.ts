@@ -41,6 +41,27 @@ data.addSubcommand(subcommand =>
         )
 )
 
+// Timezone conversion function
+function convertTimezone(timezone: string) {
+    switch (timezone) {
+        case "NZT":
+        case "NZDT": 
+            return "Pacific/Auckland";
+        case "AEST":
+        case "AEDT":
+        case "AET": 
+            return "Australia/Sydney";
+        case "ACST":
+        case "ACDT":
+        case "ACT": 
+            return "Australia/Adelaide";
+        case "AWST": 
+            return "Australia/Perth";
+        default: 
+            return timezone;
+    }
+}
+
 const convert: Command = {
 
 	data,
@@ -54,12 +75,14 @@ const convert: Command = {
             const time = interaction.options.getString("time");
             let timezoneTo = interaction.options.getString("timezone", true);
 
-            switch (timezoneTo) {
-                case "NZT" || "NZDT": timezoneTo = "Pacific/Auckland"; break;
-                case "AEST" || "AEDT" || "AET": timezoneTo = "Australia/Sydney"; break;
-                case "ACST" || "ACDT" || "ACT": timezoneTo = "Australia/Adelaide"; break;
-                case "AWST": timezoneTo = "Australia/Perth"; break;
-            }
+            // switch (timezoneTo) {
+            //     case "NZT" || "NZDT": timezoneTo = "Pacific/Auckland"; break;
+            //     case "AEST" || "AEDT" || "AET": timezoneTo = "Australia/Sydney"; break;
+            //     case "ACST" || "ACDT" || "ACT": timezoneTo = "Australia/Adelaide"; break;
+            //     case "AWST": timezoneTo = "Australia/Perth"; break;
+            // }
+
+            timezoneTo = convertTimezone(timezoneTo);
 
             let currentDate, timeString, timezoneFrom;
         
@@ -69,20 +92,15 @@ const convert: Command = {
                 const timeSplit = time!.split(" ");
                 timeString = timeSplit[0];
                 timezoneFrom = timeSplit[1];
+                timezoneFrom = convertTimezone(timezoneFrom);
                 currentDate = DateTime.now().setZone(timezoneFrom).toISODate();
             } else {
                 // If time is not provided, use current time in timezoneTo
-                timezoneFrom = time;
+                timezoneFrom = time || "NZT";
+                timezoneFrom = convertTimezone(timezoneFrom);
                 currentDate = DateTime.now().setZone(timezoneFrom).toISODate();
                 const currentTime = DateTime.now().setZone(timezoneFrom);
                 timeString = currentTime.toFormat("HH:mm");
-            }
-
-            switch (timezoneFrom) {
-                case "NZT" || "NZDT": timezoneFrom = "Pacific/Auckland"; break;
-                case "AEST" || "AEDT" || "AET": timezoneFrom = "Australia/Sydney"; break;
-                case "ACST" || "ACDT" || "ACT": timezoneFrom = "Australia/Adelaide"; break;
-                case "AWST": timezoneFrom = "Australia/Perth"; break;
             }
 
             // Check for AM/PM in the time string
@@ -104,7 +122,7 @@ const convert: Command = {
             }
 
             const dateTimeString = `${currentDate}T${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`;
-
+            
             // Parse the time in the given timezone using Luxon's ISO format parsing
             const parsedDate = DateTime.fromISO(dateTimeString, { zone: timezoneFrom });
 
