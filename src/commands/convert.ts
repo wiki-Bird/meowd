@@ -52,8 +52,15 @@ const convert: Command = {
 
         if (subcommand === "time") {
             const time = interaction.options.getString("time");
-            const timezoneTo = interaction.options.getString("timezone", true);
-        
+            let timezoneTo = interaction.options.getString("timezone", true);
+
+            switch (timezoneTo) {
+                case "NZT" || "NZDT": timezoneTo = "Pacific/Auckland"; break;
+                case "AEST" || "AEDT" || "AET": timezoneTo = "Australia/Sydney"; break;
+                case "ACST" || "ACDT" || "ACT": timezoneTo = "Australia/Adelaide"; break;
+                case "AWST": timezoneTo = "Australia/Perth"; break;
+            }
+
             let currentDate, timeString, timezoneFrom;
         
             // Check if a time is provided, if not use current time in the timezoneTo
@@ -70,16 +77,6 @@ const convert: Command = {
                 const currentTime = DateTime.now().setZone(timezoneFrom);
                 timeString = currentTime.toFormat("HH:mm");
             }
-
-            // const time = interaction.options.getString("time", true);
-            // const timezoneTo = interaction.options.getString("timezone", true);
-
-            // // // parse the time. Formats can be (using 10am with NZT as an example): 10:00am NZT, 10am NZT, 10:00 NZT, 10 NZT
-            // const timeSplit = time.split(" ");
-            // const timeString = timeSplit[0];
-            // const timezoneFrom = timeSplit[1];
-
-            // const currentDate = DateTime.now().setZone(timezoneFrom).toISODate();
 
             // Check for AM/PM in the time string
             const isAmOrPm = timeString.includes('am') || timeString.includes('pm');
