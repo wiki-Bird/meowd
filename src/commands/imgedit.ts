@@ -17,6 +17,7 @@ const imgedit: Command = {
                     { name: "Jerma", value: "jerma" },
                     { name: "Invert", value: "invert" },
                     { name: "1984", value: "1984" },
+                    { name: "Cpoint", value: "cpoint"}
                 )
         )
         .addStringOption(option =>
@@ -116,6 +117,16 @@ const imgedit: Command = {
         else if (action === "jerma") {
             const jerma = await loadImage("https://cdn.discordapp.com/attachments/669394205705240606/1095204244447043615/jerma.png");
             ctx.drawImage(jerma, 0, 124, 900, 900);
+        }
+        else if (action === "cpoint") {
+            const serverWhitelist = ["1034219118276120586", "521856622998323202", "945166361519353877"];
+            if (serverWhitelist.indexOf(interaction.guild.id) === -1) {
+                interaction.editReply({ content: "This image is server restricted and cannot be used here, sorry." });
+                return;
+            }
+
+            const cpoint = await loadImage("https://media.discordapp.net/attachments/1163430975183802379/1181522569053085817/Csoy.png");
+            ctx.drawImage(cpoint, 0, 0, 1024, 1024);
         }
         else if (action === "invert") {
             const imgData = ctx.getImageData(0, 0, 1024, 1024);
