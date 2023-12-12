@@ -14,7 +14,8 @@ const imgedit: Command = {
                 .addChoices(
                     { name: "Speech Bubble", value: "speechbubble" },
                     { name: "Rainbow", value: "rainbow" },
-                    { name: "Jerma", value: "jerma" },
+                    { name: "JermaPoint", value: "jerma" },
+                    { name: "SuperPoint", value:"superpoint"},
                     { name: "Invert", value: "invert" },
                     { name: "1984", value: "1984" },
                     { name: "Cpoint", value: "cpoint"}
@@ -117,6 +118,10 @@ const imgedit: Command = {
         else if (action === "jerma") {
             const jerma = await loadImage("https://cdn.discordapp.com/attachments/669394205705240606/1095204244447043615/jerma.png");
             ctx.drawImage(jerma, 0, 124, 900, 900);
+        }
+        else if (action === "superpoint") {
+            const superpoint = await loadImage("https://media.discordapp.net/attachments/590667063165583409/1184257470684745828/superTFpoint.png");
+            ctx.drawImage(superpoint, 0, 0, 1024, 1024);
         }
         else if (action === "cpoint") {
             const serverWhitelist = ["1034219118276120586", "521856622998323202", "945166361519353877"];
