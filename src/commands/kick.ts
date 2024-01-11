@@ -53,8 +53,10 @@ const kick: Command = {
         const embed = new MessageEmbed()
         .setTitle("User Kicked:")
         .setDescription("<@!" + userID + `> (` + userID + `) has been kicked by ${moderator.tag} for the following reason:`)
-        .addField("Reason:", reason, true)
-        .addField("Date:", currentDate.toLocaleDateString(), true)
+        .addFields(
+            { name: "Reason:", value: reason, inline: true },
+            { name: "Date:", value: currentDate.toLocaleDateString(), inline: true }
+        )
         .setColor("#ff9c00")
         .setTimestamp();
 

@@ -118,7 +118,7 @@ const modlog: Command = {
             }
         })
         if (i === 1) {
-            embed.addField("No cases found.", "No cases found of type " + type + ".");
+            embed.addFields({ name: "No cases found.", value: "No cases found of type " + type + "." });
         }
         if (userID === client.user.id) {
             embed.setTitle("User " + userID + "'s " + type + " history (user not in server):");

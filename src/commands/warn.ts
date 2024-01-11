@@ -27,7 +27,6 @@ const warn: Command = {
 
 
   execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
-    
     await interaction.deferReply();
 
 	const user = interaction.options.getString("user", true);
@@ -90,8 +89,10 @@ const warn: Command = {
     const embed = new MessageEmbed()
         .setTitle("Warning:")
         .setDescription("<@!" + userID + `> (` + userID + `) has been warned by ${moderator.tag} for the following reason:`)
-        .addField("Reason:", reason, true)
-        .addField("Date:", currentDate.toLocaleDateString(), true)
+        .addFields(
+            { name: "Reason:", value: reason, inline: true },
+            { name: "Date:", value: currentDate.toLocaleDateString(), inline: true }
+        )
         .setColor("#ffd200")
         .setTimestamp();
     

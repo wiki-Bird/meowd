@@ -62,9 +62,11 @@ const remove: Command = {
                     .setDescription(`Case ${case_no} has been removed from ${userNamed.tag}`)
                     .setColor("#00f2ff")
                     .setTimestamp()
-                    .addField("Original reason:", snapshot.val().reason, true)
-                    .addField("Original Date:", snapshot.val().date, true)
-                    .addField("Original Moderator:", moderator.tag, true)
+                    .addFields(
+                        { name: "Original reason:", value: snapshot.val().reason, inline: true },
+                        { name: "Original Date:", value: snapshot.val().date, inline: true },
+                        { name: "Original Moderator:", value: moderator.tag, inline: true }
+                    )
                     .setFooter({text: "Case removed by " + moderator.tag});
 
                 await warnsRef.child(snapshot.key!).remove();
