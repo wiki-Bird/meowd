@@ -12,7 +12,8 @@ const textedit: Command = {
                         .setRequired(true)
                         .addChoices(
                                 { name: "uwu", value: "uwu" },
-                                { name: "zizek", value: "zizek" }
+                                { name: "zizek", value: "zizek" },
+                                { name: "maoist_standard_english", value: "maoist_standard_english" }
                         )
                 )
                 .addStringOption(option =>
@@ -60,19 +61,15 @@ const textedit: Command = {
                         reply = uwu;
                 }
                 else if (action === "zizek") {
-                        // make the text have sniffs and stutters like slavoj zizek
-                        // every 5 to 15 words, add a sniff
-                        // every 2 to 8 words, add a stutter
-                        // every 1 to 3 words, add a pause
-                        // replace every "s" with "sh"
-                        // replace every "t" with "d"
+                        const text2 = text!.replace(/s/g, "sh")
+                                .replace(/d /g, "dj ")
+                                .replace(/t/g, "d");
                         
-                        const words = text!.split(" ");
+                        const words = text2!.split(" ");
                         const newWords = [];
                         let newWord = "";
                         
                         for (let i = 0; i < words.length; i++) {
-                                words[i].replace("s", "sh");
 
                                 if (i % 5 === 0 && i % 15 === 0) {
                                         newWord += " *sniff* ";
@@ -80,7 +77,7 @@ const textedit: Command = {
                                 else if (i % 2 === 0 && i % 8 === 0) {
                                         newWord += words[i][0] + "-" + words[i];
                                 }
-                                else if (i % 1 === 0 && i % 3 === 0) {
+                                else if (i % 9 === 0 && i % 14 === 0) {
                                         newWord += " *pauses* ";
                                 }
                                 newWord += words[i];
@@ -88,7 +85,22 @@ const textedit: Command = {
                                 newWord = "";
                         }
 
+                        // one in 18 chance to add "an- and one more thing", one in 20 chance to add ". pure ideology." to the end
+                        const random = Math.floor(Math.random() * 18);
+                        if (random === 0) {
+                                newWords.push("an- and one more thing, i apologise, one more thing....");
+                        }
+                        const random2 = Math.floor(Math.random() * 20);
+                        if (random2 === 0) {
+                                newWords.push(". pure ideology.");
+                        }
+
                         reply = newWords.join(" ");
+                }
+                else if (action === "maoist_standard_english") {
+                        
+
+                        reply = text!;
                 }
 
                 interaction.editReply({ content: reply });

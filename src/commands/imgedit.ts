@@ -18,7 +18,8 @@ const imgedit: Command = {
                     { name: "SuperPoint", value:"superpoint"},
                     { name: "Invert", value: "invert" },
                     { name: "1984", value: "1984" },
-                    { name: "Cpoint", value: "cpoint"}
+                    { name: "Cpoint", value: "cpoint"},
+                    { name: "blank", value: "blank"}
                 )
         )
         .addStringOption(option =>
@@ -70,6 +71,11 @@ const imgedit: Command = {
             // if (!attachment.url.endsWith(".png") && !attachment.url.endsWith(".jpg") && !attachment.url.endsWith(".jpeg") && !attachment.url.endsWith(".gif")) {
             if (!attachment.contentType!.startsWith("image/")) {
                 interaction.editReply({ content: "You must upload an image." });
+                return;
+            }
+            // can't use webps
+            if (attachment.contentType!.startsWith("image/webp")) {
+                interaction.editReply({ content: "You can't use webp images. sorry :(" });
                 return;
             }
             image = attachment.url;
@@ -146,17 +152,14 @@ const imgedit: Command = {
             ctx.putImageData(imgData, 0, 0);
         }
         else if (action === "1984") {
-            // set background to https://i.imgur.com/ezs1Gf0.png
             ctx.drawImage(img, 20, 0, 1000, 800);
             // drag https://i.imgur.com/00mhtBU.png over it
             const img2 = await loadImage("https://i.imgur.com/00mhtBU.png");
             ctx.drawImage(img2, 0, 0, 1024, 1024);
         }
-
-
-            // draw "img" on top, from  
-
-
+        else if (action === "blank") {
+            // do nothing, just return the image
+        }
 
         if (text) {
             ctx.font = "bold 80px Arial";

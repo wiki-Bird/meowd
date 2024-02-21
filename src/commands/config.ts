@@ -63,6 +63,54 @@ data.addSubcommandGroup(subcommandGroup =>
 
 data.addSubcommandGroup(subcommandGroup =>
 	subcommandGroup
+		.setName("ploobs")
+		.setDescription("ploob settings")
+		// add, remove, or list custom ploobs. Add authorised users to add/remove ploobs
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("add")
+				.setDescription("Add a ploob URL.")
+				.addStringOption(option =>
+					option.setName("plooburl")
+						.setDescription("The ploob URL image to add.")
+						.setRequired(true)
+		))
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("remove")
+				.setDescription("Remove an otter channel.")
+				.addIntegerOption(option =>
+					option.setName("ploob")
+						.setDescription("The ploob to remove.")
+						.setRequired(true)
+		))
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("list")
+				.setDescription("List ploobs.")
+		)
+		// .addSubcommand(subcommand =>
+		// 	subcommand
+		// 		.setName("adduser")
+		// 		.setDescription("Add a user to the authorised list.")
+		// 		.addStringOption(option =>
+		// 			option.setName("user")
+		// 				.setDescription("The user to add. @everyone to allow everyone.")
+		// 				.setRequired(true)
+		// ))
+		// .addSubcommand(subcommand =>
+		// 	subcommand
+		// 		.setName("removeuser")
+		// 		.setDescription("Remove a user from the authorised list.")
+		// 		.addStringOption(option =>
+		// 			option.setName("user")
+		// 				.setDescription("The user to remove.")
+		// 				.setRequired(true)
+		// ))
+)
+
+data.addSubcommandGroup(subcommandGroup =>
+	subcommandGroup
 		.setName("rules")
 		.setDescription("Change the rules.")
 		// add, remove, or list rules
@@ -306,6 +354,148 @@ const config: Command = {
 				}
 				await interaction.editReply({ embeds: [embed] });
 			}
+		}
+
+		else if (interaction.options.getSubcommandGroup() === "ploobs") {
+			if (subcommand === "add") {
+				const ploob = interaction.options.getString("plooburl", true);
+
+				// if ploob doesn't end in .gif, .png, or .jpg, return error
+				if (
+					(!ploob.endsWith(".gif") && !ploob.endsWith(".png") && !ploob.endsWith(".jpg")) || 
+					(!ploob.startsWith("http://") && !ploob.startsWith("https://"))
+				) {
+					const embed = new MessageEmbed()
+						.setTitle("Invalid Ploob")
+						.setColor("#ff0000")
+						.setTimestamp()
+						.setDescription(`Ploob URL end with .gif, .png, or .jpg. and start with https:// sorry :(`);
+					await interaction.editReply({ embeds: [embed] });
+					return;
+				}
+
+				let n = 1;
+
+				if (serverConfigRef.child("ploobs") === null) { //if ploobs is null, create it and add the ploob and the user ID of who added it
+					await serverConfigRef.child("ploobs").set({
+						n: [ploob, interaction.user.id]
+					});
+				}
+				else { // append to existing list
+					const ploobsRef = serverConfigRef.child("ploobs");
+					await ploobsRef.once("value")
+						.then(function(snapshot) {
+							n = snapshot.numChildren() + 1;
+							ploobsRef.update({[n]: [ploob, interaction.user.id]});
+						});
+				}
+
+				const embed = new MessageEmbed()
+					.setTitle(`Custom Ploob ${n} Added!`)
+					.setColor("#00f2ff")
+					.setImage(ploob)
+					.setTimestamp()
+				await interaction.editReply({ embeds: [embed] });
+			}
+			else if (subcommand === "remove") {
+				const ploob = interaction.options.getInteger("ploob", true);
+				if (serverConfigRef.child("ploobs").child(ploob.toString()) !== null) { // if rule exists in rules, remove it
+					const ploobRef = serverConfigRef.child("ploobs");
+				
+					// Decrement the key of every element after the removed one
+					await ploobRef.once("value", (snapshot) => {
+						const data = snapshot.val();
+						const newData: {[key: string]: unknown} = {}; // add index signature here
+					
+						for (const key in data) {
+							if (parseInt(key) < ploob) {
+								newData[key] = data[key];
+							} else if (parseInt(key) > ploob) {
+								newData[(parseInt(key) - 1).toString()] = data[key]; // convert key back to string
+							}
+						}
+					
+						// Remove the last element (if any)
+						const lastKey = Object.keys(newData).pop();
+						if (lastKey && !newData[lastKey]) {
+							delete newData[lastKey];
+						}
+					
+						// Update the data with the new values
+						ploobRef.set(newData);
+					});
+				
+					const embed = new MessageEmbed()
+					.setTitle("Ploob Removed")
+					.setColor("#00f2ff")
+					.setTimestamp()
+					.setDescription(`Ploob ${ploob} removed.`);
+					await interaction.editReply({ embeds: [embed] });
+				}
+			}
+			else if (subcommand === "list") {
+				const ploobs = await serverConfigRef.child("ploobs").get();
+				const embed = new MessageEmbed()// create embed with ploobs
+					.setTitle("Ploobs")
+					.setColor("#00f2ff");
+				if (ploobs.exists()) {
+					let i = 1;
+					for (const [, value] of Object.entries(ploobs.val())) {
+						const ploobText: string = value as string;
+						const ploobUploader = `<@${ploobText[1]}>`
+						embed.addFields({ name: `Ploob #${i}`, value: `${ploobUploader}'s: ` + ploobText[0] });
+						i++;
+					}
+				} else {
+					embed.addFields({ name: "Ploobs", value: "No ploobs added. Use `/config ploobs add` to add ploobs." });
+				}
+				await interaction.editReply({ embeds: [embed] });
+			}
+		// 	else if (subcommand === "adduser") {
+		// 		const user = interaction.options.getString("user", true);
+		// 		if (serverConfigRef.child("ploobUsers") === null) { //if ploobUsers is null, create it and add the user
+		// 			await serverConfigRef.child("ploobUsers").set({
+		// 				1: user
+		// 			});
+		// 		}
+		// 		else { // append to existing list
+		// 			const ploobUsersRef = serverConfigRef.child("ploobUsers");
+		// 			await ploobUsersRef.once("value")
+		// 				.then(function(snapshot) {
+		// 					const ploobUsers = snapshot.val();
+		// 					const n = Object.keys(ploobUsers).length + 1;
+		// 					ploobUsersRef.update({[n]: user});
+		// 				});
+		// 		}
+
+		// 		const embed = new MessageEmbed()
+		// 			.setTitle("User Added")
+		// 			.setColor("#00f2ff")
+		// 			.setTimestamp()
+		// 			.setDescription(`User ${user} added.`);
+		// 		await interaction.editReply({ embeds: [embed] });
+		// 	}
+		// 	else if (subcommand === "removeuser") {
+		// 		const user = interaction.options.getString("user", true);
+		// 		if (serverConfigRef.child("ploobUsers") !== null) { // if user exists in ploobUsers, remove it
+		// 			const ploobUsersRef = serverConfigRef.child("ploobUsers");
+		// 			await ploobUsersRef.once("value", (snapshot) => {
+		// 				const ploobUsers = snapshot.val();
+		// 				const index = ploobUsers.indexOf(user);
+		// 				if (index > -1) {
+		// 					ploobUsers.splice(index, 1);
+		// 				}
+		// 				ploobUsersRef.set(ploobUsers);
+		// 			});
+		// 		}
+
+		// 		const embed = new MessageEmbed()
+		// 			.setTitle("User Removed")
+		// 			.setColor("#00f2ff")
+		// 			.setTimestamp()
+		// 			.setDescription(`User ${user} removed.`);
+		// 		await interaction.editReply({ embeds: [embed] });
+		// 	}
 		}
 
 		else if (interaction.options.getSubcommandGroup() === "wordsblacklist") {
