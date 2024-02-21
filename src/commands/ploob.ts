@@ -9,7 +9,6 @@ const ploob: Command = {
     .addNumberOption(option =>
         option.setName("number")
             .setDescription("The ploob to get")
-            .setRequired(true)
             .setMinValue(1)
         )
 	.setDescription('ploob.. .'),
