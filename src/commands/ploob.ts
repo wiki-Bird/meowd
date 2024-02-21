@@ -13,7 +13,7 @@ const ploob: Command = {
         )
 	.setDescription('ploob.. .'),
     execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
-		const ploobs = 3;
+		const ploobs = 34;
         const number = interaction.options.getNumber("number");
 
 		await interaction.deferReply();
@@ -48,7 +48,10 @@ const ploob: Command = {
             ploobArray = dbPloobs.val();
         }
 
-        const totalPloobs = ploobs + ploobArray.length;
+        let totalPloobs = ploobs;
+        if (ploobArray) {
+            totalPloobs += ploobArray.length;
+        }
 
         if (!number || number > totalPloobs) {
             const randomMsg = Math.floor((Math.random() * ploobMsgs.length));
