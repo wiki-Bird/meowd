@@ -98,9 +98,103 @@ const textedit: Command = {
                         reply = newWords.join(" ");
                 }
                 else if (action === "maoist_standard_english") {
-                        
+                        // Server not in list
+                        ["521856622998323202", "1034219118276120586"]
+                        if (interaction.guild.id !== "521856622998323202" && interaction.guild.id !== "1034219118276120586") {
+                                interaction.editReply({ content: "This action is server restricted and cannot be used here, sorry." });
+                                return;
+                        }
 
-                        reply = text!;
+                        const specificReplacements = {
+                                'american soldiers': 'Imperial storm troopers',
+                                'america': 'AmeriKKKa',
+                                'american': 'Burger',
+                                'auckland': 'AucKKKland',
+                                'australia': 'AuSStralia',
+                                'austria': 'AuSStria',
+                                'austerity': 'AuSSterity',
+                                'belarus': 'BelaruZ',
+                                'brazil': 'BraSSil',
+                                'canada': 'KKKanada',
+                                'cappuccino': 'KKKappuccino',
+                                'capitalism': 'KKKapitali$m',
+                                'christchurch': 'KKKristchurch',
+                                'class': 'KKKlaSS',
+                                'clinton': 'KKKlinton',
+                                'colonise': 'KKKoloni$e',
+                                'coloniser': 'KKKoloni$er',
+                                'community': 'KKKommunity',
+                                'consumer': 'KKKon$umer',
+                                'cracker': 'craKKKa',
+                                'cream': 'KKKream',
+                                'croatia': 'KKKroatia',
+                                'culture': 'KKKulture',
+                                'democrats': 'DemoKKKRats',
+                                'domination': 'McDomination',
+                                'economist': 'eKKKonomiSSt',
+                                'estonia': 'ESStonia',
+                                'france': 'FranSSe',
+                                'germany': 'DeutSSchland',
+                                'hillary': 'KKKillary',
+                                'historian': 'hiSStorian',
+                                'history': 'theirstory',
+                                'israel': 'the Zionist entity',
+                                'kansas': 'KKKanSSa$',
+                                'kraut': 'KKKraut',
+                                'patrick': 'PatricKKK',
+                                'police': 'pigs',
+                                'revenue': 'imperial super profits',
+                                'russia': 'RuZZia',
+                                'shortage': 'fuck the global south',
+                                'snowflake': 'snowflaKKKe',
+                                'south africa': 'South AfriKKKa',
+                                'south korea': 'South KKKorea',
+                                'spain': '$pain',
+                                'starvation': 'white death',
+                                'state': 'SState',
+                                'sweden': 'SSweden',
+                                'switzerland': 'SSwitzerland',
+                                'to their surprise': 'to their white surprise',
+                                'uk': 'the so-called United Kingdom',
+                                'united kingdom': 'the so-called United Kingdom',
+                                'united states': 'The United States of Lyncherdom',
+                                'united states of America': 'United $$nake$$ of AmeriKKKa',
+                                'usa': 'U$A',
+                                'us': 'U$',
+                                'us soldiers': 'mercenary techno-legion GI',
+                                'wellington': 'the so-called capital of New Zealand',
+                                'west': 'settler-colonialist',
+                                'western': 'imperialist',
+                                'white': 'Whitey',
+                                'chris luxon': 'so called honourable prime minister KKKris luxon'
+                        };                        
+
+
+                        let result = text?.toLowerCase() ?? "";
+
+                        // Apply specific replacements
+                        for (const [key, value] of Object.entries(specificReplacements)) {
+                                const regex = new RegExp(key, 'gi');
+                                result = result.replace(regex, value);
+                        }
+                        // General character replacements combined into a single replace() call
+                        result = result.replace(/ck|kk|k|ss|s/gi, function(match) {
+                                switch(match.toLowerCase()) {
+                                    case 'ck':
+                                    case 'kk':
+                                        return 'KKK';
+                                    case 'k':
+                                        return 'KKK';
+                                    case 'ss':
+                                        return 'SS';
+                                    case 's':
+                                        return '$';
+                                    default:
+                                        return match; // Just in case
+                                }
+                        });
+
+                        reply = result;
                 }
 
                 interaction.editReply({ content: reply });
