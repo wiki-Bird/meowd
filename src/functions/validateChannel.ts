@@ -16,11 +16,11 @@ export default async function validateChannel(channel: string, interaction: Comm
         if (channel?.startsWith("<#") && channel?.endsWith(">")) {
             channelID = channel.slice(2, -1);
         }
-        else if (channel?.length === 18 && isNaN(Number(channel)) === false) {
+        else if (channel?.length >= 18 && isNaN(Number(channel)) === false) {
             channelID = channel;
         }
         else {
-            if (interaction !== undefined) {
+            if (interaction !== undefined ) {
                 try {
                     await interaction.reply({ content: `Invalid channel. Please provide a channel's ID, # a channel, or nothing at all.`, ephemeral: true });
                 }

@@ -15,7 +15,7 @@ export default async function validateGuild(guildInput: string, interaction: Com
         if (guildInput?.startsWith("<@&") && guildInput?.endsWith(">")) {
             guildID = guildInput.slice(3, -1);
         }
-        else if (guildInput?.length === 18 && isNaN(Number(guildInput)) === false) {
+        else if (guildInput?.length >= 18 && isNaN(Number(guildInput)) === false) {
             guildID = guildInput;
         }
         else {
