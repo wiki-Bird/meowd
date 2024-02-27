@@ -17,6 +17,11 @@ const msg: Command = {
                 .setDescription("The message to send.")
                 .setRequired(true)
         )
+        .addStringOption(option =>
+            option.setName("guild")
+                .setDescription("The guild to send.")
+                .setRequired(false)
+        )
 		.setDescription('Message a channel as the bot.'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
@@ -30,10 +35,26 @@ const msg: Command = {
 
         const channel = interaction.options.getChannel("channel", true);
         const message = interaction.options.getString("message", true);
+        const guild = interaction.options.getString("guild", false);
 
         if (!interaction.guild) {return;}
         if (channel === null || !(channel instanceof TextChannel)) {
             interaction.reply({ content: "You must specify text a channel to message.", ephemeral: true });
+        }
+
+        if (guild !== null) {
+            const guilds = interaction.client.guilds.cache;
+            const foundGuild = guilds.find(g => g.name === guild);
+            if (foundGuild === undefined) {
+                interaction.reply({ content: "Guild not found.", ephemeral: true });
+                return;
+            }
+            const channels = foundGuild.channels.cache;
+            const foundChannel = channels.find(c => c.name === channel.name);
+            if (foundChannel === undefined) {
+                interaction.reply({ content: "Channel not found.", ephemeral: true });
+                return;
+            }
         }
 
         (channel as TextChannel).send(message);
