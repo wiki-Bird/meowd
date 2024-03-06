@@ -126,7 +126,7 @@ const imgedit: Command = {
             ctx.drawImage(jerma, 0, 124, 900, 900);
         }
         else if (action === "superpoint") {
-            const superpoint = await loadImage("https://media.discordapp.net/attachments/590667063165583409/1184257470684745828/superTFpoint.png");
+            const superpoint = await loadImage("https://cdn.discordapp.com/attachments/590667063165583409/1184257470684745828/superTFpoint.png");
             ctx.drawImage(superpoint, 0, 0, 1024, 1024);
         }
         else if (action === "cpoint") {
