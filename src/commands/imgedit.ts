@@ -118,15 +118,15 @@ const imgedit: Command = {
         }
         else if (action === "rainbow") {
             // draw pride circle around image
-            const pride = await loadImage("https://cdn.discordapp.com/attachments/669394205705240606/1095209363452469349/pride2.png");
+            const pride = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/pride2.png");
             ctx.drawImage(pride, 0, 0, 1024, 1024);
         }
         else if (action === "jerma") {
-            const jerma = await loadImage("https://cdn.discordapp.com/attachments/669394205705240606/1095204244447043615/jerma.png");
+            const jerma = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/jerma.png");
             ctx.drawImage(jerma, 0, 124, 900, 900);
         }
         else if (action === "superpoint") {
-            const superpoint = await loadImage("https://cdn.discordapp.com/attachments/590667063165583409/1184257470684745828/superTFpoint.png");
+            const superpoint = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/superTFpoint.png");
             ctx.drawImage(superpoint, 0, 0, 1024, 1024);
         }
         else if (action === "cpoint") {
@@ -136,7 +136,7 @@ const imgedit: Command = {
                 return;
             }
 
-            const cpoint = await loadImage("https://media.discordapp.net/attachments/1163430975183802379/1181522569053085817/Csoy.png");
+            const cpoint = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/Csoy.png");
             ctx.drawImage(cpoint, 0, 0, 1024, 1024);
         }
         else if (action === "invert") {
@@ -154,7 +154,7 @@ const imgedit: Command = {
         else if (action === "1984") {
             ctx.drawImage(img, 20, 0, 1000, 800);
             // drag https://i.imgur.com/00mhtBU.png over it
-            const img2 = await loadImage("https://i.imgur.com/00mhtBU.png");
+            const img2 = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/1984.png");
             ctx.drawImage(img2, 0, 0, 1024, 1024);
         }
         else if (action === "blank") {
