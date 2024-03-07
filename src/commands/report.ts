@@ -31,7 +31,7 @@ const report: Command = {
 		.setDescription('Report a user.'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
-        await interaction.deferReply();
+        // await interaction.deferReply();
 
         const user = interaction.options.getString("user", true);
         const reason = interaction.options.getString("reason", true);
