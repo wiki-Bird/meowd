@@ -18,8 +18,9 @@ const imgedit: Command = {
                     { name: "SuperPoint", value:"superpoint"},
                     { name: "Invert", value: "invert" },
                     { name: "1984", value: "1984" },
-                    { name: "Cpoint", value: "cpoint"},
-                    { name: "blank", value: "blank"}
+                    { name: "Puter", value: "puter"},
+                    { name: "blank", value: "blank"},
+                    { name: "Cpoint", value: "cpoint"}
                 )
         )
         .addStringOption(option =>
@@ -129,6 +130,11 @@ const imgedit: Command = {
             const superpoint = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/superTFpoint.png");
             ctx.drawImage(superpoint, 0, 0, 1024, 1024);
         }
+        else if (action === "puter") {
+            const puter = await loadImage("/images/puter.png");
+            ctx.drawImage(puter, 0, 0, 1024, 1024);
+
+        }
         else if (action === "cpoint") {
             const serverWhitelist = ["1034219118276120586", "521856622998323202", "945166361519353877"];
             if (serverWhitelist.indexOf(interaction.guild.id) === -1) {
@@ -152,10 +158,10 @@ const imgedit: Command = {
             ctx.putImageData(imgData, 0, 0);
         }
         else if (action === "1984") {
-            ctx.drawImage(img, 20, 0, 1000, 800);
+            // ctx.drawImage(img, 20, 0, 1000, 800);
             // drag https://i.imgur.com/00mhtBU.png over it
-            const img2 = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/1984.png");
-            ctx.drawImage(img2, 0, 0, 1024, 1024);
+            const nineEightFour = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/1984.png");
+            ctx.drawImage(nineEightFour, 0, 0, 1024, 1024);
         }
         else if (action === "blank") {
             // do nothing, just return the image
