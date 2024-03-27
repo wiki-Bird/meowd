@@ -131,7 +131,8 @@ const imgedit: Command = {
             ctx.drawImage(superpoint, 0, 0, 1024, 1024);
         }
         else if (action === "puter") {
-            const puter = await loadImage("/images/puter.png");
+            ctx.drawImage(img, 300, 0, 550, 650);
+            const puter = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/puter.png");
             ctx.drawImage(puter, 0, 0, 1024, 1024);
 
         }
@@ -158,7 +159,7 @@ const imgedit: Command = {
             ctx.putImageData(imgData, 0, 0);
         }
         else if (action === "1984") {
-            // ctx.drawImage(img, 20, 0, 1000, 800);
+            ctx.drawImage(img, 20, 0, 1000, 800);
             // drag https://i.imgur.com/00mhtBU.png over it
             const nineEightFour = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/1984.png");
             ctx.drawImage(nineEightFour, 0, 0, 1024, 1024);
