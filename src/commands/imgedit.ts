@@ -19,8 +19,7 @@ const imgedit: Command = {
                     { name: "Invert", value: "invert" },
                     { name: "1984", value: "1984" },
                     { name: "Puter", value: "puter"},
-                    { name: "blank", value: "blank"},
-                    { name: "Cpoint", value: "cpoint"}
+                    { name: "blank", value: "blank"}
                 )
         )
         .addStringOption(option =>
@@ -135,16 +134,6 @@ const imgedit: Command = {
             const puter = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/puter.png");
             ctx.drawImage(puter, 0, 0, 1024, 1024);
 
-        }
-        else if (action === "cpoint") {
-            const serverWhitelist = ["1034219118276120586", "521856622998323202", "945166361519353877"];
-            if (serverWhitelist.indexOf(interaction.guild.id) === -1) {
-                interaction.editReply({ content: "This image is server restricted and cannot be used here, sorry." });
-                return;
-            }
-
-            const cpoint = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/Csoy.png");
-            ctx.drawImage(cpoint, 0, 0, 1024, 1024);
         }
         else if (action === "invert") {
             const imgData = ctx.getImageData(0, 0, 1024, 1024);
