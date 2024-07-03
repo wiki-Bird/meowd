@@ -16,14 +16,15 @@ const funnyfont: Command = {
                 .setRequired(false)
                 .addChoices(
                     { name: "cool edgy", value: "cooledgy" },
-                    { name: "cursive", value: "cursive" }
+                    { name: "cursive", value: "cursive" },
+                    { name: "upside down", value: "upsidedown" }
                 )
         )
     .setDescription('Makes text into a funny font'),
 	
 	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
         const text = interaction.options.getString("text", true);
-        const font = interaction.options.getString("font", false) || "cooledgy";
+        const font = interaction.options.getString("font", false) || "cursive";
 
         let lowerCaseOut: Array<string>;
         let upperCaseOut: Array<string>;
@@ -41,6 +42,10 @@ const funnyfont: Command = {
         else if (font === "cursive") {
             lowerCaseOut = ['𝓪', '𝓫', '𝓬', '𝓭', '𝓮', '𝓯', '𝓰', '𝓱', '𝓲', '𝓳', '𝓴', '𝓵', '𝓶', '𝓷', '𝓸', '𝓹', '𝓺', '𝓻', '𝓼', '𝓽', '𝓾', '𝓿', '𝔀', '𝔁', '𝔂', '𝔃'];
             upperCaseOut = ['𝓐', '𝓑', '𝓒', '𝓓', '𝓔', '𝓕', '𝓖', '𝓗', '𝓘', '𝓙', '𝓚', '𝓛', '𝓜', '𝓝', '𝓞', '𝓟', '𝓠', '𝓡', '𝓢', '𝓣', '𝓤', '𝓥', '𝓦', '𝓧', '𝓨', '𝓩'];
+        }
+        else if (font ==="upsidedown") {
+            lowerCaseOut = ["ɐ","q","ɔ","p","ǝ","ɟ","ƃ","ɥ","ᴉ","ɾ","ʞ","l","ɯ","u","o","d","b","ɹ","s","ʇ","n","ʌ","ʍ","x","ʎ","z"];
+            upperCaseOut = ["∀","q","Ɔ","p","Ǝ","Ⅎ","פ","H","I","ſ","ʞ","˥","W","N","O","Ԁ","Q","ɹ","S","┴","∩","Λ","M","X","⅄","Z"];
         }
         else{
             return;
