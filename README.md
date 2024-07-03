@@ -1,5 +1,5 @@
 </br>
-<p align="center"><a href="https://meowd.ramiels.me/" target="_blank" rel="noreferrer noopener"><img width="170" alt="Logo" src="https://media.discordapp.net/attachments/669394205705240606/1095216676154392677/lgoo1.png"></a></p>
+<p align="center"><a href="https://meowd.ramiels.me/" target="_blank" rel="noreferrer noopener"><img width="170" alt="Logo" src="./images/logo1.png"></a></p>
 <h2 align="center"> Meowd</h2>
 <h3 align="center">Your powerful, customisable Discord bot. <br> 
 Neep help? Check out <a href="https://meowd.ramiels.me/">meowd.ramiels.me</a>.</h3>
