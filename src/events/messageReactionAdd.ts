@@ -58,18 +58,17 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
             try {
                 const userUser = await client.users.fetch(user.id);
                 await userUser.send("You can't star your own message. Sorry :(");
-                // reaction.remove();
+                reaction.remove();
             } catch (error) {
                 console.error(`Failed to send DM to user ${user.id}: ${error}`);
             }
-            // return;
+            return;
         }
 
         // Check if the number of star reacts >= minimum reacts to go to starboard. If it doesn't, return
         const starCount = message.reactions.cache.find(r => 
             r.emoji.id === emojiIdentifier || r.emoji.toString() === starEmoji
         )?.count || 0;
-        console.log(starCount)
         if ( starCount < minReactsToStar ) return;
 
         // Get the last 100 messages in the starboard channel
