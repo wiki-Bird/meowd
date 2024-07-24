@@ -9,7 +9,6 @@ import MemberServerPair from '../types/MemberServerPair';
 const messageCreate: Event<[Message]> = {
     name: 'messageCreate',
     execute: async function (message: Message) {
-
         // if message comes from a bot, ignore it.
         if (message.author.bot) return;
 

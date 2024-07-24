@@ -20,7 +20,7 @@ const guildBanAdd: Event<[GuildBan]> = {
         });
         const latestBan = fetchedLogs.entries.first();
 
-        if (!latestBan) return console.log(`${ban.user.tag} was banned from ${ban.guild.name} but no audit log could be found.`);
+        if (!latestBan) return console.log(`${ban.user.username} was banned from ${ban.guild.name} but no audit log could be found.`);
 
         const { executor, reason } = latestBan;
 
@@ -45,7 +45,7 @@ const guildBanAdd: Event<[GuildBan]> = {
         
         const logEmbed = new MessageEmbed()
             .setColor("#ff0000")
-            .setAuthor({name: `${ban.user.tag} (ID: ${ban.user.id}) was banned.`, iconURL: ban.user.displayAvatarURL()})
+            .setAuthor({name: `${ban.user.username} (ID: ${ban.user.id}) was banned.`, iconURL: ban.user.displayAvatarURL()})
             .addFields(
                 { name: "Reason:", value: reasonGiven},
                 { name: "Banned by:", value: executor!.tag, inline: true},

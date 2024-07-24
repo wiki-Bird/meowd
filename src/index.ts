@@ -24,7 +24,7 @@ const { token, clientId } = require('../config.json');
 // myIntents.add(Intents.ALL);
 
 export const client= new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_MESSAGES,
-Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MEMBERS], partials: ["CHANNEL"] }) as OtterClient
+Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MEMBERS], partials: ["MESSAGE", "CHANNEL", "REACTION"] }) as OtterClient
 
 // FIREBASE:
 // Import the functions you need from the SDKs you need
@@ -65,6 +65,7 @@ const commandCheck = async () => {
         const commandModule = await import(join(basePath, file));
         const command = commandModule.default;
         commands.push(command.data.toJSON());
+        console.log(`Loaded Command: /${file}`);
     }
 
     const rest = new REST({ version: '9' }).setToken(token);
@@ -105,9 +106,9 @@ const init = async () => {
     
     for (const file of eventFiles) {
         const filePath = join(eventsPath, file);
-        // const event = require(filePath).default;
         const eventModule = await import(filePath);
         const event = eventModule.default;
+        console.log(`Loaded event: ${file}`);
         if (event.once) {
             client.once(event.name, (...args) => event.execute(...args));
         } else {

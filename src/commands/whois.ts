@@ -59,7 +59,7 @@ const whois: Command = {
                 .setColor(color as ColorResolvable)
                 .setDescription("**" + userNamed.tag + "  -  <@" + userGuildMember.id + ">**")
                 .setThumbnail(userGuildMember.user.displayAvatarURL())
-                .setFooter({ text: `User info requested by ${interaction.user.tag} ` })
+                .setFooter({ text: `User info requested by ${interaction.user.username} ` })
                 .setTimestamp();
 
             // if user has a role that is (igorning case) "she/her" "he/him" or "they/them", add pronouns to embed:

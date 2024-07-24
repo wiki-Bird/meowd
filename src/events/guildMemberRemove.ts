@@ -38,7 +38,7 @@ const guildMemberRemove: Event<[GuildMember]> = {
         if (!kickLog) {
             // user left on their own
             const embed = new MessageEmbed()
-                .setAuthor({name: `${member.user.tag} left the server.`, iconURL: member.user.displayAvatarURL()})
+                .setAuthor({name: `${member.user.username} left the server.`, iconURL: member.user.displayAvatarURL()})
                 .setColor('#00f2ff')
                 .setTimestamp()
                 .setFooter({ text: `ID ${member.user.id}` });
@@ -56,7 +56,7 @@ const guildMemberRemove: Event<[GuildMember]> = {
 
             const logEmbed = new MessageEmbed()
                 .setColor("#00f2ff")
-                .setAuthor({name: `${member.user.tag} (ID: ${member.user.id}) was kicked.`, iconURL: member.user.displayAvatarURL()})
+                .setAuthor({name: `${member.user.username} (ID: ${member.user.id}) was kicked.`, iconURL: member.user.displayAvatarURL()})
                 .addFields(
                     { name: "Reason:", value: reasonGiven},
                     { name: "Kicked by:", value: executor!.tag, inline: true},
@@ -69,7 +69,7 @@ const guildMemberRemove: Event<[GuildMember]> = {
         else{
             // user left on their own
             const embed = new MessageEmbed()
-                .setTitle(`${member.user.tag} left the server.`)
+                .setTitle(`${member.user.username} left the server.`)
                 .setColor('#00f2ff')
                 .setTimestamp()
                 .setFooter({ text: `ID ${member.user.id}` });

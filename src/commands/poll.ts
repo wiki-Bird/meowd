@@ -24,7 +24,7 @@ const poll: Command = {
 
 		const embed = new MessageEmbed();
 		embed.setTitle(Title!)
-		.setFooter({ text: `Poll created by ${interaction.user.tag} with /poll` })
+		.setFooter({ text: `Poll created by ${interaction.user.username} with /poll` })
 		.setColor("#00f2ff");
 
 		if (Options === null) {

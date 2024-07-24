@@ -56,7 +56,7 @@ const dm: Command = {
         // userGuildMember.user.send(message);
         userGuildMember.user.send({ embeds: [embed] });
 
-        interaction.editReply({ content: `Message sent to ${userGuildMember.user.tag}`});
+        interaction.editReply({ content: `Message sent to ${userGuildMember.user.username}`});
 
     }
 }

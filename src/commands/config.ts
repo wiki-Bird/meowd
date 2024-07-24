@@ -63,6 +63,46 @@ data.addSubcommandGroup(subcommandGroup =>
 
 data.addSubcommandGroup(subcommandGroup =>
 	subcommandGroup
+		.setName("starboard")
+		.setDescription("Change starboard settings.")
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("updatechannel")
+				.setDescription("Update the starboard channel.")
+				.addChannelOption(option =>
+					option.setName("channel")
+						.setDescription("The channel for meowd to send starred messages to.")
+						.setRequired(true)
+		))
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("updateemoji")
+				.setDescription("Update the starboard emoji.")
+				.addStringOption(option =>
+					option.setName("emoji")
+						.setDescription("The emoji to use as the 'star'.")
+						.setRequired(true)
+		))
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("updateminstars")
+				.setDescription("Update the minimum number of stars emoji.")
+				.addIntegerOption(option =>
+					option.setName("minstars")
+						.setDescription("How many 'stars' to get on the starboard.")
+						.setRequired(true)
+						.setMinValue(1) 
+						.setMaxValue(500)
+		))
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName("toggle")
+				.setDescription("Turn the starboard on or off")
+		)
+)
+
+data.addSubcommandGroup(subcommandGroup =>
+	subcommandGroup
 		.setName("ploobs")
 		.setDescription("ploob settings")
 		// add, remove, or list custom ploobs. Add authorised users to add/remove ploobs
@@ -217,6 +257,119 @@ const config: Command = {
 				.setTimestamp()
 				.setDescription(`Log channel set to <#${channel.id}>`);
 			await interaction.editReply({ embeds: [embed] });
+		}
+		else if (interaction.options.getSubcommandGroup() === "starboard") {
+			console.log('ur a star');
+			if (serverConfigRef.child("starboard") === null) { //if starboard is null, create it and add the channel
+				await serverConfigRef.child("starboard").set({ //  empty
+				});
+			}
+			const starboardConfigRef = serverConfigRef.child("starboard");
+
+			if (subcommand === "updatechannel"){
+				const channel = interaction.options.getChannel("channel", true);
+				if (starboardConfigRef.child("channel") === null) { //if starboard.channel is null, create it and add the channel
+					await starboardConfigRef.child("channel").set({
+						[channel.id]: channel.name
+					});
+				}
+				else { // overwrite to existing list
+					starboardConfigRef.child("channel").set(null);
+					await starboardConfigRef.child("channel").update({
+						[channel.id]: channel.name
+					});
+				}
+
+				const embed = new MessageEmbed()
+					.setAuthor({name: "Meowd Starboard", iconURL: "https://raw.githubusercontent.com/wiki-Bird/meowd-site/main/meowdSiteSveltekit/static/point.png"})
+					.setColor("#00f2ff")
+					.addFields({ name: "Starboard Channel Updated: ", value: `<#${channel.id}>` })
+				await interaction.editReply({embeds: [embed]});
+			}
+			if (subcommand === "updateemoji"){
+				const emote = interaction.options.getString("emoji", true);
+
+				const emoteRegex = /<a?:\w+:\d+>/;
+				const emojiRegex = /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F1E6}-\u{1F1FF}\u{1F201}-\u{1F251}\u{1F004}\u{1F0CF}\u{1F18E}\u{1F191}-\u{1F19A}\u{1F1E6}-\u{1F1FF}]+/gu;
+				let valToSave;
+
+				// First try to match a Discord emote
+				let match = emote.match(emoteRegex);
+				if (match) {
+					valToSave = match[0];
+				}
+				else {
+					match = emote.match(emojiRegex);
+					if (match) {
+						valToSave = match[0];
+					}
+					else {
+						interaction.editReply("Invalid emote given.");
+						return;
+					}
+				}
+
+				if (starboardConfigRef.child("emote") === null) { //if starboard.emote is null, create it and add the channel
+					await starboardConfigRef.child("emote").set({
+						valToSave
+					});
+				}
+				else { // overwrite to existing list
+					starboardConfigRef.child("emote").set(null);
+					await starboardConfigRef.child("emote").update({
+						valToSave
+					});
+				}
+
+				const embed = new MessageEmbed()
+					.setAuthor({name: "Meowd Starboard", iconURL: "https://raw.githubusercontent.com/wiki-Bird/meowd-site/main/meowdSiteSveltekit/static/point.png"})
+					.setColor("#00f2ff")
+					.addFields({ name: "Starboard Emote Updated: ", value: `${emote}` })
+				await interaction.editReply({embeds: [embed]});
+			}
+			if (subcommand === "updateminstars"){
+				const minStarCount = interaction.options.getInteger("minstars", true);
+				if (minStarCount < 1 && minStarCount >= 500) {
+					console.log(minStarCount);
+					interaction.editReply(`Sorry, Min Starcount must be >= 1 and <= 500. ${minStarCount} does not fit this.`)
+					return;
+				}
+
+				if (starboardConfigRef.child("minstars") === null) { //if starboard.minstars is null, create it and add the channel
+					await starboardConfigRef.child("minstars").set({
+						minStarCount
+					});
+				}
+				else { // overwrite to existing list
+					starboardConfigRef.child("minstars").set(null);
+					await starboardConfigRef.child("minstars").update({
+						minStarCount
+					});
+				}
+
+				const embed = new MessageEmbed()
+					.setAuthor({name: "Meowd Starboard", iconURL: "https://raw.githubusercontent.com/wiki-Bird/meowd-site/main/meowdSiteSveltekit/static/point.png"})
+					.setColor("#00f2ff")
+					.addFields({ name: "Starboard Minimum Stars Updated: ", value: `${minStarCount}` })
+				await interaction.editReply({embeds: [embed]});
+			}
+			if (subcommand === "toggle"){
+				let toggle = "on";
+				if (starboardConfigRef.child("starboardon") === null) { //if starboard.channel is null, create it and add the channel
+					starboardConfigRef.child("starboardon").set("true");
+				}
+				else { // overwrite to existing list
+					const newState = (await starboardConfigRef.child("starboardon").get()).val() === "true" ? "false" : "true";
+					starboardConfigRef.child("starboardon").set(newState);
+					toggle = newState === "true" ? "on" : "off";
+				}
+
+				const embed = new MessageEmbed()
+					.setAuthor({name: "Meowd Starboard", iconURL: "https://raw.githubusercontent.com/wiki-Bird/meowd-site/main/meowdSiteSveltekit/static/point.png"})
+					.setColor("#00f2ff")
+					.addFields({ name: "Starboard turned ", value: `${toggle}` })
+				await interaction.editReply({embeds: [embed]});
+			}
 		}
 		else if (interaction.options.getSubcommandGroup() === "otterchannels") {
 			if (subcommand === "add") {
