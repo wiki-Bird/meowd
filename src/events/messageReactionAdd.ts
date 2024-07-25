@@ -28,14 +28,13 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
         const starboardChannelID = Object.keys(starboardDB.child("channel").val() || {})[0] || "";
         
         // If server doesn't have starboard enabled, or a starboard channel, return
-        if (enabled != "true") return;
+        if (enabled != "t") return;
         if (starboardChannelID === "") return;
         // If the starboard channel doesn't exist, return
         const starboardChannel = message.guild?.channels.cache.get(starboardChannelID);
         if (!starboardChannel) return;
 
         const emojiIdentifier = String(Object.values(starboardDB.child("emote").val() || {})[0] || "⭐");
-        const minReactsToStar = parseInt(String(Object.values(starboardDB.child("minstars").val() || {})[0] || "1"), 10) || 1;
 
         // Determine the actual emoji to use
         let starEmoji: string;
@@ -65,6 +64,8 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
             return;
         }
 
+        const minReactsToStar = parseInt(String(Object.values(starboardDB.child("minstars").val() || {})[0] || "1"), 10) || 1;
+        
         // Check if the number of star reacts >= minimum reacts to go to starboard. If it doesn't, return
         const starCount = message.reactions.cache.find(r => 
             r.emoji.id === emojiIdentifier || r.emoji.toString() === starEmoji
