@@ -24,7 +24,7 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
         // Access FirebaseDB and get state, minstars, emote, and channel
         const starboardDB = await ref.child("config").child(message.guildId).child("starboard").get();
         
-        const enabled = Object.values(starboardDB.child("starboardon").val() || {})[0] || "true";
+        const enabled = Object.values(starboardDB.child("starboardon").val() || {})[0] || "t";
         const starboardChannelID = Object.keys(starboardDB.child("channel").val() || {})[0] || "";
         
         // If server doesn't have starboard enabled, or a starboard channel, return
