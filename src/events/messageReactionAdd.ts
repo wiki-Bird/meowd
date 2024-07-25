@@ -57,7 +57,7 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
             try {
                 const userUser = await client.users.fetch(user.id);
                 await userUser.send("You can't star your own message. Sorry :(");
-                reaction.remove();
+                await reaction.users.remove(user.id);
             } catch (error) {
                 console.error(`Failed to send DM to user ${user.id}: ${error}`);
             }
@@ -65,7 +65,7 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
         }
 
         const minReactsToStar = parseInt(String(Object.values(starboardDB.child("minstars").val() || {})[0] || "1"), 10) || 1;
-        
+
         // Check if the number of star reacts >= minimum reacts to go to starboard. If it doesn't, return
         const starCount = message.reactions.cache.find(r => 
             r.emoji.id === emojiIdentifier || r.emoji.toString() === starEmoji
