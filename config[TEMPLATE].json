@@ -1,0 +1,5 @@
+{
+	"clientId": "bot_id_here",
+	"guildId": "guild_id_here (unused unless enabling guild commands in deploy-commands.ts)",
+	"token": "bot_token_here"
+}
