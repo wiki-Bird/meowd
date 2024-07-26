@@ -53,7 +53,7 @@ const report: Command = {
 
         const reportEmbed = new MessageEmbed()
             .setColor("#00f2ff")
-            .setAuthor({name: `${userNamed.tag} (${userNamed.id}) reported by ${reportingUser.tag}`, iconURL: userNamed.displayAvatarURL()})
+            .setAuthor({name: `${userNamed.username} (${userNamed.id}) reported by ${reportingUser.username}`, iconURL: userNamed.displayAvatarURL()})
             .addFields(
                 { name: "Reason:", value: reason},
                 { name: "Channel:", value: "<#" + channel.id + ">", inline: true},
@@ -82,7 +82,7 @@ const report: Command = {
             return;
         }
 
-        interaction.reply({ content: `${userNamed.tag} reported to the mod team.`, ephemeral: true });
+        interaction.reply({ content: `${userNamed.username} reported to the mod team.`, ephemeral: true });
 	}
 }
 

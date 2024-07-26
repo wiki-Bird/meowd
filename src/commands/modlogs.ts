@@ -76,7 +76,7 @@ const modlog: Command = {
     if (userID === client.user.id) {
         embed.setTitle("User " + userID + "'s moderation history (user not in server):");
     } else {
-        embed.setAuthor({ name: userNamed.tag + "'s moderation history:", iconURL: userNamed.displayAvatarURL() });
+        embed.setAuthor({ name: userNamed.username + "'s moderation history:", iconURL: userNamed.displayAvatarURL() });
     }
     if (page < totalPages) {
         embed.setFooter({ text: "Page " + page + " of " + totalPages + "  |  /modlog " + userID  + " " + (page + 1) + " for the next page."});
@@ -123,7 +123,7 @@ const modlog: Command = {
         if (userID === client.user.id) {
             embed.setTitle("User " + userID + "'s " + type + " history (user not in server):");
         } else {
-            embed.setAuthor({ name: userNamed.tag + "'s " + type + " history:", iconURL: userNamed.displayAvatarURL() });
+            embed.setAuthor({ name: userNamed.username + "'s " + type + " history:", iconURL: userNamed.displayAvatarURL() });
         }
 
         totalPages = Math.ceil(addedFieldCount / 15);

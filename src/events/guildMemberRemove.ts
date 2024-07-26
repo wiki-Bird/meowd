@@ -59,7 +59,7 @@ const guildMemberRemove: Event<[GuildMember]> = {
                 .setAuthor({name: `${member.user.username} (ID: ${member.user.id}) was kicked.`, iconURL: member.user.displayAvatarURL()})
                 .addFields(
                     { name: "Reason:", value: reasonGiven},
-                    { name: "Kicked by:", value: executor!.tag, inline: true},
+                    { name: "Kicked by:", value: executor!.username, inline: true},
                     { name: "Date:", value: new Date().toLocaleDateString(), inline: true}
                 )
                 .setTimestamp();

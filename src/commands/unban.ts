@@ -66,7 +66,7 @@ const unban: Command = {
 
         const embed = new MessageEmbed()
         .setTitle("User Unbanned:")
-        .setDescription("<@!" + userID + `> (` + userID + `) has been unbanned by ${moderator.tag} for the following reason:`)
+        .setDescription("<@!" + userID + `> (` + userID + `) has been unbanned by ${moderator.username} for the following reason:`)
         .addFields(
             { name: "Reason:", value: reason, inline: true },
             { name: "Date:", value: currentDate.toLocaleDateString(), inline: true }

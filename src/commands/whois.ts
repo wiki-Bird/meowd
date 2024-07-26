@@ -57,7 +57,7 @@ const whois: Command = {
                 // .setColor("#00f2ff")
                 // .setColor(userGuildMember.displayHexColor)
                 .setColor(color as ColorResolvable)
-                .setDescription("**" + userNamed.tag + "  -  <@" + userGuildMember.id + ">**")
+                .setDescription("**" + userNamed.username + "  -  <@" + userGuildMember.id + ">**")
                 .setThumbnail(userGuildMember.user.displayAvatarURL())
                 .setFooter({ text: `User info requested by ${interaction.user.username} ` })
                 .setTimestamp();

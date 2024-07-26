@@ -88,7 +88,7 @@ const warn: Command = {
     // Send a message to the user, with the reason and the moderator who warned them
     const embed = new MessageEmbed()
         .setTitle("Warning:")
-        .setDescription("<@!" + userID + `> (` + userID + `) has been warned by ${moderator.tag} for the following reason:`)
+        .setDescription("<@!" + userID + `> (` + userID + `) has been warned by ${moderator.username} for the following reason:`)
         .addFields(
             { name: "Reason:", value: reason, inline: true },
             { name: "Date:", value: currentDate.toLocaleDateString(), inline: true }
@@ -101,7 +101,7 @@ const warn: Command = {
         await interaction.editReply({ content: `<@${userID}> has been warned.`, embeds: [embed] });
     }
     catch (err) {
-        await interaction.editReply({ content: `Could not DM warning to ${userNamed.tag}.`, embeds: [embed] });
+        await interaction.editReply({ content: `Could not DM warning to ${userNamed.username}.`, embeds: [embed] });
     }
 
   }      

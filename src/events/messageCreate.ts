@@ -18,7 +18,7 @@ const messageCreate: Event<[Message]> = {
         //     console.log("DM message recieved")
         //     const DMEmbed = new MessageEmbed();
         //     DMEmbed.setColor('#00f2ff')
-        //         .setAuthor({ name: `${message.author.tag} sent this message in DMs:`, iconURL: message.author.displayAvatarURL()})
+        //         .setAuthor({ name: `${message.author.username} sent this message in DMs:`, iconURL: message.author.displayAvatarURL()})
         //         .setFooter({ text: `ID: ${message.id}` })
         //         .setDescription(message.content);
         //     // if the message has an image attached, send that too
@@ -68,7 +68,7 @@ const messageCreate: Event<[Message]> = {
                     const embed = new MessageEmbed()
                     .setColor('#ff0000')
                     .setTitle('Banned Message Deleted')
-                    .setAuthor({ name: `${message.author.tag}`, iconURL: message.author.displayAvatarURL()})
+                    .setAuthor({ name: `${message.author.username}`, iconURL: message.author.displayAvatarURL()})
                     .setFooter({ text: "Change banned words using /config blacklist" })
 
                     // if server punishment is set

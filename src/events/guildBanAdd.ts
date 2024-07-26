@@ -48,7 +48,7 @@ const guildBanAdd: Event<[GuildBan]> = {
             .setAuthor({name: `${ban.user.username} (ID: ${ban.user.id}) was banned.`, iconURL: ban.user.displayAvatarURL()})
             .addFields(
                 { name: "Reason:", value: reasonGiven},
-                { name: "Banned by:", value: executor!.tag, inline: true},
+                { name: "Banned by:", value: executor!.username, inline: true},
                 { name: "Date:", value: new Date().toLocaleDateString(), inline: true}
             )
             .setTimestamp();
