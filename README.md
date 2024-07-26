@@ -6,7 +6,7 @@ Neep help? Check out <a href="https://meowd.ramiels.me/">meowd.ramiels.me</a>.</
 
 </br>
 
-<h3 align="center"> 🏗️ Currently under development </h3>
+<!-- <h3 align="center"> 🏗️ Currently under development </h3> -->
 <div align="center">
    <img src="https://github.com/wiki-Bird/meowd/actions/workflows/codeql.yml/badge.svg">
    <img src="https://github.com/wiki-Bird/meowd/actions/workflows/node.js.yml/badge.svg">
@@ -49,24 +49,25 @@ Neep help? Check out <a href="https://meowd.ramiels.me/">meowd.ramiels.me</a>.</
 - Fun:
    - `/otter`, `/imgedit`
    - `/stats <overwatch>`
+   - `starboard`
 
 
 </br>
 
-## 💡 Some Future plans:
+## 💡 Features being worked on:
 
 #### For a full list, visit [projects](https://github.com/users/wiki-Bird/projects/4).
 
-- [x] Overwatch stats
-- [x] Add pronouns to `/whois`
+- [x] Timezone conversion
+- [x] Starboard
+- [x] Funny font
 - [ ] Website guide
 - [ ] Banned words/websites
 - [ ] Whitelisted websites
 - [ ] System logging
-- [ ] Timezone/Currency conversion
 
 </br>
 
 ## 🌐 Website Repository:
 
-#### View the Meowd website repository [here](https://github.com/wiki-Bird/meowd-site)
+<a href="https://github.com/wiki-Bird/meowd-site" target="_blank" rel="noreferrer noopener"><img width="170" alt="Logo" src="./images/meowdReacts/point.png"></a> <b>View the Meowd website repository [here](https://github.com/wiki-Bird/meowd-site) </b>
