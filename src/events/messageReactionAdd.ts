@@ -56,18 +56,18 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
             // message  user womp womp
             try {
                 const userUser = await client.users.fetch(user.id);
-                await userUser.send("You can't star your own message. Sorry :(");
+                await userUser.send("Your stars on your own messages dont count sorry :(");
                 
                 // Fetch the message to ensure we have the latest data
-                const fetchedMessage = await message.fetch();
+                // const fetchedMessage = await message.fetch();
                 
                 // Remove only this user's reaction
-                try {
-                    await fetchedMessage.reactions.cache.get(reaction.emoji.name!)?.users.remove(user.id);
-                }
-                catch {
-                    console.log('nothing to remove?')
-                }
+                // try {
+                //     await fetchedMessage.reactions.cache.get(reaction.emoji.name!)?.users.remove(user.id);
+                // }
+                // catch {
+                //     console.log('nothing to remove?')
+                // }
             } catch (error) {
                 console.error(`Failed to send DM to user ${user.id}: ${error}`);
             }
