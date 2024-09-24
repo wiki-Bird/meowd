@@ -19,6 +19,7 @@ const imgedit: Command = {
                     { name: "Invert", value: "invert" },
                     { name: "1984", value: "1984" },
                     { name: "Puter", value: "puter"},
+                    { name: "Bomb", value: "bomb"},
                     { name: "blank", value: "blank"}
                 )
         )
@@ -133,7 +134,6 @@ const imgedit: Command = {
             ctx.drawImage(img, 300, 0, 550, 650);
             const puter = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/puter.png");
             ctx.drawImage(puter, 0, 0, 1024, 1024);
-
         }
         else if (action === "invert") {
             const imgData = ctx.getImageData(0, 0, 1024, 1024);
@@ -152,6 +152,11 @@ const imgedit: Command = {
             // drag https://i.imgur.com/00mhtBU.png over it
             const nineEightFour = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/1984.png");
             ctx.drawImage(nineEightFour, 0, 0, 1024, 1024);
+        }
+        else if (action === "bomb") {
+            ctx.drawImage(img, 0, 0, 1024, 1024);
+            const bomb = await loadImage("https://raw.githubusercontent.com/wiki-Bird/meowd/main/images/bomb.png");
+            ctx.drawImage(bomb, 0, 0, 1024, 1024);
         }
         else if (action === "blank") {
             // do nothing, just return the image
