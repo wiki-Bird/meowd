@@ -1,5 +1,6 @@
-import { GuildMember, User, CommandInteraction } from 'discord.js';
+import { GuildMember, User, CommandInteraction, Guild } from 'discord.js';
 import MemberServerPair from '../types/MemberServerPair';
+import { APIInteractionGuildMember } from 'discord-api-types/v9';
 
 export interface ValidatedUser {
     userNamed: User;
@@ -12,8 +13,8 @@ export default async function validateUser(user: string, interaction: CommandInt
     let userNamed: User;
     let userID: string;
 
-    let server = undefined;
-    let guildMember = undefined;
+    let server: Guild | null;
+    let guildMember: GuildMember | APIInteractionGuildMember | null;
     if (interaction !== undefined) {
         server = interaction.guild;
         guildMember = interaction.member;
@@ -43,7 +44,7 @@ export default async function validateUser(user: string, interaction: CommandInt
                 try {
                     await interaction.followUp({ content: `Invalid user. Please provide a user's ID, @ a user, or nothing at all.`, ephemeral: true });
                 }
-                catch (e) {
+                catch {
                     await interaction.reply({ content: `Invalid user. Please provide a user's ID, @ a user, or nothing at all.` });
                 }
             }
@@ -58,7 +59,7 @@ export default async function validateUser(user: string, interaction: CommandInt
                         try {
                             await interaction.followUp({ content: `Invalid user. Please provide a user's ID, @ a user, or nothing at all.`, ephemeral: true });
                         }
-                        catch (e) {
+                        catch {
                             await interaction.reply({ content: `Invalid user. Please provide a user's ID, @ a user, or nothing at all.` });
                         }
                     }
@@ -66,13 +67,13 @@ export default async function validateUser(user: string, interaction: CommandInt
                 }
             }
         }
-        catch (e) {
+        catch {
             if (checker) {
                 if (interaction !== undefined) {
                     try {
                         await interaction.followUp({ content: `User not found in this server.`, ephemeral: true });
                     }
-                    catch (e) {
+                    catch {
                         await interaction.reply({ content: `User not found in this server.`, ephemeral: true });
                     }
                 }
@@ -93,7 +94,7 @@ export default async function validateUser(user: string, interaction: CommandInt
                 try {
                     await interaction.followUp({ content: `User not found.`, ephemeral: true });
                 }
-                catch (e) {
+                catch {
                     await interaction.reply({ content: `User not found.`, ephemeral: true });
                 }
             }
@@ -110,7 +111,7 @@ export default async function validateUser(user: string, interaction: CommandInt
             try {
                 await interaction.followUp({ content: `This should never happen! Contact support`, ephemeral: true });
             }
-            catch (e) {
+            catch {
                 await interaction.reply({ content: `This should never happen! Contact support`, ephemeral: true });
             }
         }

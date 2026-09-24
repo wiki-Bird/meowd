@@ -31,7 +31,7 @@ const unban: Command = {
         }
         const moderator = interaction.user;
 
-        let userID = "";
+        let userID: string;
         if (user.match(/^[0-9]+$/)) {
             // if theres a banned user with that ID
             const bannedUsers = await interaction.guild?.bans.fetch();
@@ -120,7 +120,7 @@ const unban: Command = {
             // await interaction.editReply({ content: `<@${userID}> has been banned.`, embeds: [embed] });
             await interaction.reply({ content: `<@${userID}> has been unbanned.`, embeds: [embed] });
         }
-        catch (err) {
+        catch {
             // await interaction.editReply({ content: `Could not DM the banned information to ${userNamed.tag}.`, embeds: [embed] });
             await interaction.editReply({ content: `<@${userID}> has been unbanned.`, embeds: [embed] });
         }

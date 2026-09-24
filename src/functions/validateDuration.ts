@@ -20,7 +20,7 @@ export default async function validateDuration(time: string, interaction: Comman
         try{
             if (interaction !== undefined) await interaction.reply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1hr`, `4minutes`", ephemeral: true });
         }
-        catch(e){
+        catch{
             if (interaction !== undefined) await interaction.editReply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1hr`, `4minutes`" });
         }
         return false;
@@ -34,7 +34,7 @@ export default async function validateDuration(time: string, interaction: Comman
         try{
             if (interaction !== undefined) await interaction.reply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1hr`, `4minutes`", ephemeral: true });
         }
-        catch(e){
+        catch{
             if (interaction !== undefined) await interaction.editReply({ content: "Invalid time. Please provide a number followed by a time unit, eg: `12d`, `1hr`, `4minutes`" });
         }
         return false;

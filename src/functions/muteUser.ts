@@ -1,4 +1,4 @@
-import { User } from 'discord.js';
+import { User, Guild } from 'discord.js';
 import { ref } from '..';
 const configRef = ref.child("config");
 import { CommandInteraction, MessageEmbed } from 'discord.js';
@@ -10,7 +10,7 @@ import MemberServerPair from '../types/MemberServerPair';
 /** Pre-existing config for a specified guild. */
 export default async function muteUser(interaction: CommandInteraction<"cached" | "raw"> | undefined, user: string, reason: string, time: string, moderator: User, memberServer?: MemberServerPair): Promise<string[] | null> {
 
-    let server = undefined;
+    let server: Guild | null;
     // let guildMember = undefined;
     if (interaction !== undefined) {
         server = interaction.guild;
@@ -125,7 +125,7 @@ export default async function muteUser(interaction: CommandInteraction<"cached" 
     try {
         if (interaction !== undefined) await interaction.editReply({ content: `<@${userID}> has been muted.`, embeds: [embed] });
     }
-    catch (err) {
+    catch {
         if (interaction !== undefined) await interaction.editReply({ content: `Could not DM the kick information to ${userNamed.username}.`, embeds: [embed] });
     }
 

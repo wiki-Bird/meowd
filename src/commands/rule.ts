@@ -18,7 +18,7 @@ const rule: Command = {
         await interaction.deferReply();
 
 		const ruleNumber = interaction.options.getNumber("number") ?? 1;
-        let title = "";
+        let title: string;
         let description = "";
 
         // get rules from database

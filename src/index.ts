@@ -12,7 +12,7 @@ import { Routes } from 'discord-api-types/v9';
 // const express = require('express');
 
 // ESLint doesn't like this, but it's needed to fix yarn build
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { token, clientId } = require('../config.json');
 // import config from '../config.json';
 // const { token, clientId } = config;
@@ -28,17 +28,17 @@ Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.G
 
 // FIREBASE:
 // Import the functions you need from the SDKs you need
-import admin from "firebase-admin";
+import { initializeApp, cert } from "firebase-admin/app";
 import { getDatabase } from "firebase-admin/database";
 
 // Fetch the service account key JSON file contents
 // ESLint doesn't like this, but it's needed to use json files
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const serviceAccount = require("../meowd-bot-firebase-adminsdk-2g9mv-5423d91b65.json");
 
 // Initialize the app with a service account, granting admin privileges
-const app = admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+const app = initializeApp({
+    credential: cert(serviceAccount),
     databaseURL: "https://meowd-bot-default-rtdb.firebaseio.com/"
 });
 
@@ -62,7 +62,9 @@ const commandCheck = async () => {
 
     for (const file of commandFiles) {
         // const command = require(join(basePath, file)).default;
-        const commandModule = await import(join(basePath, file));
+        // Load CommonJS modules in both ts-node development and compiled builds.
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const commandModule = require(join(basePath, file));
         const command = commandModule.default;
         commands.push(command.data.toJSON());
         console.log(`Loaded Command: /${file}`);
@@ -96,7 +98,8 @@ const init = async () => {
     for (const file of commandFiles) {
         const filePath = join(commandsPath, file);
         // const command = require(filePath).default;
-        const commandModule = await import(filePath);
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const commandModule = require(filePath);
         const command = commandModule.default;
         client.commands.set(command.data.name, command);
     }
@@ -106,7 +109,8 @@ const init = async () => {
     
     for (const file of eventFiles) {
         const filePath = join(eventsPath, file);
-        const eventModule = await import(filePath);
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const eventModule = require(filePath);
         const event = eventModule.default;
         console.log(`Loaded event: ${file}`);
         if (event.once) {

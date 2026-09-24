@@ -55,11 +55,10 @@ const ploob: Command = {
 
         if (!number || number > totalPloobs) {
             const randomMsg = Math.floor((Math.random() * ploobMsgs.length));
-            let outputPloobNo = 1;
+            let outputPloobNo: number;
             let randomPloob;
 
 
-            // eslint-disable-next-line no-constant-condition
             while (true) {
                 randomPloob = Math.floor(Math.random() * (totalPloobs - 1) + 1);
 

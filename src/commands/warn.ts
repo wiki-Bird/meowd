@@ -100,7 +100,7 @@ const warn: Command = {
         await userNamed.send({ embeds: [embed] });
         await interaction.editReply({ content: `<@${userID}> has been warned.`, embeds: [embed] });
     }
-    catch (err) {
+    catch {
         await interaction.editReply({ content: `Could not DM warning to ${userNamed.username}.`, embeds: [embed] });
     }
 

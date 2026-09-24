@@ -1,7 +1,7 @@
 import Command from '../types/Command';
 import { MessageEmbed } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { DateTime } = require('luxon');
 
 const data = new SlashCommandBuilder() 

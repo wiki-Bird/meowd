@@ -70,16 +70,20 @@ Neep help? Check out <a href="https://meowd.ramiels.me/">meowd.ramiels.me</a>.</
 
 ## 🛠️ Build/run:
 
-Install node.js v16.15.1, typescript, and yarn;
+Use Node.js 24 (the exact version is in `.nvmrc`) and Yarn Classic 1.22.22.
+Run `nvm install` and `nvm use` in this directory, then `npm install --global yarn@1.22.22`.
+TypeScript is installed locally with the project dependencies.
 
 - Update `config[TEMPLATE].json` and remove [TEMPLATE] from the name
 - Generate a [Firebase admin SDK](https://console.firebase.google.com/u/3/project/_/settings/serviceaccounts/adminsdk) and move it into root
   - Update the line `const serviceAccount = require("../firebaseSDKhere.json");` in `index.ts` to point to this file
 - Update `databaseURL: ""` in `index.ts` to your Firebase DB URL
 ---
-1. `yarn install`
-2. `yarn build`
-3. `node build/index.js`
+1. `yarn install --frozen-lockfile` (also builds the project)
+2. `yarn lint`
+3. `yarn start`
+
+Use `yarn dev` for development and `yarn build` to rebuild. TypeScript stays on 6.0.x for compatibility with the lint and development tools.
 
 </br>
 

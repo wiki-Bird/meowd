@@ -111,7 +111,7 @@ const ban: Command = {
             // await interaction.editReply({ content: `<@${userID}> has been banned.`, embeds: [embed] });
             await interaction.reply({ content: `<@${userID}> has been banned.`, embeds: [embed] });
         }
-        catch (err) {
+        catch {
             // await interaction.editReply({ content: `Could not DM the banned information to ${userNamed.tag}.`, embeds: [embed] });
             await interaction.editReply({ content: `<@${userID}> has been banned.`, embeds: [embed] });
         }

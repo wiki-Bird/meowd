@@ -111,7 +111,7 @@ const kick: Command = {
             // await interaction.editReply({ content: `<@${userID}> has been kicked.`, embeds: [embed] });
             await interaction.reply({ content: `<@${userID}> has been kicked.`, embeds: [embed] });
         }
-        catch (err) {
+        catch {
             // await interaction.editReply({ content: `Could not DM the kick information to ${userNamed.tag}.`, embeds: [embed] });
             await interaction.editReply({ content: `<@${userID}> has been kicked.`, embeds: [embed] });
         }
