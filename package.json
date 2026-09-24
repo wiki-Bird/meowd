@@ -11,7 +11,8 @@
     "build": "tsc",
     "postinstall": "yarn build",
     "dev": "nodemon src/index.ts",
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 0",
+    "test": "node --require ts-node/register --test tests/*.test.cjs"
   },
   "repository": {
     "type": "git",

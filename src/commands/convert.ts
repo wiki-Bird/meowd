@@ -109,8 +109,8 @@ const convert: Command = {
             if (isAmOrPm) {
                 const isPm = timeString.includes('pm');
                 let tempHour = parseInt(hour);
+                if (tempHour === 12) { tempHour = 0; }
                 if (isPm) { tempHour += 12; }
-                if (tempHour === 24) { tempHour = 0; }
                 hour = tempHour.toString();
             }
 
@@ -125,6 +125,10 @@ const convert: Command = {
             }
 
             const convertedDate = parsedDate.setZone(timezoneTo);
+            if (!convertedDate.isValid) {
+                await interaction.editReply(`Invalid timezone: ${timezoneTo}`);
+                return;
+            }
 
             const embed = new MessageEmbed()
                 .setTitle("Time Conversion")

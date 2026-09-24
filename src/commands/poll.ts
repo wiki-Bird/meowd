@@ -41,6 +41,7 @@ const poll: Command = {
 			const OptionsArray = Options!.split(",");
 			if (OptionsArray.length > 20) {
 				await interaction.reply({ content: `Too many options! The maximum number of options is 20.`, ephemeral: true });
+				return;
 			}
 
 			// A - T (20 emojis)
