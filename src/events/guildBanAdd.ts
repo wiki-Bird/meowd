@@ -1,7 +1,7 @@
 // if user banned
 
 import { client } from "../index";
-import { MessageEmbed, TextChannel, GuildBan  } from 'discord.js';
+import { EmbedBuilder, TextChannel, GuildBan, AuditLogEvent } from 'discord.js';
 import Event from '../types/Event';
 import { ref } from '..';
 
@@ -16,7 +16,7 @@ const guildBanAdd: Event<[GuildBan]> = {
 
         const fetchedLogs = await ban.guild.fetchAuditLogs({
             limit: 1,
-            type: 'MEMBER_BAN_ADD'
+            type: AuditLogEvent.MemberBanAdd
         });
         const latestBan = fetchedLogs.entries.first();
 
@@ -43,12 +43,12 @@ const guildBanAdd: Event<[GuildBan]> = {
             return;
         }
         
-        const logEmbed = new MessageEmbed()
+        const logEmbed = new EmbedBuilder()
             .setColor("#ff0000")
             .setAuthor({name: `${ban.user.username} (ID: ${ban.user.id}) was banned.`, iconURL: ban.user.displayAvatarURL()})
             .addFields(
                 { name: "Reason:", value: reasonGiven},
-                { name: "Banned by:", value: executor!.username, inline: true},
+                { name: "Banned by:", value: executor?.username ?? 'Unknown', inline: true},
                 { name: "Date:", value: new Date().toLocaleDateString(), inline: true}
             )
             .setTimestamp();

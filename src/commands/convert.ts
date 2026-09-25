@@ -1,9 +1,8 @@
 import Command from '../types/Command';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { DateTime } = require('luxon');
-require('luxon-parser');
 
 const data = new SlashCommandBuilder() 
 	.setName('convert')
@@ -110,8 +109,8 @@ const convert: Command = {
             if (isAmOrPm) {
                 const isPm = timeString.includes('pm');
                 let tempHour = parseInt(hour);
+                if (tempHour === 12) { tempHour = 0; }
                 if (isPm) { tempHour += 12; }
-                if (tempHour === 24) { tempHour = 0; }
                 hour = tempHour.toString();
             }
 
@@ -126,8 +125,12 @@ const convert: Command = {
             }
 
             const convertedDate = parsedDate.setZone(timezoneTo);
+            if (!convertedDate.isValid) {
+                await interaction.editReply(`Invalid timezone: ${timezoneTo}`);
+                return;
+            }
 
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setTitle("Time Conversion")
                 .setColor("#00f2ff")
                 .addFields(
@@ -145,7 +148,7 @@ const convert: Command = {
             const amount = interaction.options.getString("amount", true);
             const currency = interaction.options.getString("currency", true);
 
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setTitle("Currency Conversion")
                 .setDescription("This command is not yet implemented.")
                 .addFields(

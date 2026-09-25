@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed, TextChannel  } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, TextChannel  } from 'discord.js';
 import Command from '../types/Command';
 import { client } from "../index";
 import validateUser from '../functions/validateUser';
@@ -30,7 +30,7 @@ const report: Command = {
         )
 		.setDescription('Report a user.'),
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
         // await interaction.deferReply();
 
         const user = interaction.options.getString("user", true);
@@ -51,7 +51,7 @@ const report: Command = {
         }
         const {userNamed, userID} = isValidUser;
 
-        const reportEmbed = new MessageEmbed()
+        const reportEmbed = new EmbedBuilder()
             .setColor("#00f2ff")
             .setAuthor({name: `${userNamed.username} (${userNamed.id}) reported by ${reportingUser.username}`, iconURL: userNamed.displayAvatarURL()})
             .addFields(

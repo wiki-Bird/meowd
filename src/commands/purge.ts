@@ -1,3 +1,4 @@
+import { ChannelType } from 'discord.js';
 import Command from '../types/Command';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { client } from "../index";
@@ -32,7 +33,7 @@ const purge: Command = {
 
 		const channel = client.channels.cache.get(interaction.channelId);
 		if (!channel) { return; }
-		if (channel.type !== "GUILD_TEXT") { return; }
+		if (channel.type !== ChannelType.GuildText) { return; }
 
 		// if (user) {
 		// } else {

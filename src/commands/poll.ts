@@ -1,5 +1,5 @@
 import Command from '../types/Command';
-import { CommandInteraction, MessageEmbed, Message } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, Message } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
 const poll: Command = {
@@ -16,13 +16,13 @@ const poll: Command = {
 			)
 		.setDescription('Creates a poll.'),
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
 		// await interaction.deferReply();
 
 		const Title = interaction.options.getString("title");
 		const Options = interaction.options.getString("options");
 
-		const embed = new MessageEmbed();
+		const embed = new EmbedBuilder();
 		embed.setTitle(Title!)
 		.setFooter({ text: `Poll created by ${interaction.user.username} with /poll` })
 		.setColor("#00f2ff");
@@ -41,6 +41,7 @@ const poll: Command = {
 			const OptionsArray = Options!.split(",");
 			if (OptionsArray.length > 20) {
 				await interaction.reply({ content: `Too many options! The maximum number of options is 20.`, ephemeral: true });
+				return;
 			}
 
 			// A - T (20 emojis)

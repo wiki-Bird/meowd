@@ -1,6 +1,6 @@
 import Command from '../types/Command';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import * as overwatch from 'overwatch-api';
 
 const data = new SlashCommandBuilder() 
@@ -54,7 +54,7 @@ const stats: Command = {
         if (!interaction.guild) {return;}
 
 		
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTimestamp()
 			.addFields(
 				{ name: "Ranks:", value: "Loading...", inline: true },
@@ -65,11 +65,11 @@ const stats: Command = {
 			)
 			.setFooter({ text: "Overwatch 2 Stats from /stats", iconURL: "https://i.imgur.com/HKiAsth.png" });
 		
-		const embedLoading = new MessageEmbed()
+		const embedLoading = new EmbedBuilder()
 			.setAuthor({ name: "Loading...", iconURL: "https://i.imgur.com/fMqUG5J.gif" })
 			.setColor("#00f2ff");
 		
-		const embedError = new MessageEmbed()
+		const embedError = new EmbedBuilder()
 			.setTimestamp()
 
 

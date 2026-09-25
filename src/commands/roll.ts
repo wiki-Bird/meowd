@@ -1,5 +1,5 @@
 import Command from '../types/Command';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
 const data = new SlashCommandBuilder() 
@@ -44,7 +44,7 @@ const roll: Command = {
 
 	data,
 
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
 
 		const subcommand = interaction.options.getSubcommand();
 
@@ -62,7 +62,7 @@ const roll: Command = {
 			let modifierNumber = 0;
 
 
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setColor("#00f2ff")
 				.setTitle(`🎲 ${interaction.user.username} rolled ${count} d${maxNumber} dice`)
 			
@@ -142,7 +142,7 @@ const roll: Command = {
 		else if (subcommand === "advanced") {
 			const formula = interaction.options.getString("formula") ?? "";
 		
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setColor("#00f2ff")
 				.setTitle(`🎲 ${interaction.user.username} rolled some dice`)
 				.setFooter({ text: `Formula: ${formula}` });

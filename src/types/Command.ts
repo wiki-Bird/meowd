@@ -1,12 +1,19 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import {
+    SlashCommandBuilder,
+    SlashCommandOptionsOnlyBuilder,
+    SlashCommandSubcommandsOnlyBuilder,
+} from "@discordjs/builders";
+import { ChatInputCommandInteraction } from "discord.js";
 
 
 export default interface Command {
-    data: SlashCommandBuilder;
+    data:
+        | SlashCommandBuilder
+        | SlashCommandOptionsOnlyBuilder
+        | SlashCommandSubcommandsOnlyBuilder;
 
     /** The <"cached" | "raw"> is Discord.js's way of showing that this interaction is in a guild. */
-    execute: (interaction: CommandInteraction<"cached" | "raw">) => Promise<void>;
+    execute: (interaction: ChatInputCommandInteraction<"cached" | "raw">) => Promise<void>;
 
 }
 

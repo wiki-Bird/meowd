@@ -24,7 +24,7 @@ export default async function validateChannel(channel: string, interaction: Comm
                 try {
                     await interaction.reply({ content: `Invalid channel. Please provide a channel's ID, # a channel, or nothing at all.`, ephemeral: true });
                 }
-                catch (e) {
+                catch {
                     await interaction.editReply({ content: `Invalid channel. Please provide a channel's ID, # a channel, or nothing at all.` });
                 }
             }
@@ -45,7 +45,7 @@ export default async function validateChannel(channel: string, interaction: Comm
                     try {
                         await interaction.reply({ content: `Invalid channel. Please provide a channel's ID, # a channel, or nothing at all.`, ephemeral: true });
                     }
-                    catch (e) {
+                    catch {
                         await interaction.editReply({ content: `Invalid channel. Please provide a channel's ID, # a channel, or nothing at all.` });
                     }
                 }
@@ -56,12 +56,12 @@ export default async function validateChannel(channel: string, interaction: Comm
                 channelName = serverChannel?.name ?? '';
             }
         }
-        catch (e) {
+        catch {
             if (interaction !== undefined) {
                 try {
                     await interaction.reply({ content: `Invalid channel. Please provide a channel's ID, # a channel, or nothing at all.`, ephemeral: true });
                 }
-                catch (e) {
+                catch {
                     await interaction.editReply({ content: `Invalid channel. Please provide a channel's ID, # a channel, or nothing at all.` });
                 }
             }
@@ -73,7 +73,7 @@ export default async function validateChannel(channel: string, interaction: Comm
             try {
                 await interaction.reply({ content: `Invalid channel. Please provide a channel's ID, # a channel, or nothing at all.`, ephemeral: true });
             }
-            catch (e) {
+            catch {
                 await interaction.editReply({ content: `Invalid channel. Please provide a channel's ID, # a channel, or nothing at all.` });
             }
         }

@@ -1,6 +1,7 @@
 node_modules/
 build/
 config.json
+config_PROD.json
 pakbot-7f806-firebase-adminsdk-ep5hk-02e9bec8e8.json
 meowd-bot-firebase-adminsdk-2g9mv-5423d91b65.json
 # package.json

@@ -23,7 +23,7 @@ export default async function validateGuild(guildInput: string, interaction: Com
                 try {
                     await interaction.reply({ content: `Invalid guild. Please provide a guild's ID, or nothing at all.`, ephemeral: true });
                 }
-                catch (e) {
+                catch {
                     await interaction.editReply({ content: `Invalid guild. Please provide a guild's ID, or nothing at all.` });
                 }
             }
@@ -37,7 +37,7 @@ export default async function validateGuild(guildInput: string, interaction: Com
                     try {
                         await interaction.reply({ content: `Invalid guild. Please provide a guild's ID, or nothing at all.`, ephemeral: true });
                     }
-                    catch (e) {
+                    catch {
                         await interaction.editReply({ content: `Invalid guild. Please provide a guild's ID, or nothing at all.` });
                     }
                 }
@@ -48,12 +48,12 @@ export default async function validateGuild(guildInput: string, interaction: Com
                 guildName = serverGuild?.name ?? '';
             }
         }
-        catch (e) {
+        catch {
             if (interaction !== undefined) {
                 try {
                     await interaction.reply({ content: `Invalid guild. Please provide a guild's ID, or nothing at all.`, ephemeral: true });
                 }
-                catch (e) {
+                catch {
                     await interaction.editReply({ content: `Invalid guild. Please provide a guild's ID, or nothing at all.` });
                 }
             }

@@ -1,5 +1,5 @@
 import Command from '../types/Command';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import validateUser from '../functions/validateUser';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -20,7 +20,7 @@ const unmute: Command = {
         )
 		.setDescription('Unmutes a user'),
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
         await interaction.deferReply();
 
 
@@ -49,7 +49,7 @@ const unmute: Command = {
 
         userGuildMember.timeout(null, reason);
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setTitle("User Unmuted:")
             .setDescription("<@!" + userID + `> (` + userID + `) has been unmuted by ${interaction.user.username} for the following reason:`)
             .addFields({ name: "Reason:", value: reason, inline: true })

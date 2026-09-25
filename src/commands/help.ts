@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
-import { MessageActionRow, MessageButton } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import Command from '../types/Command';
 import { client } from "../index";
 
@@ -9,7 +9,7 @@ const help: Command = {
     .setName('help')
     .setDescription('Sends a list of server commands.'),
     execute: async function (interaction) {
-        const embed = new MessageEmbed();
+        const embed = new EmbedBuilder();
 		embed.setAuthor({ name: "Meowd Help", iconURL: client.user.displayAvatarURL()})
 			.setColor("#00f2ff")
             .addFields(
@@ -17,11 +17,11 @@ const help: Command = {
                 { name: "Need help?", value: "[Check out the setup guide](https://meowd.ramiels.me/guide) **(COMING SOON)**"},
                 { name: "Some helpful commands", value: "`/poll`, `/report`, `/rule`, `/whois`, `/otter`, `/modlogs`, `/config`"},
             )
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder<ButtonBuilder>()
 			.addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setLabel('Support')
-                    .setStyle('LINK')
+                    .setStyle(ButtonStyle.Link)
                     .setURL('https://meowd.ramiels.me/'),
 			);
 			

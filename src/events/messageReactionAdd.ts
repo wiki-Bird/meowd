@@ -1,4 +1,4 @@
-import { MessageReaction, User, PartialMessageReaction, PartialUser, MessageEmbed } from 'discord.js';
+import { MessageReaction, User, PartialMessageReaction, PartialUser, EmbedBuilder, ChannelType } from 'discord.js';
 import Event from '../types/Event';
 import { client } from "../index";
 import { ref } from '..';
@@ -19,14 +19,14 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
         const message = reaction.message;
 
         // If in DMs, return
-        if (message.channel.type === "DM" || !message.guildId) return;
+        if (message.channel.type === ChannelType.DM || !message.guildId) return;
 
         // Access FirebaseDB and get state, minstars, emote, and channel
         const starboardDB = await ref.child("config").child(message.guildId).child("starboard").get();
-        
+
         const enabled = Object.values(starboardDB.child("starboardon").val() || {})[0] || "t";
         const starboardChannelID = Object.keys(starboardDB.child("channel").val() || {})[0] || "";
-        
+
         // If server doesn't have starboard enabled, or a starboard channel, return
         if (enabled != "t") return;
         if (starboardChannelID === "") return;
@@ -52,32 +52,32 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
 
         const messageAuthorID = reaction.message.author?.id;
         // If the messageAuthorID == user.id, remove the reaction and send a private reply of "can't star your own messages sorrgy"
-        if (messageAuthorID === user.id ) {
-            // message  user womp womp
-            try {
-                const userUser = await client.users.fetch(user.id);
-                await userUser.send("Your stars on your own messages dont count sorry :(");
-                
-                // Fetch the message to ensure we have the latest data
-                // const fetchedMessage = await message.fetch();
-                
-                // Remove only this user's reaction
-                // try {
-                //     await fetchedMessage.reactions.cache.get(reaction.emoji.name!)?.users.remove(user.id);
-                // }
-                // catch {
-                //     console.log('nothing to remove?')
-                // }
-            } catch (error) {
-                console.error(`Failed to send DM to user ${user.id}: ${error}`);
-            }
-            return;
-        }
+        // if (messageAuthorID === user.id ) {
+        //     // message  user womp womp
+        //     try {
+        //         const userUser = await client.users.fetch(user.id);
+        //         await userUser.send("Your stars on your own messages dont count sorry :(");
+
+        //         // Fetch the message to ensure we have the latest data
+        //         // const fetchedMessage = await message.fetch();
+
+        //         // Remove only this user's reaction
+        //         // try {
+        //         //     await fetchedMessage.reactions.cache.get(reaction.emoji.name!)?.users.remove(user.id);
+        //         // }
+        //         // catch {
+        //         //     console.log('nothing to remove?')
+        //         // }
+        //     } catch (error) {
+        //         console.error(`Failed to send DM to user ${user.id}: ${error}`);
+        //     }
+        //     return;
+        // }
 
         const minReactsToStar = parseInt(String(Object.values(starboardDB.child("minstars").val() || {})[0] || "1"), 10) || 1;
 
         // Check if the number of star reacts >= minimum reacts to go to starboard. If it doesn't, return
-        const starCount = message.reactions.cache.find(r => 
+        const starCount = message.reactions.cache.find(r =>
             r.emoji.id === emojiIdentifier || r.emoji.toString() === starEmoji
         )?.count || 0;
         if ( starCount < minReactsToStar ) return;
@@ -96,8 +96,8 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
             );
         });
 
-        const truncatedContent = message.content!.length > 300 
-        ? message.content?.slice(0, 300) + '...' 
+        const truncatedContent = message.content!.length > 300
+        ? message.content?.slice(0, 300) + '...'
         : message.content || ' ';
         const image = message.attachments.size > 0 ? message.attachments.first()?.url : null;
         const authorImg = message.author?.displayAvatarURL() || "https://raw.githubusercontent.com/wiki-Bird/meowd-site/main/meowdSiteSveltekit/static/point.png";
@@ -106,7 +106,7 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
         if (existingStarMessage) {
             const embed = existingStarMessage.embeds[0];
             if (embed) {
-                const newEmbed = new MessageEmbed()
+                const newEmbed = new EmbedBuilder()
                     .setAuthor({ name: message.author?.username || "Username: Error", iconURL: authorImg })
                     .setDescription(`${starEmoji} **${starCount}** • [Jump to Message](${message.url})`)
                     .addFields(
@@ -122,14 +122,7 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
             return;
         }
 
-        // Send a message to starboard channel with:
-            // Set author to original messsage (OGM) author, and relevant pfp to author photo
-            // Set image to first image in the message
-            // Set description to text in the image, truncated after 300 chars with ...
-            // Add a "jump to message" link
-            // Set footer to message ID, and the date
-
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setAuthor({ name: message.author?.username || "Username: Error", iconURL: authorImg })
             .setDescription(`${starEmoji} **${starCount}** • [Jump to Message](${message.url})`)
             .addFields(

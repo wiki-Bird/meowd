@@ -1,5 +1,5 @@
 import Command from '../types/Command';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import validateUser from '../functions/validateUser';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -21,7 +21,7 @@ const dm: Command = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.setDescription('Message the user as the bot.'),
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
         await interaction.deferReply();
         // if user id not 232254618434797570, return
         // if (interaction.user.id !== "232254618434797570") {
@@ -48,7 +48,7 @@ const dm: Command = {
         const serverIcon = interaction.guild.iconURL();
 
         // create embed
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setAuthor({ name: `${serverName}'s Administrators sent you a message:`, iconURL: `${serverIcon}` })
             .setDescription(message)
             .setFooter({ text: `Message content not endorsed by Meowd.`});

@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import getUserConfig from '../functions/getUserConfig';
 import Command from '../types/Command';
 import { ref } from '..';
@@ -23,7 +23,7 @@ const kick: Command = {
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.Administrator)
 		.setDescription('Kicks a user from the server.'),
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
         await interaction.deferReply();
         const user = interaction.options.getString("user", true);
         let reason = interaction.options.getString("reason");
@@ -50,7 +50,7 @@ const kick: Command = {
 
         const currentDate = new Date();
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         .setTitle("User Kicked:")
         .setDescription("<@!" + userID + `> (` + userID + `) has been kicked by ${moderator.username} for the following reason:`)
         .addFields(
@@ -61,7 +61,7 @@ const kick: Command = {
         .setTimestamp();
 
         // if user's role is higher than mine, I can't kick them
-        if(userGuildMember.roles.highest.comparePositionTo(interaction.guild.me!.roles.highest) >= 0) {
+        if(userGuildMember.roles.highest.comparePositionTo(interaction.guild.members.me!.roles.highest) >= 0) {
             interaction.editReply("<@!" + userID + "> has a higher role than me, I cannot kick them.");
             return;
         }
@@ -111,7 +111,7 @@ const kick: Command = {
             // await interaction.editReply({ content: `<@${userID}> has been kicked.`, embeds: [embed] });
             await interaction.reply({ content: `<@${userID}> has been kicked.`, embeds: [embed] });
         }
-        catch (err) {
+        catch {
             // await interaction.editReply({ content: `Could not DM the kick information to ${userNamed.tag}.`, embeds: [embed] });
             await interaction.editReply({ content: `<@${userID}> has been kicked.`, embeds: [embed] });
         }

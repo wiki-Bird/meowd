@@ -1,7 +1,7 @@
-import { User } from 'discord.js';
+import { User, Guild } from 'discord.js';
 import { ref } from '..';
 const configRef = ref.child("config");
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { CommandInteraction, EmbedBuilder } from 'discord.js';
 import getUserConfig from './getUserConfig'; 
 import validateDuration from './validateDuration';
 import validateUser from './validateUser';
@@ -10,7 +10,7 @@ import MemberServerPair from '../types/MemberServerPair';
 /** Pre-existing config for a specified guild. */
 export default async function muteUser(interaction: CommandInteraction<"cached" | "raw"> | undefined, user: string, reason: string, time: string, moderator: User, memberServer?: MemberServerPair): Promise<string[] | null> {
 
-    let server = undefined;
+    let server: Guild | null;
     // let guildMember = undefined;
     if (interaction !== undefined) {
         server = interaction.guild;
@@ -64,7 +64,7 @@ export default async function muteUser(interaction: CommandInteraction<"cached" 
 
     const currentDate = new Date();
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
     .setTitle("User Muted:")
     .setDescription("<@!" + userID + `> (` + userID + `) has been muted by ${moderator.username} for the following reason:`)
     .addFields(
@@ -76,7 +76,7 @@ export default async function muteUser(interaction: CommandInteraction<"cached" 
     .setTimestamp();
 
     // if user's role is higher than mine, I can't mute them
-    if(userGuildMember.roles.highest.comparePositionTo(server!.me!.roles.highest) >= 0) {
+    if(userGuildMember.roles.highest.comparePositionTo(server!.members.me!.roles.highest) >= 0) {
         if (interaction !== undefined) interaction.editReply("<@!" + userID + "> has a higher role than me, I cannot mute them.");
         return null;
     }
@@ -125,7 +125,7 @@ export default async function muteUser(interaction: CommandInteraction<"cached" 
     try {
         if (interaction !== undefined) await interaction.editReply({ content: `<@${userID}> has been muted.`, embeds: [embed] });
     }
-    catch (err) {
+    catch {
         if (interaction !== undefined) await interaction.editReply({ content: `Could not DM the kick information to ${userNamed.username}.`, embeds: [embed] });
     }
 

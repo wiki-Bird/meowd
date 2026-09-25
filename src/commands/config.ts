@@ -1,6 +1,6 @@
 import Command from '../types/Command';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import { ref } from '..';
 
@@ -251,7 +251,7 @@ const config: Command = {
 		if (subcommand === "logchannel") {
 			const channel = interaction.options.getChannel("channel", true);
 			await serverConfigRef.child("logChannel").set(channel.id);
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setTitle("Log Channel")
 				.setColor("#00f2ff")
 				.setTimestamp()
@@ -280,7 +280,7 @@ const config: Command = {
 					});
 				}
 
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setAuthor({name: "Meowd Starboard", iconURL: "https://raw.githubusercontent.com/wiki-Bird/meowd-site/main/meowdSiteSveltekit/static/point.png"})
 					.setColor("#00f2ff")
 					.addFields({ name: "Starboard Channel Updated: ", value: `<#${channel.id}>` })
@@ -321,7 +321,7 @@ const config: Command = {
 					});
 				}
 
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setAuthor({name: "Meowd Starboard", iconURL: "https://raw.githubusercontent.com/wiki-Bird/meowd-site/main/meowdSiteSveltekit/static/point.png"})
 					.setColor("#00f2ff")
 					.addFields({ name: "Starboard Emote Updated: ", value: `${emote}` })
@@ -347,7 +347,7 @@ const config: Command = {
 					});
 				}
 
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setAuthor({name: "Meowd Starboard", iconURL: "https://raw.githubusercontent.com/wiki-Bird/meowd-site/main/meowdSiteSveltekit/static/point.png"})
 					.setColor("#00f2ff")
 					.addFields({ name: "Starboard Minimum Stars Updated: ", value: `${minStarCount}` })
@@ -364,7 +364,7 @@ const config: Command = {
 					toggle = newState === "true" ? "on" : "off";
 				}
 
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setAuthor({name: "Meowd Starboard", iconURL: "https://raw.githubusercontent.com/wiki-Bird/meowd-site/main/meowdSiteSveltekit/static/point.png"})
 					.setColor("#00f2ff")
 					.addFields({ name: "Starboard turned ", value: `${toggle}` })
@@ -385,7 +385,7 @@ const config: Command = {
 					});
 				}
 
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setAuthor({name: "OtterBot", iconURL: "https://cdn.discordapp.com/attachments/590667063165583409/1089047115315032125/icon.png"})
 					.setColor("#bee2ff")
 					.addFields({ name: "Otter Channel Added", value: `<#${channel.id}>` })
@@ -398,7 +398,7 @@ const config: Command = {
 					await serverConfigRef.child("otterChannels").child(channel.id).remove();
 				}
 	
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setAuthor({name: "OtterBot", iconURL: "https://cdn.discordapp.com/attachments/590667063165583409/1089047115315032125/icon.png"})
 					.setColor("#bee2ff")
 					.addFields({ name: "Otter Channel Removed", value: `<#${channel.id}>` })
@@ -408,7 +408,7 @@ const config: Command = {
 			else if (subcommand === "list") {
 				const otterChannels = await serverConfigRef.child("otterChannels").get();
 				
-				const embed = new MessageEmbed()// create embed with otter channels
+				const embed = new EmbedBuilder()// create embed with otter channels
 					.setAuthor({name: "OtterBot", iconURL: "https://cdn.discordapp.com/attachments/590667063165583409/1089047115315032125/icon.png"})
 					.setColor("#bee2ff");
 				if (otterChannels.exists()) {
@@ -444,7 +444,7 @@ const config: Command = {
 					await serverConfigRef.child("rules").update({[n]: rule});
 				}
 
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setTitle("Rule Added")
 					.setColor("#00f2ff")
 					.setTimestamp()
@@ -480,7 +480,7 @@ const config: Command = {
 						rulesRef.set(newData);
 					});
 				
-					const embed = new MessageEmbed()
+					const embed = new EmbedBuilder()
 					.setTitle("Rule Removed")
 					.setColor("#00f2ff")
 					.setTimestamp()
@@ -491,7 +491,7 @@ const config: Command = {
 			else if (subcommand === "list") {
 				// get all rules
 				const rules = await serverConfigRef.child("rules").get();
-				const embed = new MessageEmbed()// create embed with rules
+				const embed = new EmbedBuilder()// create embed with rules
 					.setTitle("Rules")
 					.setColor("#00f2ff");
 				if (rules.exists()) {
@@ -518,7 +518,7 @@ const config: Command = {
 					(!ploob.endsWith(".gif") && !ploob.endsWith(".png") && !ploob.endsWith(".jpg")) || 
 					(!ploob.startsWith("http://") && !ploob.startsWith("https://"))
 				) {
-					const embed = new MessageEmbed()
+					const embed = new EmbedBuilder()
 						.setTitle("Invalid Ploob")
 						.setColor("#ff0000")
 						.setTimestamp()
@@ -543,7 +543,7 @@ const config: Command = {
 						});
 				}
 
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setTitle(`Custom Ploob ${n} Added!`)
 					.setColor("#00f2ff")
 					.setImage(ploob)
@@ -578,7 +578,7 @@ const config: Command = {
 						ploobRef.set(newData);
 					});
 				
-					const embed = new MessageEmbed()
+					const embed = new EmbedBuilder()
 					.setTitle("Ploob Removed")
 					.setColor("#00f2ff")
 					.setTimestamp()
@@ -588,7 +588,7 @@ const config: Command = {
 			}
 			else if (subcommand === "list") {
 				const ploobs = await serverConfigRef.child("ploobs").get();
-				const embed = new MessageEmbed()// create embed with ploobs
+				const embed = new EmbedBuilder()// create embed with ploobs
 					.setTitle("Ploobs")
 					.setColor("#00f2ff");
 				if (ploobs.exists()) {
@@ -621,7 +621,7 @@ const config: Command = {
 		// 				});
 		// 		}
 
-		// 		const embed = new MessageEmbed()
+		// 		const embed = new EmbedBuilder()
 		// 			.setTitle("User Added")
 		// 			.setColor("#00f2ff")
 		// 			.setTimestamp()
@@ -642,7 +642,7 @@ const config: Command = {
 		// 			});
 		// 		}
 
-		// 		const embed = new MessageEmbed()
+		// 		const embed = new EmbedBuilder()
 		// 			.setTitle("User Removed")
 		// 			.setColor("#00f2ff")
 		// 			.setTimestamp()
@@ -669,7 +669,7 @@ const config: Command = {
 					await serverConfigRef.child("blacklistedWords").update({[n]: word});
 				}
 
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setTitle("Word Added to Blacklist")
 					.setColor("#00f2ff")
 					.setTimestamp()
@@ -690,7 +690,7 @@ const config: Command = {
 					});
 				}
 
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setTitle("Word Removed from Blacklist")
 					.setColor("#00f2ff")
 					.setTimestamp()
@@ -701,7 +701,7 @@ const config: Command = {
 				const punishment = interaction.options.getString("punishment", true);
 				await serverConfigRef.child("blacklistedWordsPunishment").set(punishment);
 
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setTitle("Punishment Set")
 					.setColor("#00f2ff")
 					.setTimestamp()
@@ -710,7 +710,7 @@ const config: Command = {
 			}
 			else { // list words in server's word blacklist
 				const words = await serverConfigRef.child("blacklistedWords").get();
-				const embed = new MessageEmbed()// create embed with words
+				const embed = new EmbedBuilder()// create embed with words
 					.setTitle("Blacklisted Words")
 					.setColor("#00f2ff");
 				if (words.exists()) {

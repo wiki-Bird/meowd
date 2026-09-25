@@ -1,5 +1,5 @@
 import Command from '../types/Command';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { client } from "../index";
 
@@ -8,7 +8,7 @@ const botstats: Command = {
 		.setName('botstats')
 		.setDescription('Shows bot statistics.'),
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
         // interaction.deferReply();
         const numberOfGuilds = client.guilds.cache.size;
         // const numberOfUsers = client.users.cache.size;
@@ -48,7 +48,7 @@ const botstats: Command = {
         // });
         // const days = Math.floor((Date.now() - new Date("1/20/2022").getTime()) / (1000 * 3600 * 24));
         setTimeout(function(){
-            const embed = new MessageEmbed();
+            const embed = new EmbedBuilder();
             embed.setColor("#00f2ff")
                 .setAuthor({ name: "Meowd Statistics", iconURL: client.user.displayAvatarURL()})
                 .setDescription("_ _")

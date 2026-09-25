@@ -4,7 +4,7 @@ import Command from './types/Command';
 import fs from 'node:fs';
 
 // ESLint doesn't like this, but it's needed to fix yarn build
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { token, clientId } = require('../config.json');
 // import config from '../config.json';
 // const { token, clientId } = config;
@@ -14,7 +14,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 
 for (const file of commandFiles) {
 	// ESLint doesn't like dynamic imports, but ¯\_(ツ)_/¯
-	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	// eslint-disable-next-line @typescript-eslint/no-require-imports
 	const command = require(`./commands/${file}`) as Command;
 	commands.push(command.data.toJSON());
 }
