@@ -8,7 +8,7 @@ function channelInput(t, amount = 1, voice = false) {
     const input = interaction(t, { amount });
     const guild = { client, id: input.guild.id };
     const Channel = voice ? VoiceChannel : TextChannel;
-    const channel = new Channel(guild, { id: '345678901234567890', name: 'general', type: voice ? 2 : 0 });
+    const channel = new Channel(guild, { id: '345678901234567890', name: 'general', type: voice ? 2 : 0 }, client);
     input.channel = channel;
     input.channelId = channel.id;
     client.channels.cache.set(channel.id, channel);

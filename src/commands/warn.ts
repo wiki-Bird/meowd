@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import getUserConfig from '../functions/getUserConfig';
 import Command from '../types/Command';
 import { ref } from '..';
@@ -26,7 +26,7 @@ const warn: Command = {
   .setDescription('Warns a user.'),    
 
 
-  execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+  execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
     await interaction.deferReply();
 
 	const user = interaction.options.getString("user", true);
@@ -86,7 +86,7 @@ const warn: Command = {
     }
 
     // Send a message to the user, with the reason and the moderator who warned them
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setTitle("Warning:")
         .setDescription("<@!" + userID + `> (` + userID + `) has been warned by ${moderator.username} for the following reason:`)
         .addFields(

@@ -1,4 +1,4 @@
-import { MessageReaction, User, PartialMessageReaction, PartialUser, MessageEmbed } from 'discord.js';
+import { MessageReaction, User, PartialMessageReaction, PartialUser, EmbedBuilder, ChannelType } from 'discord.js';
 import Event from '../types/Event';
 import { client } from "../index";
 import { ref } from '..';
@@ -19,7 +19,7 @@ const messageReactionRemove: Event<[MessageReaction | PartialMessageReaction, Us
         const message = reaction.message;
 
         // If in DMs, return
-        if (message.channel.type === "DM" || !message.guildId) return;
+        if (message.channel.type === ChannelType.DM || !message.guildId) return;
 
         // Access FirebaseDB and get state, minstars, emote, and channel
         const starboardDB = await ref.child("config").child(message.guildId).child("starboard").get();
@@ -85,7 +85,7 @@ const messageReactionRemove: Event<[MessageReaction | PartialMessageReaction, Us
 
             const embed = existingStarMessage.embeds[0];
             if (embed) {
-                const newEmbed = new MessageEmbed()
+                const newEmbed = new EmbedBuilder()
                     .setAuthor({ name: message.author?.username || "Username: Error", iconURL: authorImg })
                     .setDescription(`${starEmoji} **${starCount}** • [Jump to Message](${message.url})`)
                     .addFields(

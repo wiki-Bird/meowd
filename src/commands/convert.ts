@@ -1,5 +1,5 @@
 import Command from '../types/Command';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { DateTime } = require('luxon');
@@ -130,7 +130,7 @@ const convert: Command = {
                 return;
             }
 
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setTitle("Time Conversion")
                 .setColor("#00f2ff")
                 .addFields(
@@ -148,7 +148,7 @@ const convert: Command = {
             const amount = interaction.options.getString("amount", true);
             const currency = interaction.options.getString("currency", true);
 
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setTitle("Currency Conversion")
                 .setDescription("This command is not yet implemented.")
                 .addFields(

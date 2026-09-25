@@ -1,5 +1,5 @@
 import Command from '../types/Command';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
 const otter: Command = {
@@ -12,7 +12,7 @@ const otter: Command = {
 			.setMinValue(1)
 		)	
 	.setDescription('Sends an otter image 🦦'),
-    execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+    execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
 		// const days = Math.floor((Date.now() - new Date("1/20/2022").getTime()) / (1000 * 3600 * 24));
 		const days = 452; // As we've only got 452 otters, this is the max number. This is a temporary fix.
 		const randomDay = Math.floor(Math.random() * days + 1);
@@ -20,7 +20,7 @@ const otter: Command = {
 		await interaction.deferReply();
 		const number = interaction.options.getNumber("number");
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor("#00f2ff");
 
 		if (number === null) {

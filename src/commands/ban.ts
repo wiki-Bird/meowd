@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import getUserConfig from '../functions/getUserConfig';
 import Command from '../types/Command';
 import { ref } from '..';
@@ -23,7 +23,7 @@ const ban: Command = {
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers | PermissionFlagsBits.Administrator)
 		.setDescription('Ban a user from the server.'),
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
         await interaction.deferReply();
         const user = interaction.options.getString("user", true);
         let reason = interaction.options.getString("reason");
@@ -50,7 +50,7 @@ const ban: Command = {
 
         const currentDate = new Date();
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         .setTitle("User Banned:")
         .setDescription("<@!" + userID + `> (` + userID + `) has been banned by ${moderator.tag} for the following reason:`)
         .addFields(
@@ -61,13 +61,13 @@ const ban: Command = {
         .setTimestamp();
 
         // if user's role is higher than mine, I can't ban them
-        if(userGuildMember.roles.highest.comparePositionTo(interaction.guild.me!.roles.highest) >= 0) {
+        if(userGuildMember.roles.highest.comparePositionTo(interaction.guild.members.me!.roles.highest) >= 0) {
             interaction.editReply("<@!" + userID + "> has a higher role than me, I cannot ban them.");
             return;
         }
 
         try {
-            await userGuildMember.ban({reason: reason, days: 0});
+            await userGuildMember.ban({reason: reason, deleteMessageSeconds: 0});
         } catch (e) {
             interaction.editReply(`Error: Could not ban user.`);
             console.log(e);

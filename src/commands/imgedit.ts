@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageAttachment, MessageEmbed } from 'discord.js';
+import { AttachmentBuilder, EmbedBuilder } from 'discord.js';
 import Command from '../types/Command';
 import validateUser from '../functions/validateUser';
 import { createCanvas, loadImage } from 'canvas';
@@ -55,7 +55,7 @@ const imgedit: Command = {
 
         if (!user && !attachment) {
             // image is the author's avatar
-            image = interaction.user.displayAvatarURL({ format: "png", size: 1024 });
+            image = interaction.user.displayAvatarURL({ extension: "png", forceStatic: true, size: 1024 });
         }
         else if (user && !attachment) {
             const isValidUser = await validateUser(user, interaction, true);
@@ -64,7 +64,7 @@ const imgedit: Command = {
             }
             const {userGuildMember} = isValidUser;
 
-            image = userGuildMember.user.displayAvatarURL({ format: "png", size: 1024 });
+            image = userGuildMember.user.displayAvatarURL({ extension: "png", forceStatic: true, size: 1024 });
         }
         else if (!user && attachment) {
             // if attachment is not an image, return
@@ -212,10 +212,10 @@ const imgedit: Command = {
             // ctx.strokeText(text, 512, 90);
         }
 
-        const imgAttachment = new MessageAttachment(canvas.toBuffer(), 'image.png');
+        const imgAttachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'image.png' });
 
         // return image in embed
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setTitle(`Image Edit: ${action}`)
             .setImage("attachment://image.png")
             .setColor("#00f2ff")

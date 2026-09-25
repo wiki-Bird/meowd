@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import muteUser from '../functions/muteUser';
 import Command from '../types/Command';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
@@ -27,7 +27,7 @@ const mute: Command = {
           .setDefaultMemberPermissions(0)
 		.setDescription('Mutes a user in the server.'),
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
         await interaction.deferReply();
         const user = interaction.options.getString("user", true);
         let reason = interaction.options.getString("reason");

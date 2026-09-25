@@ -1,5 +1,5 @@
 import Command from '../types/Command';
-import { CommandInteraction, MessageEmbed, ColorResolvable, GuildMember } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, ColorResolvable, GuildMember } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import validateUser from '../functions/validateUser';
 import { createCanvas, loadImage } from 'canvas';
@@ -13,7 +13,7 @@ const whois: Command = {
             )
 		.setDescription('Investigates a user.'),
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
         await interaction.deferReply();
 
         // checks if user is mentioned or ID is given:
@@ -35,7 +35,7 @@ const whois: Command = {
             if (roleCount.length <= 0) {
                 roleCount = "No roles";
             }
-            const embed = new MessageEmbed();
+            const embed = new EmbedBuilder();
             const timeOptions = {
                 weekday: "short",
                 year: "numeric",
@@ -48,7 +48,7 @@ const whois: Command = {
             // get which rgba color the user's avatar has the most of:
             const canvas = createCanvas(1, 1);
             const ctx = canvas.getContext('2d');
-            const avatar = await loadImage(userGuildMember.user.displayAvatarURL({ format: "png", size: 128 }));
+            const avatar = await loadImage(userGuildMember.user.displayAvatarURL({ extension: "png", forceStatic: true, size: 128 }));
             ctx.drawImage(avatar, 0, 0, 1, 1);
             const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
             const color = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);

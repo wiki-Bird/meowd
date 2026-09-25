@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import Command from '../types/Command';
 import { ref } from '..';
 
@@ -14,7 +14,7 @@ const rule: Command = {
             )
 		.setDescription('Shows the specified rule.'),
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
         await interaction.deferReply();
 
 		const ruleNumber = interaction.options.getNumber("number") ?? 1;
@@ -44,7 +44,7 @@ const rule: Command = {
         }
         
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setTitle(title)
             .setDescription(description)
             .setColor('#00f2ff')

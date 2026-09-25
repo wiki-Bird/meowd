@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import getUserConfig from '../functions/getUserConfig';
 import Command from '../types/Command';
 import { ref } from '..';
@@ -50,7 +50,10 @@ const modlog: Command = {
     const serverID = interaction.guild.id;
 
     const userConfig = await getUserConfig(userID, serverID);
-    if (userConfig === null){ return interaction.reply({ content: `User has no logs.`, ephemeral: true }) }
+    if (userConfig === null) {
+        await interaction.reply({ content: 'User has no logs.', ephemeral: true });
+        return;
+    }
 
     let casenumbers = 0;
     const caseRef = ref.child("config").child(serverID).child(userID).child("cases");
@@ -66,7 +69,7 @@ const modlog: Command = {
         page = totalPages;
     }
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setColor("#00f2ff")
         .setDescription("_ _")
         .setTimestamp();

@@ -1,5 +1,5 @@
 import { client } from '..';
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder, ChannelType, ActivityType } from 'discord.js';
 import Event from '../types/Event';
 import { ref } from '..';
 import muteUser from '../functions/muteUser';
@@ -16,7 +16,7 @@ const messageCreate: Event<[Message]> = {
         // old code for forwarding DMs to mod team
         // if (message.channel.type === "DM") {
         //     console.log("DM message recieved")
-        //     const DMEmbed = new MessageEmbed();
+        //     const DMEmbed = new EmbedBuilder();
         //     DMEmbed.setColor('#00f2ff')
         //         .setAuthor({ name: `${message.author.username} sent this message in DMs:`, iconURL: message.author.displayAvatarURL()})
         //         .setFooter({ text: `ID: ${message.id}` })
@@ -36,21 +36,21 @@ const messageCreate: Event<[Message]> = {
         //     return;
         // }
 
-        if (message.channel.type === "DM") { // Update the bot's status
+        if (message.channel.type === ChannelType.DM) { // Update the bot's status
             if (message.author.id === '232254618434797570') {
                 if (message.content.toLowerCase().includes("watch")) {
                     const status = message.content.replace("watch", "");
-                    client.user!.setActivity(status, { type: 'WATCHING' });
+                    client.user!.setActivity(status, { type: ActivityType.Watching });
                     message.channel.send('Status set.');
                 }
                 else if (message.content.toLowerCase().includes("play")) {
                     const status = message.content.replace("play", "");
-                    client.user!.setActivity(status, { type: 'PLAYING' });
+                    client.user!.setActivity(status, { type: ActivityType.Playing });
                     message.channel.send('Status set.');
                 }
             }
         }
-        else {
+        else if (message.inGuild()) {
             // if message is from a server with a words blacklist
             const guildID = message.guild!.id;
             const configRef = ref.child("config");
@@ -65,7 +65,7 @@ const messageCreate: Event<[Message]> = {
                 if (regex.test(message.content)) {
                     message.delete();
 
-                    const embed = new MessageEmbed()
+                    const embed = new EmbedBuilder()
                     .setColor('#ff0000')
                     .setTitle('Banned Message Deleted')
                     .setAuthor({ name: `${message.author.username}`, iconURL: message.author.displayAvatarURL()})

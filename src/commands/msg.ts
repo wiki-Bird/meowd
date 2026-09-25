@@ -1,5 +1,5 @@
 import Command from '../types/Command';
-import { CommandInteraction, TextChannel } from 'discord.js';
+import { ChatInputCommandInteraction, TextChannel } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import validateChannel from '../functions/validateChannel';
@@ -26,7 +26,7 @@ const msg: Command = {
         )
 		.setDescription('Message a channel as the bot.'),
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
         // await interaction.deferReply();
 
         

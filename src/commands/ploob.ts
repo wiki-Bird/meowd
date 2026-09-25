@@ -1,5 +1,5 @@
 import Command from '../types/Command';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ref } from '..';
 
@@ -12,13 +12,13 @@ const ploob: Command = {
             .setMinValue(1)
         )
 	.setDescription('ploob.. .'),
-    execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+    execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
 		const ploobs = 34;
         const number = interaction.options.getNumber("number");
 
 		await interaction.deferReply();
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor("#00f2ff");
 
         const ploobMsgs = [

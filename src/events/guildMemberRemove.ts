@@ -1,5 +1,5 @@
 import { client } from "../index";
-import { MessageEmbed, TextChannel, GuildMember  } from 'discord.js';
+import { EmbedBuilder, TextChannel, GuildMember, AuditLogEvent } from 'discord.js';
 import Event from '../types/Event';
 import { ref } from '..';
 
@@ -31,13 +31,13 @@ const guildMemberRemove: Event<[GuildMember]> = {
 
         const fetchedLogs = await member.guild.fetchAuditLogs({
             limit: 1,
-            type: 'MEMBER_KICK',
+            type: AuditLogEvent.MemberKick,
         });
 
         const kickLog = fetchedLogs.entries.first();
         if (!kickLog) {
             // user left on their own
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setAuthor({name: `${member.user.username} left the server.`, iconURL: member.user.displayAvatarURL()})
                 .setColor('#00f2ff')
                 .setTimestamp()
@@ -54,21 +54,26 @@ const guildMemberRemove: Event<[GuildMember]> = {
                 reasonGiven = reason!;
             }
 
-            const logEmbed = new MessageEmbed()
+            const logEmbed = new EmbedBuilder()
                 .setColor("#00f2ff")
                 .setAuthor({name: `${member.user.username} (ID: ${member.user.id}) was kicked.`, iconURL: member.user.displayAvatarURL()})
                 .addFields(
                     { name: "Reason:", value: reasonGiven},
-                    { name: "Kicked by:", value: executor!.username, inline: true},
+                    { name: "Kicked by:", value: executor?.username ?? 'Unknown', inline: true},
                     { name: "Date:", value: new Date().toLocaleDateString(), inline: true}
                 )
                 .setTimestamp();
 
-            channelToSend.send({ embeds: [logEmbed], content: `<@!${member.user.id}> was kicked by <@!${executor!.id}>` });
+            channelToSend.send({
+                embeds: [logEmbed],
+                content: executor
+                    ? `<@!${member.user.id}> was kicked by <@!${executor.id}>`
+                    : `<@!${member.user.id}> was kicked by an unknown moderator`,
+            });
         }
         else{
             // user left on their own
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setTitle(`${member.user.username} left the server.`)
                 .setColor('#00f2ff')
                 .setTimestamp()

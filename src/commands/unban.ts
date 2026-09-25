@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import getUserConfig from '../functions/getUserConfig';
 import Command from '../types/Command';
 import { ref } from '..';
@@ -22,7 +22,7 @@ const unban: Command = {
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers | PermissionFlagsBits.Administrator)
 		.setDescription('Unban a user from the server.'),
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
         await interaction.deferReply();
         const user = interaction.options.getString("user", true);
         let reason = interaction.options.getString("reason");
@@ -64,7 +64,7 @@ const unban: Command = {
 
         const currentDate = new Date();
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         .setTitle("User Unbanned:")
         .setDescription("<@!" + userID + `> (` + userID + `) has been unbanned by ${moderator.username} for the following reason:`)
         .addFields(

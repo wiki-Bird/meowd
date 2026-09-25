@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import getUserConfig from '../functions/getUserConfig';
 import Command from '../types/Command';
 import { ref } from '..';
@@ -26,7 +26,7 @@ const remove: Command = {
 		.setDescription('Removes a mod case from a user.'),
 
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
         await interaction.deferReply();
 
 
@@ -46,11 +46,14 @@ const remove: Command = {
         const guildID = interaction.guild.id;
 
         const userConfig = await getUserConfig(userID, guildID);
-        if (userConfig === null) return interaction.reply({ content: `User has no logs.`, ephemeral: true })
+        if (userConfig === null) {
+            await interaction.reply({ content: 'User has no logs.', ephemeral: true });
+            return;
+        }
 
 
         let checker = false;
-        const embed = new MessageEmbed();
+        const embed = new EmbedBuilder();
         embed.setTitle("Loading...");
 
         const warnsRef = ref.child("config").child(userID).child("warnings");

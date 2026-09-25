@@ -1,5 +1,5 @@
 import Command from '../types/Command';
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
 const funnyfont: Command = {
@@ -22,7 +22,7 @@ const funnyfont: Command = {
         )
     .setDescription('Makes text into a funny font'),
 	
-	execute: async function (interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
+	execute: async function (interaction: ChatInputCommandInteraction<'cached' | 'raw'>): Promise<void> {
         const text = interaction.options.getString("text", true);
         const font = interaction.options.getString("font", false) || "cursive";
 

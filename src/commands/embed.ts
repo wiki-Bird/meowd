@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { PermissionFlagsBits } from 'discord-api-types/v9';
 import Command from '../types/Command';
 import { client } from "../index";
@@ -48,7 +48,7 @@ const embed: Command = {
         const footer = interaction.options.getString("footer", false);
         const thumbnail = interaction.options.getAttachment("thumbnail", false);
         const image = interaction.options.getAttachment("image", false);
-        const embed = new MessageEmbed();
+        const embed = new EmbedBuilder();
 
 
         if (!title && !description && !footer && !image) {
