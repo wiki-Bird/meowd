@@ -51,7 +51,7 @@ const messageReactionRemove: Event<[MessageReaction | PartialMessageReaction, Us
         // Check if the reaction matches our desired emoji
         if (reaction.emoji.id !== emojiIdentifier && reaction.emoji.toString() !== starEmoji) return;
 
-        // Check if the number of star reacts >= minimum reacts to go to starboard. If it doesn't, return
+        // Check if the number of star reacts <= minimum reacts to go to starboard. If it doesn't, return
         const starCount = message.reactions.cache.find(r => 
             r.emoji.id === emojiIdentifier || r.emoji.toString() === starEmoji
         )?.count || 0;
@@ -73,7 +73,8 @@ const messageReactionRemove: Event<[MessageReaction | PartialMessageReaction, Us
         const truncatedContent = message.content!.length > 300 
         ? message.content?.slice(0, 300) + '...' 
         : message.content || ' ';
-        const image = message.attachments.size > 0 ? message.attachments.first()?.url : null;
+        const attachment = message.attachments.first();
+        const image = attachment?.contentType?.startsWith('image/') ? attachment.url : null;
         const authorImg = message.author?.displayAvatarURL() || "https://raw.githubusercontent.com/wiki-Bird/meowd-site/main/meowdSiteSveltekit/static/point.png";
 
 

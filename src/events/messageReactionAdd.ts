@@ -17,6 +17,7 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
         }
 
         const message = reaction.message;
+        if (message.partial) await message.fetch();
 
         // If in DMs, return
         if (message.channel.type === ChannelType.DM || !message.guildId) return;
@@ -50,29 +51,16 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
         // Check if the reaction matches our desired emoji
         if (reaction.emoji.id !== emojiIdentifier && reaction.emoji.toString() !== starEmoji) return;
 
-        const messageAuthorID = reaction.message.author?.id;
-        // If the messageAuthorID == user.id, remove the reaction and send a private reply of "can't star your own messages sorrgy"
-        // if (messageAuthorID === user.id ) {
-        //     // message  user womp womp
-        //     try {
-        //         const userUser = await client.users.fetch(user.id);
-        //         await userUser.send("Your stars on your own messages dont count sorry :(");
+        // Check if the user who reacted is the same as the message author
+        if( reaction.message.author?.id === user.id ){
+          try {
+              await reaction.users.remove( user.id );
+          } catch( error ) {
+              console.error( 'Failed to remove self-star:', error );
+          }
 
-        //         // Fetch the message to ensure we have the latest data
-        //         // const fetchedMessage = await message.fetch();
-
-        //         // Remove only this user's reaction
-        //         // try {
-        //         //     await fetchedMessage.reactions.cache.get(reaction.emoji.name!)?.users.remove(user.id);
-        //         // }
-        //         // catch {
-        //         //     console.log('nothing to remove?')
-        //         // }
-        //     } catch (error) {
-        //         console.error(`Failed to send DM to user ${user.id}: ${error}`);
-        //     }
-        //     return;
-        // }
+          return;
+        }
 
         const minReactsToStar = parseInt(String(Object.values(starboardDB.child("minstars").val() || {})[0] || "1"), 10) || 1;
 
@@ -99,7 +87,9 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
         const truncatedContent = message.content!.length > 300
         ? message.content?.slice(0, 300) + '...'
         : message.content || ' ';
-        const image = message.attachments.size > 0 ? message.attachments.first()?.url : null;
+        const attachment = message.attachments.first();
+        const image = attachment?.contentType?.startsWith('image/') ? attachment.url : null;
+        const video = !image && (attachment?.contentType?.startsWith('video/') || /\.(mp4|webm|mov|m4v|mkv|avi)$/i.test(attachment?.name ?? '')) ? attachment : null;
         const authorImg = message.author?.displayAvatarURL() || "https://raw.githubusercontent.com/wiki-Bird/meowd-site/main/meowdSiteSveltekit/static/point.png";
 
 
@@ -134,7 +124,10 @@ const messageReactionAdd: Event<[MessageReaction | PartialMessageReaction, User 
 
         if (image) embed.setImage(image);
 
-        await starboardChannel.send({ embeds: [embed] });
+        await starboardChannel.send({
+            embeds: [embed],
+            files: video ? [{ attachment: video.url, name: video.name }] : [],
+        });
     }
 }
 
